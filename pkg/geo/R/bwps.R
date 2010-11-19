@@ -1,0 +1,6 @@
+bwps <-
+function(...){
+  postscript(...) 
+  geoplotbwpalette()
+}
+

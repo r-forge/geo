@@ -1,0 +1,6 @@
+colps <-
+function(...){
+  postscript(...) 
+  geoplotpalette()
+}
+
