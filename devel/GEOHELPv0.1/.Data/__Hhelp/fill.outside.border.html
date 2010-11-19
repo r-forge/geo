@@ -1,0 +1,95 @@
+<HTML>
+<head> 
+<style type="text/css"> 
+  body { font-size: 14pt ; font-family: SansSerif } 
+  p    { font-size: 14pt ; font-family: SansSerif } 
+  samp { font-size: small; font-family: Monospaced }
+  code { font-family: Monospaced }
+  tt   { font-family: Monospaced }
+  pre  { margin-top: 5; margin-bottom: 5; font-family: Monospaced}
+</style>
+<script language="JavaScript"> 
+<!-- 
+// searching is disabled until the applet is initialized 
+enableSearch = false; 
+function searchInIndex (srch_trm) { 
+theUrl = document.SgmlLink.search(srch_trm); 
+if (theUrl.length() == 0) { 
+alert("DOCUMENT NOT FOUND"); 
+} 
+else{ 
+coWindow =open(theUrl,"srch_trm","width=600,height=500,resizable=1,scrolling=1,statusbar=1,location=1,scrollbars=1");
+coWindow.location=theUrl; 
+coWindow.focus(); 
+} 
+return ; 
+} 
+//--> 
+</script> 
+</head> 
+  <body bgcolor='#FFFFFF'>
+<! fill.outside.border >
+
+<H1>Fills space outside the border of a plot.
+</H1>
+<H2> DESCRIPTION: </H2>When programs like  geopolygon  are  used  they  sometimes
+       fills  space  outside the border of their plots, to refill
+       that space white we use fill.outside.border.
+<H2> USAGE: </H2>
+<PRE>fill.outside.border(col=0, rat=1)
+</PRE>
+
+<H2> OPTIONAL ARGUMENTS: </H2>
+<DL>
+<DT><B> col </B>
+</DT><DD>
+The color of the fill, default is 0 (usually white).
+</DD>
+<DT><B> rat </B>
+</DT><DD>
+Ratio between the size of the current plot and the size of
+       the  fill,  if  you  want  to allow the program to draw 5%
+       outside the plot you set rat =1.05.  Default rat = 1.
+</DD>
+</DL>
+<H2> VALUE: </H2>
+<DL>No Value.
+</DL>
+
+<H2> SIDE EFFECTS: </H2>
+Fill outside of the border of the current plot.
+<H2> SEE ALSO: </H2>
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geoworld">
+<param name="text" value="geoworld">
+<param name="textColor" value="blue">
+</OBJECT>
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geopolygon">
+<param name="text" value="geopolygon">
+<param name="textColor" value="blue">
+</OBJECT>
+
+.
+<H2> EXAMPLES: </H2>
+ 
+<PRE>       geoplot(xlim=c(-50,20),ylim=c(50,70))       # Initialize plot.
+       geoworld(fill=T,color=120)                  # Colour countries.
+       fill.outside.border()                       # Clear outside of border.
+       geoplot(xlim=c(-50,20),ylim=c(50,70),new=T) # Relabel.
+
+</PRE>
+
+<!-- s-keyword  -->
+
+<!-- s-docclass function -->
+<applet 
+ code=SgmlLink.class 
+  name=SgmlLink 
+width=0 
+ height=0 > 
+ <param name="INDEXFILE" value="index.txt"> 
+ </applet> 
+ </BODY>
+</HTML>

@@ -1,0 +1,59 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+<s-topic> fill.outside.border </s-topic>
+</s-topics>
+<s-title>
+Fills space outside the border of a plot.
+</s-title>
+<s-description>
+When programs like  geopolygon  are  used  they  sometimes
+       fills  space  outside the border of their plots, to refill
+       that space white we use fill.outside.border.
+</s-description>
+<s-usage>
+<s-old-style-usage>
+fill.outside.border(col=0, rat=1)
+</s-old-style-usage>
+</s-usage>
+<s-args-optional>
+<s-arg name=" col ">
+The color of the fill, default is 0 (usually white).
+</s-arg>
+<s-arg name=" rat ">
+Ratio between the size of the current plot and the size of
+       the  fill,  if  you  want  to allow the program to draw 5%
+       outside the plot you set rat =1.05.  Default rat = 1.
+</s-arg>
+</s-args-optional>
+<s-value>
+No Value.
+</s-value>
+<s-side-effects>
+Fill outside of the border of the current plot.
+</s-side-effects>
+<s-see>
+<s-function name="geoworld.sgm">geoworld</s-function>,
+<s-function name="geopolygon.sgm">geopolygon</s-function>.
+</s-see>
+<s-examples>
+<s-example>
+       geoplot(xlim=c(-50,20),ylim=c(50,70))       # Initialize plot.
+       geoworld(fill=T,color=120)                  # Colour countries.
+       fill.outside.border()                       # Clear outside of border.
+       geoplot(xlim=c(-50,20),ylim=c(50,70),new=T) # Relabel.
+
+</s-example>
+</s-examples>
+<s-keywords>
+<s-keyword>
+<!--Put one or more s-keyword tags here-->
+</s-keyword>
+</s-keywords>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

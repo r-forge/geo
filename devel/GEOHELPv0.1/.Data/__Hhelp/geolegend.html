@@ -1,0 +1,108 @@
+<HTML>
+<head> 
+<style type="text/css"> 
+  body { font-size: 14pt ; font-family: SansSerif } 
+  p    { font-size: 14pt ; font-family: SansSerif } 
+  samp { font-size: small; font-family: Monospaced }
+  code { font-family: Monospaced }
+  tt   { font-family: Monospaced }
+  pre  { margin-top: 5; margin-bottom: 5; font-family: Monospaced}
+</style>
+<script language="JavaScript"> 
+<!-- 
+// searching is disabled until the applet is initialized 
+enableSearch = false; 
+function searchInIndex (srch_trm) { 
+theUrl = document.SgmlLink.search(srch_trm); 
+if (theUrl.length() == 0) { 
+alert("DOCUMENT NOT FOUND"); 
+} 
+else{ 
+coWindow =open(theUrl,"srch_trm","width=600,height=500,resizable=1,scrolling=1,statusbar=1,location=1,scrollbars=1");
+coWindow.location=theUrl; 
+coWindow.focus(); 
+} 
+return ; 
+} 
+//--> 
+</script> 
+</head> 
+  <body bgcolor='#FFFFFF'>
+<! geolegend >
+
+<H1>Put a legend on a plot in the geo series.
+</H1>
+<H2> DESCRIPTION: </H2>Adds a  legend  to  current  plot.  The  location  can  be
+       specified  with  $lat  and  $lon.   Allows  all  the  same
+       parameters as legend.
+<H2> USAGE: </H2>
+<PRE>geolegend(pos, legend, ...)
+</PRE>
+
+<H2> REQUIRED ARGUMENTS: </H2>
+<DL>
+<DT><B>pos</B>
+</DT><DD>
+The position of the text, should include  $lat  and  $lon.
+       If  $lat  and  $lon  are llength 1, they determine the top
+       left corner of  the  rectangle;  if  theey  are  length  2
+       vectors,  the  give  opposite  corners  of the rectangular
+       area.  A list containing x and y values may be supplied.
+</DD>
+<DT><B>legend</B>
+</DT><DD>
+Vector of character strings to be associated with plot.
+</DD>
+</DL>
+<H2> OPTIONAL ARGUMENTS: </H2>
+<DL>
+<DT><B>...</B>
+</DT><DD>
+The function allows any optional argument  to  the  legend
+       function to be taken.
+</DD>
+</DL>
+<H2> VALUE: </H2>
+<DL>None.
+</DL>
+
+<H2> SIDE EFFECTS: </H2>
+Draws a box at specified coordinates and puts  inside  (if
+       possible)  examples  of lin, points, marks and/or shading,
+       each identified with a user-specified text string.
+<H2>DETAILS:</H2>
+ <P>
+See legend.
+</P>
+
+<H2> SEE ALSO: </H2>
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="legend">
+<param name="text" value="legend">
+<param name="textColor" value="blue">
+</OBJECT>
+.
+<H2> EXAMPLES: </H2>
+ 
+<PRE>           # The function is currently defined as
+       function(pos, legend, ...)
+       {
+                      oldpar &lt;- par()
+                      par(geopar$gpar)
+                      on.exit(par(oldpar))
+                      xx &lt;- Proj(pos$lat, pos$lon)
+                      legend(xx$x, xx$y, legend = legend, ...)
+       }
+
+</PRE>
+
+<!-- s-docclass function -->
+<applet 
+ code=SgmlLink.class 
+  name=SgmlLink 
+width=0 
+ height=0 > 
+ <param name="INDEXFILE" value="index.txt"> 
+ </applet> 
+ </BODY>
+</HTML>

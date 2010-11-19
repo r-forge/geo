@@ -1,0 +1,213 @@
+<HTML>
+<head> 
+<style type="text/css"> 
+  body { font-size: 14pt ; font-family: SansSerif } 
+  p    { font-size: 14pt ; font-family: SansSerif } 
+  samp { font-size: small; font-family: Monospaced }
+  code { font-family: Monospaced }
+  tt   { font-family: Monospaced }
+  pre  { margin-top: 5; margin-bottom: 5; font-family: Monospaced}
+</style>
+<script language="JavaScript"> 
+<!-- 
+// searching is disabled until the applet is initialized 
+enableSearch = false; 
+function searchInIndex (srch_trm) { 
+theUrl = document.SgmlLink.search(srch_trm); 
+if (theUrl.length() == 0) { 
+alert("DOCUMENT NOT FOUND"); 
+} 
+else{ 
+coWindow =open(theUrl,"srch_trm","width=600,height=500,resizable=1,scrolling=1,statusbar=1,location=1,scrollbars=1");
+coWindow.location=theUrl; 
+coWindow.focus(); 
+} 
+return ; 
+} 
+//--> 
+</script> 
+</head> 
+  <body bgcolor='#FFFFFF'>
+<! geopolygon >
+
+<H1>Fill an area.
+</H1>
+<H2> DESCRIPTION: </H2>The program fills an area. The program is similar to the polygon function except the data is in lat,lon and the transform of the data specified in geoplot is used. Also there are some additional parameters. The graph has to be initialized by geoplot.
+<H2> USAGE: </H2>
+<PRE>geopolygon(lat, lon=NULL, col=0, border=F, exterior=F, nx=1,
+           outside=F, plot=T, save=F, rat=0.005, density=-1,
+           Projection=NULL, angle=45, allowed.size=4000, option=1)
+</PRE>
+
+<H2> REQUIRED ARGUMENTS: </H2>
+<DL>
+<DT><B>lat,lon</B>
+</DT><DD>
+Latitude and longitude of data ( or x and y coordinates),  negative for southern latitudes and western longitudes. May be supplied as two vectors or as a list lat (or x) including vectors lat$lat and lat$lon (x$x and x$y if projection = none).
+</DD>
+</DL>
+<H2> OPTIONAL ARGUMENTS: </H2>
+<DL>
+<DT><B>col</B>
+</DT><DD>
+Color number used.  Default value is 0 (often white).
+</DD>
+<DT><B>border</B>
+</DT><DD>
+If T borders around the polygon are drawn. Default value is F.
+</DD>
+<DT><B>exterior</B>
+</DT><DD>
+If T everything that is outside the polygon is painted , else everything inside. Default value is F. If exterior = T axes and grid often need refreshing by calling geoplot again with new=T.
+</DD>
+<DT><B>nx</B>
+</DT><DD>
+See geolines for further details.
+</DD>
+<DT><B>outside</B>
+</DT><DD>
+if T what is outside of the polygon is colored else what is inside. Default value is T.
+</DD>
+<DT><B>plot</B>
+</DT><DD>
+if T the polygon is plotted. Default is T.
+</DD>
+<DT><B>save</B>
+</DT><DD>
+if T the points plotted are returned. Default is F.
+</DD>
+<DT><B>rat</B>
+</DT><DD>
+the ratio of the plot to what is plotted. Default is 0.005 meaning that the plot is 0.5% bigger than what is plotted.
+</DD>
+<DT><B>density</B>
+</DT><DD>
+see polygon.
+</DD>
+<DT><B>Projection</B>
+</DT><DD>
+the projection to be used. Default is the one defined by current plot.
+</DD>
+<DT><B>angle</B>
+</DT><DD>
+see polygon.
+</DD>
+<DT><B>allowed.size</B>
+</DT><DD>
+printers are limited to printing polygons of certain size, when the polygons size is actually too big for your printer you can enter the tedious task of splitting up the polygon. Default is 4000.
+</DD>
+</DL>
+<H2> VALUE: </H2>
+<DL>The points plotted are returned if save=T.
+</DL>
+<H2> SEE ALSO: </H2>
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="polygon">
+<param name="text" value="polygon">
+<param name="textColor" value="blue">
+</OBJECT>
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geoplot">
+<param name="text" value="geoplot">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geolines">
+<param name="text" value="geolines">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geopoints">
+<param name="text" value="geopoints">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geotext">
+<param name="text" value="geotext">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geosymbols">
+<param name="text" value="geosymbols">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geocontour.fill">
+<param name="text" value="geocontour.fill">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geogrid">
+<param name="text" value="geogrid">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geoimage">
+<param name="text" value="geoimage">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geocontour">
+<param name="text" value="geocontour">
+<param name="textColor" value="blue">
+</OBJECT>
+
+.
+<H2> EXAMPLES: </H2>
+ 
+<PRE>     geopolygon(island)              # Paint iceland with 
+                                     # color #0 (often white).
+
+     geopolygon(island,col=0,exterior=T)
+
+     geopolygon(geolocator(),col=1)  # Paints a region defined 
+                                     # by pointing on map black.
+
+     # Of the maps available island (iceland) is about the only that
+     # is correctly defined as closed polygon so it is the only one that 
+     # can be painted by geopolygon.
+
+     geoplot(grid=F,type=&quot;n&quot;)
+     # Star by setting up the plot.
+     geopolygon(gbdypif.500,col=4,exterior=F,r=0)
+     # Use geopolygon to draw the 500 m area. 
+     geopolygon(gbdypif.100,col=155,exterior=F,r=0)
+     # Draw 100 m are over the 500 m. 
+     geolines(eyjar,col=115)
+     # Add islands around Iceland.
+     gbplot(c(100,500),depthlab=T)
+     # Draw the depth lines, labels on lines.
+     geopolygon(island,col=115,outside=T,r=0)
+     # Draw Iceland over.
+     geoplot(grid=F,new=T)
+     # Draw lines around Iceland, could also use geolines.
+
+</PRE>
+
+<!-- s-docclass function -->
+<applet 
+ code=SgmlLink.class 
+  name=SgmlLink 
+width=0 
+ height=0 > 
+ <param name="INDEXFILE" value="index.txt"> 
+ </applet> 
+ </BODY>
+</HTML>

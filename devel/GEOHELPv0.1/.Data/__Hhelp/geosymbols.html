@@ -1,0 +1,359 @@
+<HTML>
+<head> 
+<style type="text/css"> 
+  body { font-size: 14pt ; font-family: SansSerif } 
+  p    { font-size: 14pt ; font-family: SansSerif } 
+  samp { font-size: small; font-family: Monospaced }
+  code { font-family: Monospaced }
+  tt   { font-family: Monospaced }
+  pre  { margin-top: 5; margin-bottom: 5; font-family: Monospaced}
+</style>
+<script language="JavaScript"> 
+<!-- 
+// searching is disabled until the applet is initialized 
+enableSearch = false; 
+function searchInIndex (srch_trm) { 
+theUrl = document.SgmlLink.search(srch_trm); 
+if (theUrl.length() == 0) { 
+alert("DOCUMENT NOT FOUND"); 
+} 
+else{ 
+coWindow =open(theUrl,"srch_trm","width=600,height=500,resizable=1,scrolling=1,statusbar=1,location=1,scrollbars=1");
+coWindow.location=theUrl; 
+coWindow.focus(); 
+} 
+return ; 
+} 
+//--> 
+</script> 
+</head> 
+  <body bgcolor='#FFFFFF'>
+<! geosymbols >
+
+<H1>Plot different kinds of symbols at the data points.
+</H1>
+<H2> DESCRIPTION: </H2>The function plots different kinds of symbols at the data points defined by lat,lon. There are four categories of symbols.
+ - 1. Default. Shapes whose  size  is proportional to z or sqrt(z).
+ - 2. Shapes where certain color, shading or size represents certain
+      range of z. Similar to contour program.
+ - 3. Filled circles where certain size represents certain range of z,
+      specified with fill.circles = T.
+ - 4. Characters or character strings represent the different ranges 
+      of z, specified with characters = T.
+Their are seven types of shapes:
+circles, squares, rectangles,  vbars (vertical bars), hbars(horisontal bars)
+, perbers (perpendicular bars), parbars (parallel bars)
+<H2> USAGE: </H2>
+<PRE>geosymbols(lat, lon=0, z, levels=NULL, reflevels=NULL, labels.only=F,
+           csi=0.1,chs=0.1, z1=0, circles=0, squares=0, rectangles=c(0, 0), 
+           vbars=0, hbars=0, perbars=0, parbars=0, sqrt=F, col=1,
+           maxn=0, colplot=F, nlevels=10, colors=0, n=25, maxcol=155,
+           only.positive=F, digits=0, white=F, lwd=1, label.location=NULL, 
+           labels=1, fill.circles=F, density=0, angle=45, rotate=0,
+           outside=F, minsym=&quot;&lt;&quot;, boundcheck=0, na.rm=T, label.resolution=0,
+           characters=F, pch, marks, charcol=0, open.circles=F,
+           col.names=c(&quot;lat&quot;, &quot;lon&quot;), border=F, bordercol=0)
+</PRE>
+
+<H2> REQUIRED ARGUMENTS: </H2>
+<DL>
+<DT><B>lat,lon</B>
+</DT><DD>
+latitude and longitude of data or a dataframe containing latitude and longitude of data (or x and y coordinates), negative for southern latitudes and western longitudes. Expected to contain $lat and $lon if not otherwise specified in col.names.
+</DD>
+<DT><B>z</B>
+</DT><DD>
+Matrix containing values at datapoints.
+</DD>
+</DL>
+<H2> OPTIONAL ARGUMENTS: </H2>
+<DL>
+<DT><B>levels</B>
+</DT><DD>
+Values at contourlines. Default value is zero. If levels is zero the program determines the contourlines from the data. If squares, circles, hbars, vbars or perbars are being used levels corresponds to the levels where labels are given.
+</DD>
+<DT><B>labels.only</B>
+</DT><DD>
+if true only labels are plotted. Default is false.
+</DD>
+<DT><B>csi</B>
+</DT><DD>
+Size of digits.
+</DD>
+<DT><B>z1</B>
+</DT><DD>
+Value 2 at data points. Only used in connection with rectangles.
+</DD>
+<DT><B>circles</B>
+</DT><DD>
+Max size of circles plotted at data points. Default value used if value <-0 or >100. Size is either proportional to z or sqrt(z).
+</DD>
+<DT><B>squares</B>
+</DT><DD>
+Max size of squares plotted at data points. Default value used if value <-0 or >100. Size is either proportional to z or sqrt(z).
+</DD>
+<DT><B>rectangles</B>
+</DT><DD>
+Max size of rectangles plotted at datapoints in inches. The first number gives max height and the second number max width. Values < 0 or > 100 give default values.
+</DD>
+<DT><B>vbars</B>
+</DT><DD>
+Max size of vertical bars at data points in inches. Values >100 give default values. Value <0 gives bars below points.
+</DD>
+<DT><B>hbars</B>
+</DT><DD>
+Max size of horizontal bars at data points in inches. Values >100 give default values. Value <0 gives bars left of  points.
+</DD>
+<DT><B>perbars</B>
+</DT><DD>
+Max size of bars perpendicular to transsect lines in inches. Values >100 give default values. Value <0 gives different orientation.
+</DD>
+<DT><B>parbars</B>
+</DT><DD>
+Same as perbars, except the bars are now parallel.
+</DD>
+<DT><B>sqrt</B>
+</DT><DD>
+If sqrt=T the size of symbol is proportional to sqrt(z) else to z. Default value if F.
+</DD>
+<DT><B>col</B>
+</DT><DD>
+Color number used, default col = 0.
+</DD>
+<DT><B> maxn </B>
+</DT><DD>
+If nonzero maxn is the base for the size of symbols, else max(z) is used. Nonzero maxn is used if several plots are to be compared.
+</DD>
+<DT><B> colplot </B>
+</DT><DD>
+if true range of z is specified by a colour and not size.
+</DD>
+<DT><B>nlevels</B>
+</DT><DD>
+Number of contourlines. Used if the program has to determine the contourlines. Default value is 10.
+</DD>
+<DT><B>colors</B>
+</DT><DD>
+Color number for the contourlines. Runs from 0 to 155. A vector one longer than the vector levels. Default is blue-green-yellow- red from lowest to the highest values. Color 0 is white and 1 is black. On black and white plots higher color number means darker color and also when hatching. When hatching the useful range is 10 to 80. When plotting filled circles of different sizes colors means sizes in inches. When levels are not specified directly colors have to be found by the program because even  though nlevels = 5 the length of levels can be 7 due to characteristics of the Splus pretty command.
+</DD>
+<DT><B>n</B>
+</DT><DD>
+Number of vertices in each circle, default value is 25, this parameter is rarely changed by the user.
+</DD>
+<DT><B>maxcol</B>
+</DT><DD>
+Number of colors used (excluding #0). Default value is 155
+</DD>
+<DT><B>only.positive</B>
+</DT><DD>
+Logical value. If F then negative values are allowed else negative values are set to zero. Default value is F.
+</DD>
+<DT><B>digits</B>
+</DT><DD>
+Number of digits used in labels. Default value is zero.
+</DD>
+<DT><B>white</B>
+</DT><DD>
+If true the first color is white.
+</DD>
+<DT><B>lwd</B>
+</DT><DD>
+Line width for symbols. Default value is the value when the program was called.
+</DD>
+<DT><B>label.location</B>
+</DT><DD>
+List with components $lat and $lon specifying oppesite corners of a square where the label should be put. (or $x,$y) Gives the lower left and upper right corner of the box where the labels are put. Default value is 0 that means no labels are put on the drawing or if geoplot was initialized with cont = T, then labels are put on the left side of the plot. label.location is best given by geolocator or directly by specifying label.location = "locator".
+</DD>
+<DT><B>labels</B>
+</DT><DD>
+Type of labels 1 or 2. One is default and is usually used except in color with very many colors (more than 10-20) .
+</DD>
+<DT><B>fill.circles</B>
+</DT><DD>
+If T filled circles of different sizes are plotted. Size of the circles is given directly by the parameter color or found from the data. (maxcol corresponds to the size of the largest circle in this case and is 0.1 by default (changing maxcol to 0.4 makes all the circles 4 times larger.)
+</DD>
+<DT><B>density</B>
+</DT><DD>
+If density is 1 (or not zero) circles are hatched instead of having different color. Only available with circles. Color does in this case specify the density of hatching. Higher number means denser hatching. The range is from zero to maxcol (155). But the effective range is ca. 10 - 80.
+</DD>
+<DT><B>angle</B>
+</DT><DD>
+Angle of hatching, default is 45 degrees.
+</DD>
+<DT><B>rotate</B>
+</DT><DD>
+Rotation of hatching from one level to the next. Default value is 0 but 45 or 90 can be good to better distinquish between different levels.
+</DD>
+<DT><B>minsym</B>
+</DT><DD>
+Minimum symbol, default is "<", meaning that if levels = c(1,2), labels will be presented as < 1, 1-2, 2 <, but if minsym = " " labels will be presented as 1,1-2,2. See also labels.resolution.
+</DD>
+<DT><B>boundcheck</B>
+</DT><DD>
+If boundcheck != 0 those points which are out of bounds are returned to the user, if boundcheck = 2 the points are also not plotted, default is boundcheck=0.
+</DD>
+<DT><B>na.rm</B>
+</DT><DD>
+If true NA's are removed, default is true.
+</DD>
+<DT><B>characters</B>
+</DT><DD>
+A boolean variable determing whether characters are to be plotted.
+</DD>
+<DT><B>pch</B>
+</DT><DD>
+Type of symbols for each level.
+</DD>
+<DT><B>marks</B>
+</DT><DD>
+Type of symbols for each level. The difference between marks and pch is becae when making points on a plot the user can either give pch=17 or pch="A". The former type is called marks here but the latter pch. Marks have to be given for each level and set to -1 where pch is to be used. The length of the vector
+</DD>
+<DT><B>charcol</B>
+</DT><DD>
+The color of the charchters, default is the same as col.
+</DD>
+</DL>
+<H2> VALUE: </H2>
+<DL>No values are returned
+</DL>
+<H2> SEE ALSO: </H2>
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geoplot">
+<param name="text" value="geoplot">
+<param name="textColor" value="blue">
+</OBJECT>
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geopolygon">
+<param name="text" value="geopolygon">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="points">
+<param name="text" value="points">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geotext">
+<param name="text" value="geotext">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geopoints">
+<param name="text" value="geopoints">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geocontour.fill">
+<param name="text" value="geocontour.fill">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geogrid">
+<param name="text" value="geogrid">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geoimage">
+<param name="text" value="geoimage">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geocontour">
+<param name="text" value="geocontour">
+<param name="textColor" value="blue">
+</OBJECT>
+
+.
+<H2> EXAMPLES: </H2>
+ 
+<PRE>      # lodna.2 composes of echo measurements for capelin on the
+      # norther- and easternshores of Iceland. [lat,lon,z]
+     
+      # Show points.            
+     
+      geoplot(lodna.2,type=&quot;l&quot;,grid=F)       # Begin by ploting Iceland.
+      geopoints(lodna.2,pch=&quot;*&quot;,col=150)     # See where the points are.
+     
+      ####################################
+      # Example 1, color parbars plot.   #
+      ####################################
+
+      geoplot(lodna.2,type=&quot;l&quot;,grid=T)       # Begin by ploting Iceland. 
+      levels=c(0,20,50,100,500,1000)   
+
+      geosymbols(lodna.2, z=lodna.2$z,colplot=T,colors=seven.col,
+                 levels=levels, parbars=0.05, colors=seven.col,
+                 label.location=&quot;locator&quot;)
+      
+      # &quot;locator&quot; click twice on the map where you want the contour index.
+      # Indicate firstly the upper left corner position then lower right.
+
+      #######################################
+      # Example 2, black/white perbars plot.#
+      #######################################
+
+      geoplot(lodna.2,type=&quot;l&quot;,grid=F)  
+ 
+      geosymbols(lodna.2, z=lodna.2$z, perbars=0.1)
+     
+      # Bars perpendicular to measurement direction
+
+      #######################################
+      # Example 3, Color Dots.              #
+      #######################################
+       
+      # Set up data.  
+      attach(&quot;/usr/local/reikn/SplusNamskeid&quot;)
+      i&lt;-utbrteg$ar==2004
+    
+      # Set up the plot.
+      geoplot()  
+      levels=c(10,100,500)
+      colors=c(13,55,111,153)
+      labloc&lt;-list(lat=c(63.95,65.4),lon=c(-19.8,-17.3))
+
+      geosymbols(utbrteg[i,], z=utbrteg[i,&quot;torskur.kg&quot;], circles=0.05,
+                 sqrt=T, colplot=T, levels=levels, colors=colors,
+                 label.location=labloc) 
+
+
+      #######################################
+      # Example 4, Rings around points.     #
+      #######################################
+
+      # Having done the set up data and plot in Example 3.
+ 
+      geoplot(utbrteg$lat, utbrteg$lon,pch=&quot;.&quot;)
+      geosymbols(utbrteg[i,],z=utbrteg[i,&quot;torskur.kg&quot;], circles=0.2, sqrt=T,
+                 label.location = labloc)     
+    
+      # Circles can be replaced with squares, rectangles, vbars, hbars or 
+      # perbars or more than one used simultanuously.
+
+</PRE>
+
+<!-- s-docclass function -->
+<applet 
+ code=SgmlLink.class 
+  name=SgmlLink 
+width=0 
+ height=0 > 
+ <param name="INDEXFILE" value="index.txt"> 
+ </applet> 
+ </BODY>
+</HTML>

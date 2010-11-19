@@ -1,0 +1,68 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+<s-topic> Proj </s-topic>
+</s-topics>
+<s-title>
+Performs Mercator or Lambert projection of data.
+</s-title>
+<s-description>
+Performs Mercator, Lambert or no projection of data, as a default it will perform the projection used in current plot.
+</s-description>
+<s-usage>
+<s-old-style-usage>
+Proj(a, b=0, scale=geopar$scale, b0=geopar$b0, b1=geopar$b1,l1=geopar$l1,
+     projection=geopar$projection, col.names=c("lon", "lat"))
+</s-old-style-usage>
+</s-usage>
+<s-args-required>
+<s-arg name="a,b">
+The input data to be projected, may be given as two vectors or as list attributes, $lat and $lon ($x and $y if projection = none).
+</s-arg>
+</s-args-required>
+<s-args-optional>
+<s-arg name="scale">
+The scale used for the projection, (m, km or miles). Default is the scale defined in geopar (the scale defined when the plot is initialized).
+</s-arg>
+<s-arg name="b0">
+if projection = mercator b0 is the center of the  mercator projection. If projection = "Lambert" b0 and b1 are lattitudes defining the Lambert projection. Default are the b0 and b1 defined in geopar.
+</s-arg>
+<s-arg name="l1">
+The longitude defining the Lambert projection, default is the l1 defined in geopar.
+</s-arg>
+<s-arg name="projection">
+The projection of the data, legal projections are "Mercator", "Lambert" and "none".
+</s-arg>
+<s-arg name="col.names">
+This has to be set to the default value of c("lon", "lat"), otherwise projection will be
+set to "none".
+</s-arg>
+</s-args-optional>
+<s-value>
+The function returns a list containing if projection = "none" x and y,
+if projection is "Mercator" or "Lambert" it includes the projection
+($projection), the scale ($scale), $lat and $lon and $x and $y (the
+distance in $scale from point (0,0) in spherical coordinates.
+</s-value>
+
+<s-see>
+<s-function name="invProj.sgm">invProj</s-function>,
+<s-function name="geopar.sgm">geopar</s-function>,
+<s-function name="geoplot.sgm">geoplot</s-function>.
+</s-see>
+<s-examples>
+<s-example>
+  # For an example of use for this function see i.e. init() where
+  # it is called:
+
+  xgr <- Proj(lat, lon, scale, b0, b1, l1, projection)
+
+</s-example>
+</s-examples>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

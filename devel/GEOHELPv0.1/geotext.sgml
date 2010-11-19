@@ -1,0 +1,147 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+<s-topic> geotext </s-topic>
+</s-topics>
+<s-title>
+Plots text on a drawing defined by geoplot.
+</s-title>
+<s-description>
+The function plots a text in each of the points defined by
+       lat,lon.   (or  x,y)  The  value  plotted at each point is
+       defined by the numeric vector or text vector z. Simular to
+       text but allows lat and lon and a choice of digits used.
+</s-description>
+<s-usage>
+<s-old-style-usage>
+geotext(lat, lon=0, z, cex=0.7, adj=0.5, col=1, digits=0, pretext="",
+        lwd=0, aftertext="", outside=F, angle=0, jitter=NULL,csi=NULL)
+</s-old-style-usage>
+</s-usage>
+<s-args-required>
+<s-arg name="lat,lon">
+Latitude  and  longitude  of  data  (  or  x   and   y
+       coordinates),  negative for southern latitudes and western
+       longitudes.  May be supplied as two vectors or as  a  list
+       lat  (or x) including vectors lat$lat and lat$lon (x$x and
+       x$y if projection = none).
+</s-arg>
+<s-arg name="z">
+Vector with values that will be plotted at datapoints. Has
+       to be of the same length as lat. If z is of mode character
+       it is written directly on the screen.
+</s-arg>
+</s-args-required>
+<s-args-optional>
+<s-arg name="cex">
+Relative size of characters (see the help on the parameter
+  cex).  The size of plotted characeters is cex time the parameter csi
+  that can be seen by par()$csi.  In earlier versions of geoplot the
+  parameter csi was set but csi is a parameter that can not be set in
+  R.  
+</s-arg>
+<s-arg name="adj">
+Location of the text relative to the point, 0  means  text
+       right of point, 0.5 text centered at point and 1 text left
+       of point.  Default value is 0.5.
+</s-arg>
+<s-arg name="col">
+Color number used. Default value is 1.
+</s-arg>
+<s-arg name="digits">
+Number of digits used.
+</s-arg>
+<s-arg name="pretext">
+ Text put  in front of all the text.  Default value is
+       nothing.
+</s-arg>
+<s-arg name="lwd">
+ Linewidth used.
+</s-arg>
+<s-arg name="aftertext">
+ Text put after all the  text.   Default  value  is
+       nothing.
+</s-arg>
+<s-arg name="outside">
+If outside is F no text is plotted outside the  range
+       defined  by xlim,ylim.  Else it is done.  Default value is
+       F.
+</s-arg>
+<s-arg name="angle">
+angle of text in degrees, default is 0.
+</s-arg>
+<s-arg name="jitter">
+see jitter in geoplot.
+</s-arg>
+<s-arg name="csi">
+Size of character.  This parameter can not be set in R but for
+compatibility with old Splus scripts the parameter cex is readjusted by 
+cex = cex*csi/0.12.  Use of this parameter is not recommended.  Default
+value is NULL i.e not used.  
+</s-arg>
+</s-args-optional>
+<s-value>
+No values returned.
+</s-value>
+<s-see>
+<s-function name="geoplot.sgm">geoplot</s-function>,
+<s-function name="geopolygon.sgm">geopolygon</s-function>,
+<s-function name="geolines.sgm">geolines</s-function>,
+<s-function name="geosymbols.sgm">geosymbols</s-function>,
+<s-function name="geogrid.sgm">geogrid</s-function>,
+<s-function name="geopar.sgm">geopar</s-function>,
+<s-function name="geocontour.fill.sgm">geocontour.fill</s-function>,
+<s-function name="geolocator.sgm">geolocator</s-function>,
+<s-function name="geocontour.sgm">geocontour</s-function>.
+</s-see>
+<s-examples>
+<s-example>
+
+       geotext(deg,z=z)    # plot text at points deg$lat,deg$lon
+       
+       geotext(deg$lat,deg$lon,z,csi=0.06) # Same, size of text 0.06".
+       
+       geotext(x$x,x$y,x$z,aftertext="km",pretext="distance")
+       # If geopar$projection="none"
+       
+       geotext(x,z=x$z,aftertext=" km",pretext="distance",angle =90) 
+       # Same text written vertically.
+
+
+       ###############################################################
+       #  Example                                                    #
+       ###############################################################
+
+       lon <- rnorm(10,-27,1.3)
+       lat <- rnorm(10,65,0.6)
+       # Make a normal dist. random set of 10 points.
+
+       geoplot(lat=lat,lon=lon,grid=F,xlim=c(-22,-30),ylim=c(63,67))
+       # Plot the random data points.
+       
+       geopolygon(island,col=115,exterior=T)
+       geolines(island)
+       # Color Iceland. Use litir(number) to see colour scheme. 
+       # Sharpen lines around Iceland.
+
+       num <- 1:10
+       lab <- paste("Nr.",num,sep="")
+       # Make string vector with "Nr.1".."Nr.10" for geotext.
+
+       geopoints(lat,lon,pch="*",col=5)
+       # Redraw the data in a new color the * mark at points.
+
+       geotext(lon=lon,lat=lat,z=lab,col=155)
+       # With geotext we put one element from lab at each data point.
+       title(main="10 Random Data Point")
+       # Add title
+
+</s-example>
+</s-examples>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

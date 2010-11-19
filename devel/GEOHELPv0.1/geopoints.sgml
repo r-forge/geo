@@ -1,0 +1,86 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+<s-topic> geopoints </s-topic>
+</s-topics>
+<s-title>
+Adds points on plots initialized by geoplot.
+</s-title>
+<s-description>
+Plot points on a graph initialized by geoplot. Data is stored as lat, lon or x,y depending on the projection. The program plots the transformation of the data. Parameters for the projection are stored in the list geopar. Similar to the Splus function points.
+</s-description>
+<s-usage>
+<s-old-style-usage>
+geopoints(lat, lon=0, pch="*", cex=0.7, col=1, lwd=0,
+          outside=F, jitter=NULL,mkh=NULL,csi=NULL)
+</s-old-style-usage>
+</s-usage>
+<s-args-required>
+<s-arg name="lat,lon">
+Plot points on a graph initialized by geoplot. Data is stored as lat, lon or x,y depending on the projection. The program plots the transformation of the data. Parameters for the projection are stored in the list geopar. Similar to the Splus function points.
+</s-arg>
+</s-args-required>
+<s-args-optional>
+<s-arg name="pch">
+Type of symbol used options are for example. "  ","*","+","." or anything else, letter, digit, or symbol. Default is "*"
+<s-arg name="cex">
+Relative size of character and symbols (see the help on the parameter
+  cex).  The size of plotted characeters is cex time the parameter csi
+  that can be seen by par()$csi.  In earlier versions of geoplot the
+  parameter csi was set but csi is a parameter that can not be set in
+  R.  The parameter mkh should probably be used for symbols instead of
+  cex, see help on graphical parameters.  
+</s-arg>
+<s-arg name="col">
+Colour number used.  Default value is one.
+</s-arg>
+<s-arg name="lwd">
+Linewidth used. Default is the value set when the program was called.
+</s-arg>
+<s-arg name="outside">
+If True geopoints will plot points outside the specified limits set by
+geoplot(). If False, which is default, outside points will be skipped.
+</s-arg>
+<s-arg name="jitter">
+useful if many datapoints have the same coordinates, points are jittered randomly to make common values look bigger.jitter=0.016 is often about right but you may want to have jitter smaller or bigger varying on plot.
+</s-arg>
+<s-arg name="mkh">
+Size of symbol in inches.  If not given cex is used instead. 
+</s-arg>
+<s-arg name="csi">
+Size of character.  This parameter can not be set in R but for
+compatibility with old Splus scripts the parameter cex is readjusted by 
+cex = cex*csi/0.12.  Use of this parameter is not recommended.  Default
+value is NULL i.e not used.  
+</s-arg>
+</s-args-optional>
+<s-see>
+<s-function name="geoplot.sgm">geoplot</s-function>,
+<s-function name="geopolygon.sgm">geopolygon</s-function>,
+<s-function name="geolines.sgm">geolines</s-function>,
+<s-function name="points.sgm">points</s-function>,
+<s-function name="geotext.sgm">geotext</s-function>,
+<s-function name="geosymbols.sgm">geosymbols</s-function>,
+<s-function name="geocontour.fill.sgm">geocontour.fill</s-function>,
+<s-function name="geogrid.sgm">geogrid</s-function>,
+<s-function name="geocontour.sgm">geocontour</s-function>.
+</s-see>
+<s-examples>
+<s-example>
+       geopoints(deg)                           # Plots * in the points
+                                                # defined by deg$lat,deg$lon.
+      
+       geopoints(deg$lat,deg$lon,pch="*",col=5) # Same but uses color 5.
+
+       geopoints(fd$x,fd$y)                     # Points in x,y when
+                                                # projection in geoplot 
+                                                # was "none".
+</s-example>
+</s-examples>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

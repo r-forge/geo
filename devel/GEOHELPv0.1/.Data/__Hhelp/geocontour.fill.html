@@ -1,0 +1,556 @@
+<HTML>
+<head> 
+<style type="text/css"> 
+  body { font-size: 14pt ; font-family: SansSerif } 
+  p    { font-size: 14pt ; font-family: SansSerif } 
+  samp { font-size: small; font-family: Monospaced }
+  code { font-family: Monospaced }
+  tt   { font-family: Monospaced }
+  pre  { margin-top: 5; margin-bottom: 5; font-family: Monospaced}
+</style>
+<script language="JavaScript"> 
+<!-- 
+// searching is disabled until the applet is initialized 
+enableSearch = false; 
+function searchInIndex (srch_trm) { 
+theUrl = document.SgmlLink.search(srch_trm); 
+if (theUrl.length() == 0) { 
+alert("DOCUMENT NOT FOUND"); 
+} 
+else{ 
+coWindow =open(theUrl,"srch_trm","width=600,height=500,resizable=1,scrolling=1,statusbar=1,location=1,scrollbars=1");
+coWindow.location=theUrl; 
+coWindow.focus(); 
+} 
+return ; 
+} 
+//--> 
+</script> 
+</head> 
+  <body bgcolor='#FFFFFF'>
+<! geocontour.fill >
+
+<H1>geocontour.fill plots colored or black and white  contours  on  a
+graph made by geoplot.
+</H1>
+<H2> DESCRIPTION: </H2>       The program accepts data on a rectangular grid.  Irregular
+       data can be interpolated on the grid in a  number of ways,
+       using kriging, the Splus function interp, etc.   NA's  are
+       allowed  in  the  matrix  but they are changed to 0 or the
+       average value of z early in the program. The  geo  package
+       contains  two  different contour plot programs, geocontour
+       and geocontour.fill.  Geocontour draws contour  lines  and
+       geocontour.fill fills in between the lines.
+         Hardcopy of the plot can  be done on a color  postscript
+       printer  or  on  a black and white postscript printer.  In
+       all cases the "postscript" driver included with Splus  has
+       to  be  used.  There is another postscript driver included
+       with Splus called "pscript".  That driver is used  when  a
+       plot  is  on  the  screen and the print button is pressed.
+       That can not be done when the postscript driver is used as
+       described here after.
+<H2> USAGE: </H2>
+<PRE>geocontour.fill(grd, z, levels=NULL, nlevels=0, csi=0.08, digits=1,col=NULL,
+                working.space=0, labels=1, ratio=1000, only.positive=F,
+                fill=0, maxcol=155, white=F, label.location=0, labels.only=F, 
+                bordercheck=F, maxn=10000, bcrat=0.05, limits=NULL,
+                col.names=c(&quot;lon&quot;, &quot;lat&quot;), minsym=&quot;&lt;&quot;, label.resolution=0,
+                labtxt=NULL, boxcol=0, first.color.trans=T, mai=c(0,1,0,1),
+                leftrat=0.1, labbox=T)
+</PRE>
+
+<H2> REQUIRED ARGUMENTS: </H2>
+<DL>
+<DT><B> grd </B>
+</DT><DD>
+List with components $lat and $lon (or $x,$y) defining the
+       grid   values.   Can  be  made  for  example   by  lat  <-
+       list(lat=seq(60,65,length=100),              lon=seq(-30,-
+       10,length=200)).   Also  lat  can  be  the  outcome of the
+       program  grid  and  then  the   components   lat$grpt$lat,
+       lat$grpt$lon and lat$reg are used.
+</DD>
+<DT><B> z </B>
+</DT><DD>
+Matrix or vector of values.  Length(z) = nlat*nlon  except
+       when  lat  is a list with components lat$grpt and lat$xgr.
+       Then the length  of  z  is  the  same  as  the  length  of
+       lat$xgr$lat  and  lat$xgr$lon.  This  is  the  case if the
+       output of the grid program is used as input lat.
+</DD>
+</DL>
+<H2> OPTIONAL ARGUMENTS: </H2>
+<DL>
+<DT><B> levels </B>
+</DT><DD>
+Values at contourlines.  Default  value  is  zero.   If
+       levels  is  zero  the  program determines the contourlines
+       from the data.  If levels is of length  3  with  levels  =
+       c(0,1,2)  then  there are 4 groups each with special color
+       i.e. <0, 0-1, 1-2 and > 2.
+</DD>
+<DT><B> nlevels </B>
+</DT><DD>
+Number of contourlines.  Used if the program  has  to
+       determine the contourlines.  Default value is 10.  nlevels
+       = 10 does not always mean 10 due to characteristic of  the
+       pretty command.
+</DD>
+<DT><B> csi </B>
+</DT><DD>
+Character  size  inches.   Size  of  letters  in  labels.
+       Default value is 0.08.
+</DD>
+<DT><B> digits </B>
+</DT><DD>
+Number of digits in the labels.  Default value is 1.
+</DD>
+<DT><B> col </B>
+</DT><DD>
+Color  number  for  the  contourlines.   A  vector  one
+       longer  than   the  vector  levels  Default is blue-green-
+       yellow-red from lowest to the highest values.  The program
+       assumes   certain  setup  of  the  splus  colors  that  is
+       described later. Colors should not be specified explicitly
+       except the contour lines are.
+</DD>
+<DT><B> working.space </B>
+</DT><DD>
+Size of working space.  The  program  determines
+       it  from  data  and  prints  on the screen.  If mysterious
+       errors occur then it is likely that the  program  has  not
+       reserved  enough  working  space.   The program writes the
+       used  work  space  on  the  screen  for  use  in   similar
+       situations. (saves time.)
+</DD>
+<DT><B> labels </B>
+</DT><DD>
+       Type of labels, either 1 or 2
+       
+<PRE>
+       labels = 1 means type of label used with few contourlines &lt;20.
+       labels = 2 means type of label used with many contourlines &gt;20.
+       can also use
+       labels = 3 means only labels, no contour plot.
+       
+       
+</PRE>
+
+       Labels can be inserted in two  ways,  by  calling  geoplot
+       with  cont  =  T  or by specifying label.location.  In the
+       first case the left part  of  the  plot  is  reserved  for
+       labels  while  in  the  latter  case the label is put in a
+       place  specified  by  the  user.   The  latter  method  is
+       recommended in most cases.
+</DD>
+<DT><B> ratio </B>
+</DT><DD>
+Factor used to avoid numerical problems.  Default value
+       100.   Lower  values  decrease  numerical problems but can
+       introduce bias.
+</DD>
+<DT><B> only.positive </B>
+</DT><DD>
+Logical value.  If T then negative values are not allowed else
+       negative values are set to zero.  Default value is F.
+</DD>
+<DT><B> fill </B>
+</DT><DD>
+ Determines whether NA's should be replaced  with  zeros
+       (fill=1)  or  mean(z)  (fill=2).  Default value is fill=1.
+       Used   when   lat    is    a    list    with    components
+       lat$xgr$lat,lat$xgr$lon,  lat$grpt$lat  and  lat$grpt$lon.
+       Only used in special cases.
+</DD>
+<DT><B> maxcol </B>
+</DT><DD>
+Number of colors used (excluding  #0).   Default  value
+       155.
+</DD>
+<DT><B> white </B>
+</DT><DD>
+If true the the first class is represented  with  white
+       (color  0). Default value is F but white = T is also often
+       used.
+</DD>
+<DT><B> label.location </B>
+</DT><DD>
+List with  components  $lat  and  $lon.   (or
+       $x,$y)  Gives the lower left and upper right corner of the
+       box where the labels are put.  Default  value  is  0  that
+       means  no  labels  are  put  on  the  drawing (except when
+       geopar$cont = T).  l1  is  best  given  by  geolocator  or
+       directly by specifying label.location = "locator".
+</DD>
+<DT><B> labels.only </B>
+</DT><DD>
+       If labels.only is true no contours are  drawn  but
+       only  labels.   Default  value  is  false.   Order  of the
+       commands    could    be:
+       
+<PRE>       &gt; geoplot(deg,plot=F)
+       &gt; geocontour.fill(lat,z=z,levels=lev,reg=area) # Draw contours.
+       &gt; geocontour(lat,z=z,levels=lev,colors=F,reg=area)
+       # Only used with black and white printers to make  distinction
+       # between  different  levels  clearer.  (not used with color
+       # printers).
+       &gt; geoplot(deg,new=T)  # Refresh  gridlines. 
+       &gt; geocontour.fill(lat,z=z,levels=lev,labels.only=T,label.location=l1)
+       # Add labels.
+       
+</PRE>
+</DD>
+<DT><B> bordercheck </B>
+</DT><DD>
+      if true the program  checks  if  plot  is  outside
+       border and does not plot what is outside border.
+</DD>
+<DT><B> maxn </B>
+</DT><DD>
+       a parameter  determing  the  resolution  of  the  plot,
+       unimportant.
+</DD>
+<DT><B> bcrat </B>
+</DT><DD>
+bordercheck ratio, how much outside the border we  will
+       allow to be plotted, default is bcrat=0.05 meaning that we
+       will allow the plot to go 5% off the border.
+</DD>
+<DT><B> limits </B>
+</DT><DD>
+</DD>
+<DT><B> col.names </B>
+</DT><DD>
+the names  of  the  columns  in  grid,  the  first
+       argument  will  be plotted on the x-axes and the second on
+       the y-axes.  Default is col.names=c("lat","lon").
+</DD>
+<DT><B> minsym </B>
+</DT><DD>
+minimum symbol, default is "<", meaning that if  levels
+       =  c(1,2),  labels will be presented as < 1, 1-2, 2 <, but
+       if minsym = " " labels will be presented as  1,1-2,2.  See
+       also labels.resolution.
+</DD>
+<DT><B> label.resolution </B>
+</DT><DD>
+the  resolution  (precision)  of  the  label
+       numbers,  default  is  0, meaning that if levels = c(1,2),
+       labels  will  be   presented   <   1,   1-2,   2   <,   if
+       label.resolution=0.1  labels will be presented < 1, 1.1-2,
+       2.1<, see also minsym.   If  label.resolution="none",  the
+       labels will present the lowest number of the interval with
+       each color.
+</DD>
+<DT><B>labtxt</B>
+</DT><DD>
+</DD>
+<DT><B>boxcol</B>
+</DT><DD>
+</DD>
+<DT><B>first.color.trans</B>
+</DT><DD>
+</DD>
+<DT><B>mai</B>
+</DT><DD>
+</DD>
+<DT><B>leftrat</B>
+</DT><DD>
+</DD>
+<DT><B>labbox</B>
+</DT><DD>
+</DD>
+</DL>
+<H2> VALUE: </H2>
+<DL>
+</DL>
+
+<H2> DETAILS: </H2>
+ <P>
+<PRE>      
+       The program is based on making triangles out of  a  matrix
+       of  data  nx * ny.  The number of triangles is (nx-1)*(ny-
+       1)*4  and  linear  interpolation  is  used   inside   each
+       triangle.   The  factor  4  comes  from  the fact that the
+       number of points is doubled by interpolation.
+</PRE>
+
+<PRE>      
+       Most of the calculations in the  program  are  done  by  a
+       program  written  in  C.    The  Splus part of the program
+       prepares the data  for the C program, reserves memory  and
+       the  user  interface is in Splus.  The C program is loaded
+       automatically.
+</PRE>
+
+<PRE>      
+       The program is currently  based  on  the  following  color
+       setup in Splus.
+</PRE>
+
+<PRE>      
+       splus*color :  white  black  blue  50  green  50 yellow
+       50 red
+</PRE>
+
+<PRE>      
+       This gives 155 colors with color#0  white,  #1  black,  #2
+       blue, #53 green, #104 yellow, and #155 red.  The parameter
+       maxcol is set to 155 based on this setup  but  it  can  be
+       changed  if  another  setup  is  used.  The vector postcol
+       stores the mapping from the  colors  on  the  terminal  to
+       color postscript based on this setup.
+</PRE>
+
+<PRE>      
+       If the openlook() or  motif()  windowmanager  is  used  in
+       Splus the colors can be changed inside Splus.  In openlook
+       it is best to make a  colorscheme  called  geoplot:  black
+       blue  50  green  50  yellow 50 red.  The background color,
+       i.e. white is not in the definition here.
+</PRE>
+
+<PRE>      
+       The maximum number of contourlines that  can  be  used  is
+       currently 60.
+</PRE>
+
+<PRE>      
+       The program requires that geoplot is called before to  set
+       up  the  drawing.   geoplot  is  called  by  the parameter
+       cont=T. This  is  to  reserve  space  for  labels  on  the
+       drawing.
+</PRE>
+
+<PRE>      
+       If the drawing is written to  a  file  geoplot  should  be
+       called  with  plot  = F.  Then it only sets up the drawing
+       but does not plot anything so the size of the file will be
+       reduced.
+</PRE>
+
+<PRE>      
+       If the labels do not  fit  the  relative  space  taken  by
+       labels  and  picture can be changed by the parameter lcont
+       in geoplot.  After geocontour.fill is  called  geoplot  is
+       called  again with new=T to get all kind of lines back but
+       they were painted over by the program.
+</PRE>
+
+<PRE>      
+       The program treats borders in a special way.  It begins by
+       making  contour-lines over the hole area as if the borders
+       did not exist.  When that is finished the area outside the
+       borders is painted white.
+</PRE>
+
+<PRE>    
+      
+       If  good  picture  is  needed  geocontour
+       should be used between levels to get sharper pictures.
+</PRE>
+
+<PRE>      
+       If the matrix z is not full the program should  be  called
+       by   a   list   lat$xgr$lat,lat$xgr$lon,lat$grpt$lat   and
+       lat$grpt$lon.   Then  the  length  of   the   vectors   z,
+       lat$xgr$lat  and lat$xgr$lon is the same. lat$grpt$lat and
+       lat$grpt$lon is on  the other hand the coordinates of  the
+       rows  and  columns of the matrix. The program grid makes a
+       list with components with these names.
+</PRE>
+
+<PRE>      
+       The functions geolines,  geopoint, geopolygon,  geotext  &
+       geosymbols can be used to add things to the contourplot.
+</PRE>
+</P>
+
+<H2> SEE ALSO: </H2>
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geoplot">
+<param name="text" value="geoplot">
+<param name="textColor" value="blue">
+</OBJECT>
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geolines">
+<param name="text" value="geolines">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geopolygon">
+<param name="text" value="geopolygon">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geotext">
+<param name="text" value="geotext">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geosymbols">
+<param name="text" value="geosymbols">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geogrid">
+<param name="text" value="geogrid">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geopar">
+<param name="text" value="geopar">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geolocator">
+<param name="text" value="geolocator">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geocontour">
+<param name="text" value="geocontour">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="reitaplott">
+<param name="text" value="reitaplott">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="define.area">
+<param name="text" value="define.area">
+<param name="textColor" value="blue">
+</OBJECT>
+
+.
+<H2> EXAMPLES: </H2>
+ 
+<PRE>
+  ######################################################
+  # Example 1.                                         #
+  ######################################################
+
+  # Need the data.frame botnv.2004 to be able to compile this
+  # example, if not attached use: 
+  # &gt;attach(&quot;/usr/local/reikn/Splus5/Aflaskyrslur/Data&quot;)
+
+  codgrd &lt;-list(lat=seq(62,68,by=0.1),lon=seq(-30,-9,by=0.25))
+  # A grid is made.
+  lab.loc&lt;-list(lat=c(63.9,65.6),lon=c(-20.75,-16.5)) 
+  # Location of the label.
+
+  tmp &lt;- combine.rt(botnv.2004$lat,botnv.2004$lon,
+                    botnv.2004$torskur,codgrd,fun=&quot;sum&quot;,fill=T)
+  # The data is read into the grid with combine.rt.
+
+  tmp$z &lt;- tmp$z/(cos(tmp$lat*pi/180)*0.1*60*0.25*60)
+  # Data changed.(from being in
+  # kilos per box to kilos per square mile).
+
+  vg &lt;- list(nugget=0.1,sill=1,range=50)
+  # Parameters for the variogram
+
+  z &lt;- pointkriging(tmp$lat,tmp$lon,tmp$z,codgrd,vg, 
+                    maxnumber=80,maxdist=30,set=-1) 
+  # Dataset smoothened with pointkriging.
+
+  geoplot(lat=c(63,67.5),lon=c(-27,-11),grid=F,axlabels=T,type=&quot;n&quot;)
+  # Plot initialized
+  level=c(160,200,320,500,700,1000,2000,3000,4000,5000,6000)
+  # Levels for geocontour.fill
+
+  geocontour.fill(codgrd,z,levels=level,white=T      # Plot the data.
+                ,working.space = 300000)
+
+  geopolygon(island)
+  # Contourlines inside Iceland overwritten.
+  geolines(island)
+  # Iceland redrawn with geolines.
+
+  geocontour.fill(codgrd,z,levels=level,white=T
+                  label.location=lab.loc,labels.only=T)
+  # Call geocontour.fill again only to plot the labels.
+
+  #########################################################
+  # Example 2.                                            #
+  #########################################################
+
+  
+  # Preperation for pointkriging    
+  # th4.2002 is the data used here, dataframe [lon,lat,mat].
+  # &gt;attach(?????) 
+  
+
+  grd.smb &lt;-list(lat=seq(62.8,67.5,length=80),  # Set up the grid.
+                 lon=seq(-28,-10,length=130))
+  m.lev&lt;-c(0,0.1,0.2,0.3,0.5)
+  # Levels for the geocontour.fill.
+  m.col&lt;-c(0,14,59,104,119,149)
+  # Colors for the levels.
+  lab.in.island&lt;-list(lat=c(63.9,65.6),lon=c(-20.75,-16.5)) 
+  # Location of the Label
+
+  vg &lt;- list(nugget=0.3,sill=1,range=50) 
+  # Initialize variogram parameters.
+ 
+  zfj&lt;-pointkriging(th4.2002$lat,th4.2002$lon,z=th4.2002$mat,
+                  grd.smb,vg,maxnumber=80,maxdist=30,set=-1)
+  # Smooth the data with pointkriging.
+
+  #
+  # Plotting                       
+  #
+
+  par(mfrow=c(1,1), mai=rep(0,4))
+  # Set up graphic parameters.
+  geoplot(lat=c(63,67.5),lon=c(-27,-11),grid=F,axlabels = F,type=&quot;n&quot;)
+  # Draw a background with Iceland with geoplot.
+
+  geocontour.fill(zfj,levels=m.lev,col=m.col,working.space=300000) 
+  # Plot the data with geocontour.fill.
+
+  geopolygon(gbdypif.500,col=0,exterior=T,r=0)
+  # Remove contours outside gbdypif.500.
+  geoplot(lat=c(63,67.5),lon=c(-27,-11),grid=F,          # Replot.
+          axlabels = F,type=&quot;n&quot;,new=T)
+
+  geopolygon(island,col=43)
+  # Remove contours inside Iceland and color Iceland.
+  geocontour.fill(zfj,levels=m.lev,label.location=lab.in.island,
+                  labels.only=T,csi=0.1,col=m.col,working.space=300000)
+  # Call geocontour.fill to plot labels.
+  geolines(island)
+  # Redraw the lines of Iceland.
+
+</PRE>
+
+<!-- s-docclass function -->
+<applet 
+ code=SgmlLink.class 
+  name=SgmlLink 
+width=0 
+ height=0 > 
+ <param name="INDEXFILE" value="index.txt"> 
+ </applet> 
+ </BODY>
+</HTML>

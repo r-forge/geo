@@ -1,0 +1,46 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+<s-topic> geodefine </s-topic>
+</s-topics>
+<s-title>
+Defines regions.
+</s-title>
+<s-description>
+locates points pointed out by users and defines regions.
+</s-description>
+<s-usage>
+<s-old-style-usage>
+geodefine(nholes=0)
+</s-old-style-usage>
+</s-usage>
+<s-args-optional>
+<s-arg name="nholes">
+The number of holes in data, number of regions - 1.
+</s-arg>
+</s-args-optional>
+<s-value>
+A list of the points pointed out by  the  user  with  NA's between regions.
+</s-value>
+<s-side-effects>
+Draws the regions on the plot.
+</s-side-effects>
+<s-details>
+Draws the regions on the plot.
+</s-details>
+<s-see>
+<s-function name="geolocator.sgm">geolocator</s-function>.
+</s-see>
+<s-examples>
+<s-example>
+    Push left mouse button to mark point, push middle button to 
+    mark the end of a region.
+</s-example>
+</s-examples>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

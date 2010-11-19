@@ -1,0 +1,57 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+<s-topic> orthproj </s-topic>
+</s-topics>
+<s-title>
+Performs an orthogonal projection to a curve.
+</s-title>
+<s-description>
+Finds curve coordinates of  points,  given  points  and  a
+       curve  it  returns  the  length  of  the  points orhogonal
+       projection and the distance  traveled  to  the  projection
+       from a given origin on the curve.
+</s-description>
+<s-usage>
+<s-old-style-usage>
+orthproj(pts, curve)
+</s-old-style-usage>
+</s-usage>
+<s-args-required>
+<s-arg name="pts">
+A list containing the points as $lat  and  $lon,  you  may
+       also use geolocator.
+</s-arg>
+<s-arg name="curve">
+The curve to be used for projection.
+</s-arg>
+</s-args-required>
+<s-value>
+Returns  a  dataframe  with  vectors  pardist  (length  of
+       orthogonal  projection)  and  perdist  (how  far  traveled
+       alongst the curve).
+</s-value>
+<s-side-effects>
+ None.
+</s-side-effects>
+<s-see>
+<s-function name="geocurve.sgm">geocurve</s-function>,
+<s-function name="geolocator.sgm">geolocator</s-function>.
+</s-see>
+<s-examples>
+<s-example>
+
+       
+       geoplot(my.curve)     # Plot curve and initialize plot.
+       geocurve(geolocator(),my.curve)         # Mark points.
+
+
+</s-example>
+</s-examples>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

@@ -1,0 +1,50 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+<s-topic> geozoom </s-topic>
+</s-topics>
+<s-title>
+Zoom into plots.
+</s-title>
+<s-description>
+Zoom into current geoplot, redraws  current  geoplot  with
+       area defined by user.  The current plot can be restored by
+       using geodezoom.
+</s-description>
+<s-usage>
+<s-old-style-usage>
+geozoom()
+</s-old-style-usage>
+</s-usage>
+<s-value>
+none.
+</s-value>
+<s-side-effects>
+The last  call  to  geoplot  is  recalled  with  different
+       borders for x and y.
+</s-side-effects>
+<s-see>
+<s-function name="geoplot.sgm">geoplot</s-function>,
+<s-function name="geodezoom.sgm">geodezoom</s-function>.
+</s-see>
+<s-examples>
+<s-example>
+
+    geoplot()
+    geozoom()
+    # Click with mouse as when placing legend i.e. first place the
+    # mouse where the upper left corner is supposed to be and click
+    # once, then move to where the lower right corner is supposed to
+    # be and also press once.
+    geodezoom()
+    # Return to previous plot, here geoplot().
+
+</s-example>
+</s-examples>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

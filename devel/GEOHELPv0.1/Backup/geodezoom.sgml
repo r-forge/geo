@@ -1,0 +1,41 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+<s-topic> geodezoom </s-topic>
+</s-topics>
+<s-title>
+Restores a zoomed plot.
+</s-title>
+<s-description>
+Geodezoom restores a plot zoomed with geodezoom.
+</s-description>
+<s-usage>
+<s-old-style-usage>
+geodezoom()
+</s-old-style-usage>
+</s-usage>
+<s-value>
+none
+</s-value>
+<s-side-effects>
+The limits of the current plot change back to its original
+       size.
+</s-side-effects>
+<s-see>
+<s-function name="geoplot.sgm">geoplot</s-function>,
+<s-function name="geozoom.sgm">geozoom</s-function>.
+</s-see>
+<s-examples>
+<s-example>
+
+    See examples in help(geozoom).
+   
+</s-example>
+</s-examples>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

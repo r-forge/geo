@@ -1,0 +1,247 @@
+<HTML>
+<head> 
+<style type="text/css"> 
+  body { font-size: 14pt ; font-family: SansSerif } 
+  p    { font-size: 14pt ; font-family: SansSerif } 
+  samp { font-size: small; font-family: Monospaced }
+  code { font-family: Monospaced }
+  tt   { font-family: Monospaced }
+  pre  { margin-top: 5; margin-bottom: 5; font-family: Monospaced}
+</style>
+<script language="JavaScript"> 
+<!-- 
+// searching is disabled until the applet is initialized 
+enableSearch = false; 
+function searchInIndex (srch_trm) { 
+theUrl = document.SgmlLink.search(srch_trm); 
+if (theUrl.length() == 0) { 
+alert("DOCUMENT NOT FOUND"); 
+} 
+else{ 
+coWindow =open(theUrl,"srch_trm","width=600,height=500,resizable=1,scrolling=1,statusbar=1,location=1,scrollbars=1");
+coWindow.location=theUrl; 
+coWindow.focus(); 
+} 
+return ; 
+} 
+//--> 
+</script> 
+</head> 
+  <body bgcolor='#FFFFFF'>
+<! grid >
+
+<H1>Grid is a function that prepares a list to use with the  programs
+pointkriging  and blockkriging.  The program calculates a grid of
+points covering the range  of  the  datapoints.   Then  only  the
+gridpoints that are inside specified region are used. Many of the
+parameters for the program are the same as in geoplot.
+</H1>
+<H2> USAGE: </H2>
+<PRE>grid(lat, lon=0, type=&quot;p&quot;, pch=&quot;*&quot;, xlim=c(0, 0), ylim=c(0, 0),
+     b0=65, r=1.1, country=island, xlab=&quot;default&quot;, ylab=&quot;default&quot;,
+     option=&quot;cut&quot;, reg=0, dx=c(0, 0), nx=c(0, 0), grpkt=0, scale=&quot;km&quot;,
+     find=F, new=F, grid=T, projection=&quot;Mercator&quot;, n=2500, b1=b0, nholes=0)
+</PRE>
+
+<H2> REQUIRED ARGUMENTS: </H2>
+<DL>
+<DT><B>lat</B>
+</DT><DD>
+Latitude of points plotted. (or x coordinate)
+</DD>
+</DL>
+<H2> OPTIONAL ARGUMENTS: </H2>
+<DL>
+<DT><B>lon</B>
+</DT><DD>
+Longitude of points plotted. ( or y coordinate)  If  lon=0
+       then  lat  is  a  list containing lat$lat and lat$lon. (or
+       $x,$y) Negative values mean western longitudes.
+</DD>
+<DT><B>type</B>
+</DT><DD>
+Same as an argument with the same name  in  the  "plot"
+       command   in  Splus.   Options  are  type="l"  for  lines,
+       type="p" for points.  Default value is "p".
+</DD>
+<DT><B>pch</B>
+</DT><DD>
+x limits of  drawing  (longitudinal  direction).   Program
+       finds the default values from the range of the data
+</DD>
+<DT><B>xlim</B>
+</DT><DD>
+ x limits of drawing (longitudinal direction).   Program
+       finds the default values from the range of the data.
+</DD>
+<DT><B>ylim</B>
+</DT><DD>
+ y limits of drawing.  Program finds the default  values
+       from the range of the data.
+</DD>
+<DT><B>b0</B>
+</DT><DD>
+Latitude for the mercator transform.
+</DD>
+<DT><B>r</B>
+</DT><DD>
+Size of area that is plotted.  r = 1.0 means  exactly  the
+       range of the datapoints, but r=1.5 means that the range is
+       1.5 times the range of data.  Default value is 1.1.
+</DD>
+<DT><B>country</B>
+</DT><DD>
+Country that is plotted same as in geoplot. Which map
+       is used depends on the size of the area plotted.  If small
+       part of the coast is seen bisland is used,  else  Iceland.
+       Ilands  can be added later by : " geolines(eyjar). Default
+       is iceland.
+</DD>
+<DT><B>xlab</B>
+</DT><DD>
+X-label.  Default value is "Longitude".
+</DD>
+<DT><B>ylab</B>
+</DT><DD>
+Y-label.  Default value is "Latitute".
+</DD>
+<DT><B>option</B>
+</DT><DD>
+Can be either "cut" or "nocut".  If  "nocut"  the  plot
+       always  fills the plotting area but if "cut" the plot does
+       not fill it in the direction where the range  of  data  is
+       minimum.   It  has  to  be  kept  in mind that the program
+       always keeps the same scale vertically  and  horizontally.
+       Default  value  is "cut".  Not effective when contourplots
+       are plotted.
+</DD>
+<DT><B>reg</B>
+</DT><DD>
+List with components reg$lat  and  reg$lon.   Only  points
+       within  the region  are used.  Holes in area are marked by
+       NA.  If reg=0 the region is given by the locator function.
+</DD>
+<DT><B>dx</B>
+</DT><DD>
+Distance between points in the grid in  degrees  longitude
+       and  latitude.   (longitude  first) Default value is 50x50
+       grid over the range of interest.  At  65  degree  north  1
+       degree latitude = 111.1km and 1 degree longitude = 47 km.
+</DD>
+<DT><B>nx</B>
+</DT><DD>
+Number of grid points in x and y direction.  (lon,lat)
+</DD>
+<DT><B>grpkt</B>
+</DT><DD>
+List with two components $lat and $lon.   Latitude  and
+       longitude of the points in the matrix.  Default value is 0
+       which means that the program selects the points  from  the
+       range of data and values of dx.
+</DD>
+<DT><B>scale</B>
+</DT><DD>
+"km" or miles.  Default value is "km".
+</DD>
+<DT><B>find</B>
+</DT><DD>
+If F the program does not look  for  which  points  are
+       inside  the  region,  else  it  does.  Default value is F.
+       Find = F should be used  in  most  cases  except  all  the
+       points  are  to  be used at once in kriging. Then reducing
+       the number of points helps a lot.
+</DD>
+<DT><B>new</B>
+</DT><DD>
+If new is F a new plot is made else  it  is  plotted  over
+       what is on the screen.
+</DD>
+<DT><B>grid</B>
+</DT><DD>
+If grid is F no meridians of longitude and paralells of
+       latitude are not plotted.
+</DD>
+<DT><B>projection</B>
+</DT><DD>
+"Mercator", "Lambert" or "none", default mercator.
+</DD>
+<DT><B>n</B>
+</DT><DD>
+ Total number of points, divided by the program in x and  y
+       direction  to get even spacing. Default is 2500.  The user
+       can specify any of the parameters dx, grpkt, nx, n or none
+       of them.
+</DD>
+<DT><B>b1</B>
+</DT><DD>
+Second latitude in Lambert transform.  Default is the same
+       as b0.
+</DD>
+<DT><B>nholes</B>
+</DT><DD>
+</DD>
+</DL>
+<H2> VALUE: </H2>
+<DL> A list with the following component.        xgr  list with
+       the  coordinates  of  the points that are           inside
+       the border. Components $lat and $lon.        grpt latitude
+       and   longitude   of   the   rows   and   columns  of  the
+                 matrix    that    xgr    is    selected    from.
+              reg  The   borders   of  the  region  of  interest.
+              find If points inside the region were found or not.
+       The  list  from  the  program  grid goes directly into the
+       programs pointkriging and blockkriging.
+</DL>
+<H2> SEE ALSO: </H2>
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geoplot">
+<param name="text" value="geoplot">
+<param name="textColor" value="blue">
+</OBJECT>
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geogrid">
+<param name="text" value="geogrid">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="pointkriging">
+<param name="text" value="pointkriging">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="variogram">
+<param name="text" value="variogram">
+<param name="textColor" value="blue">
+</OBJECT>
+
+.
+<H2> EXAMPLES: </H2>
+ 
+<PRE>
+       grlat &lt;- c(1:20)*0.5+60
+       grlon &lt;- -10-c(1:20)
+       xgr &lt;- grid(lon=grlon,lat=grlat)
+
+       # Here a plot is created, which shows our data as it would
+       # be plotted with geoplot(). The user is prompted for GUI
+       # input. Done as in geozoom. That is we define the area of our
+       # grid by selecting any two points on the plot and the pushing
+       # the middle button.
+
+</PRE>
+
+<!-- s-docclass function -->
+<applet 
+ code=SgmlLink.class 
+  name=SgmlLink 
+width=0 
+ height=0 > 
+ <param name="INDEXFILE" value="index.txt"> 
+ </applet> 
+ </BODY>
+</HTML>

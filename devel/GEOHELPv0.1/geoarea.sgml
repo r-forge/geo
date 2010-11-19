@@ -1,0 +1,67 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+<s-topic> geoarea </s-topic>
+</s-topics>
+<s-title>
+Calculates the area of a given region.
+</s-title>
+<s-description>
+Calculates  the  area  of  a  given  region  to  a   given
+       precision.
+</s-description>
+<s-usage>
+<s-old-style-usage>
+geoarea(data, Projection="Lambert", old.method=F, ngrdpts=2000, robust=T)
+</s-old-style-usage>
+</s-usage>
+<s-args-required>
+<s-arg name=" data ">
+The region, should contain $lat and $lon.
+</s-arg>
+<s-arg name=" ngrdpts ">
+The precision of the calculation.
+</s-arg>
+</s-args-required>
+<s-args-optional>
+<s-arg name=" Projection ">
+Which projection is beeing used.
+</s-arg>
+<s-arg name=" old.method ">
+If true an older version of this program is used. Default is False.
+</s-arg>
+<s-arg name=" robust ">
+If true a more robust method is used, default is True.
+</s-arg>
+</s-args-optional>
+<s-value>
+The area of the region given.
+</s-value>
+<s-side-effects>
+None
+</s-side-effects>
+<s-see>
+<s-function name="geodefine.sgm">geodefine</s-function>,
+<s-function name="geolocator.sgm">geolocator</s-function>,
+<s-function name="geoinside.sgm">geoinside</s-function>.
+</s-see>
+<s-examples>
+<s-example>
+
+         geoarea(island)         # Calculates the area of Iceland up to 
+                                 # an with default precision.
+
+         geoarea(island,10000)   # Calculates the area of Iceland up to 
+                                 # an adiquite precision.
+
+         geoarea(geodefine(),10) # Calculates the area of a region specified 
+                                 # by the user.
+</s-example>
+</s-examples>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

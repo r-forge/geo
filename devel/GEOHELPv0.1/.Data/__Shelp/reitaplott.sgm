@@ -1,0 +1,147 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+<s-topic> reitaplott </s-topic>
+</s-topics>
+<s-title>
+Function that fills squares or subsquares according to the amount
+of fish calculated in them.
+</s-title>
+<s-usage>
+<s-old-style-usage>
+reitaplott(reitur, smareitur=NULL, z, levels=NULL, colors=NULL,
+           density=1, maxcol=155, nlevels=6, white=F, border=F,
+           angle=45, rotate=0, digits=0, csi=0, label.location=0,
+           labels.only=F, col=1, outside=T, mincol=NULL)
+</s-old-style-usage>
+</s-usage>
+<s-args-required>
+<s-arg name="reitur">
+Number of square.  If number of square >1000  the  last
+       digit means subsquare.  For example 5604 means square 560,
+       subsquare 4.
+</s-arg>
+<s-arg name="z">
+Values for each square and subsquare.
+</s-arg>
+</s-args-required>
+<s-args-optional>
+<s-arg name="smareitur">
+Number of subsquare if they are used.  Default  is
+       that subsquare is not used.
+</s-arg>
+<s-arg name="levels">
+Values between colors or different  density  of  lines.
+       Default  is  to  let  the program find it. A small example
+       shows how levels are given.
+       <s-example>
+
+           levels <- c(0,100,1000,2000,4000,5000,8000)
+
+       </s-example>
+       Then the groups  are  <100,100-1000,2000-4000,4000-5000  &
+       >5000,  i.e.   the  program more or less ignores the first
+       and the last values given.
+
+</s-arg>
+<s-arg name="colors">
+Number of color or  shading  pattern  for  each  level.
+       Colours   can   go   from   0  thru  155.   They  go  from
+       white=0,black=1, blue=2,green,yello,red  =  155.   Density
+       goes from 10 thru 130.  Everything above 130 is completely
+       black.  If colors is not given the program  determines  it
+       from  the  data.  Default maximum density is set to 70 but
+       everything above that is very black.
+</s-arg>
+<s-arg name="density">
+If density is 0 coloured plot is made else  different
+       desity of lines is used.
+</s-arg>
+<s-arg name="maxcol">
+Maximum color ( or density)  Default value is  155  for
+       colors  70  for  shading.   All density of lines > 130 are
+       black.
+</s-arg>
+<s-arg name="nlevels">
+Number of levels.  Default value is 6.
+</s-arg>
+<s-arg name="white">
+If white = T the  lowest  color  or  density  is  zero.
+       Default value is white.
+</s-arg>
+<s-arg name="border">
+If border of polygon is to be drawn.  Default value  is
+       F.
+</s-arg>
+<s-arg name="angle">
+ Angle of lines used for hatching.  Default value is  45
+       degrees.
+</s-arg>
+<s-arg name="rotate">
+Rotation of hatcing lines between each level.   Default
+       value is zero or no rotation but rotate=90 is very useful.
+</s-arg>
+<s-arg name="digits">
+Number of digits in labels.  Default value is zero.
+</s-arg>
+<s-arg name="csi">
+Size of digits in labels.  Default value  is  the  current
+       size when the program is called.
+</s-arg>
+<s-arg name="label.location">
+location of labels, default is no labels  are
+       plotted.
+</s-arg>
+<s-arg name="labels.only">
+if true only labels are plotted.
+</s-arg>
+<s-arg name="col">
+ the color of lines, default is 1 (black).
+</s-arg>
+<s-arg name="outside">
+if  true  squares  outside  plot  area  are  plotted,
+       default is true.
+</s-arg>
+<s-arg name="mincol">
+the color number of the first color to be used,  colors
+       are taken from the range mincol to maxcol.
+</s-arg>
+</s-args-optional>
+<s-value>
+No values returned.
+</s-value>
+<s-side-effects>
+ No side effects.
+</s-side-effects>
+<s-details>
+Geoplot has to be  called  before  to  set  the  parameter
+       geopar.  If  geoplot  is  called with the parameter cont=T
+       labels are plotted on the left hand side of the plot. If a
+       color plot is to be made litaps has to be called before.
+</s-details>
+<s-see>
+<s-function name="geoplot.sgm">geoplot</s-function>.
+</s-see>
+<s-examples>
+<s-example>
+     
+       geoplot(reitur=T)
+       reitur <- c(560,560,560,560,561,561,561,561)
+       smareitur <-c(1,2,3,4,1,2,3,4)
+       lab.loc <- list(lat=c(63.95,65.4),lon=c(-19.8,-17.3))
+       z <- c(100,200,300,222,345,453,232,212)
+       geopolygon(island); geolines(island)
+       reitaplott(reitur,smareitur,z,rotate=90,label.location=lab.loc)
+       # All subsuares in square 560 and 561.
+
+
+
+</s-example>
+</s-examples>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

@@ -1,0 +1,52 @@
+GEOHELP v.0.1 for consideration
+(16.8.05)
+
+      Proj  
+      arcdist 
+      combine.rt          - missing 3 parameters, missing example(s).*
+      fill.outside.border 
+      gbplot 
+      geoarea 
+      geocontour.fill     - missing 6 parameters.+ **
+      geocontour 
+      geocurve 
+      geodefine 
+      geodezoom 
+      geoexpand 
+      geogrid 
+      geoidentify 
+      geoinside 
+      geolegend 
+      geolines 
+      geolocator  
+      geoplot 
+      geopoints 
+      geopolygon 
+      geosubplot 
+      geosymbols 
+      geotext 
+      geoworld           - this function does not work.
+      geozoom 
+      grid 
+      invProj 
+      orthproj 
+      plvar              - missing example(s).
+      pointkriging       - missing 2 parameters. ***
+      reitaplott 
+      s2pre 
+      selpos  
+      variofit           - missing example(s).
+      variogram          - missing example(s).
+
+      *** pointkriging 2 parameter comments  missing
+            lognormal, zeroset.     
+
+      **  geocontour.fill 6 parameter comments missing
+            labtxt, boxcol, first.color.trans, mai, leftrat, labbox
+            
+      +     Also data.frame th4.2002 needs to be placed in a common folder
+            to be available to compile Example 2.
+      
+      *   combine.rt 3 parameter comments missing
+            fun, xy, type
+      

@@ -1,0 +1,89 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+<s-topic> geolines </s-topic>
+</s-topics>
+<s-title>
+Add lines to current plot initialized by geoplot.
+</s-title>
+<s-description>
+Add lines to a plot initialized by geoplot. Data is stored as lat, lon
+or x,y. Lists are assumed to have the components $x and $y if projection in geoplot was "none", else $lat,$lon. The program transforms the data as specified in geoplot. Similar to the Splus function lies.
+</s-description>
+<s-usage>
+<s-old-style-usage>
+geolines(lat, lon=0, col=1, lwd=0, lty=0, nx=1)
+</s-old-style-usage>
+</s-usage>
+<s-args-required>
+<s-arg name="lat">
+Latitude of data. ( or x coordinate)
+</s-arg>
+</s-args-required>
+<s-args-optional>
+<s-arg name="lon">
+Longitude of data. ( or y coordinate) Negative values mean western longitudes. Default value is zero. If lon is zero then the data is stored as lat$lat and lat$lon. (or lat$x and lat$y)
+</s-arg>
+<s-arg name="col">
+Colour number used for plotting the lines, default value is 1.
+</s-arg>
+<s-arg name="lwd">
+Line width. Default is to use the width set when the program was called.
+</s-arg>
+<s-arg name="lty">
+Line type. Default is to use the width set when the program was called. See Splus manuals for numbers corresponding to different linetypes and linewidths.
+</s-arg>
+<s-arg name="nx">
+Parameter only used with Lambert transform when lines in lat,lon are curves in x,y. If nx > 1, nx-1 points are put between each two datapoints in lat, lon before projection is done. For example :
+<s-example>
+              geolines(c(66,66),c(-30,-10),nx=50)
+</s-example>
+plots a line onto the 66 degree latitude from -30 to -10. The line is curved because it is made of 50 segments.
+</s-arg>
+</s-args-optional>
+<s-value>
+No values returned.
+</s-value>
+<s-side-effects>
+The projection is stored in geopar$projection and parameters for the transform in geopar$b0, geopar$b1 and geopar$l1.
+</s-side-effects>
+<s-see>
+<s-function name="geoplot.sgm">geoplot</s-function>,
+<s-function name="geopolygon.sgm">geopolygon</s-function>,
+<s-function name="geopoints.sgm">geopoints</s-function>,
+<s-function name="geotext.sgm">geotext</s-function>,
+<s-function name="geosymbols.sgm">geosymbols</s-function>,
+<s-function name="geocontour.fill.sgm">geocontour.fill</s-function>,
+<s-function name="geogrid.sgm">geogrid</s-function>,
+<s-function name="geocontour.sgm">geocontour</s-function>.
+</s-see>
+<s-examples>
+<s-example>
+       geolines(island)                      # plot iceland.
+       geolines(island$lat,island$lon,col=1) # same.
+
+       #######################################################
+
+       geoplot(xlim=c(0,-50),ylim=c(60,75),projection="Lambert")
+       # Set up a Lambert plot.       
+
+       geolines(c(66,66),c(-30,-10),nx=50,col=155,lwd=2)
+       # Draw a line with colour 155 and width 2.
+
+       geopolygon(island)
+       geolines(island,col=3,lwd=3)
+       geolines(eyjar,col=40)
+       geolines(faeroes,col=40)
+       geolines(greenland,col=3,lwd=3)
+       geolines(janmayen,col=40)
+       # Plot some more countries using geolines.
+
+</s-example>
+</s-examples>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

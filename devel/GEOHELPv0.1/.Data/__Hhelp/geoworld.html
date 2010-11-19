@@ -1,0 +1,156 @@
+<HTML>
+<head> 
+<style type="text/css"> 
+  body { font-size: 14pt ; font-family: SansSerif } 
+  p    { font-size: 14pt ; font-family: SansSerif } 
+  samp { font-size: small; font-family: Monospaced }
+  code { font-family: Monospaced }
+  tt   { font-family: Monospaced }
+  pre  { margin-top: 5; margin-bottom: 5; font-family: Monospaced}
+</style>
+<script language="JavaScript"> 
+<!-- 
+// searching is disabled until the applet is initialized 
+enableSearch = false; 
+function searchInIndex (srch_trm) { 
+theUrl = document.SgmlLink.search(srch_trm); 
+if (theUrl.length() == 0) { 
+alert("DOCUMENT NOT FOUND"); 
+} 
+else{ 
+coWindow =open(theUrl,"srch_trm","width=600,height=500,resizable=1,scrolling=1,statusbar=1,location=1,scrollbars=1");
+coWindow.location=theUrl; 
+coWindow.focus(); 
+} 
+return ; 
+} 
+//--> 
+</script> 
+</head> 
+  <body bgcolor='#FFFFFF'>
+<! geoworld >
+
+<H1>Plots rough outline of the world.
+</H1>
+<H2> DESCRIPTION: </H2>  Plots roughly the outlines of those countries  which  have
+       borders  intersecting  the  current  plot  initialized  by
+       geoplot. The program is slow due to size of database.  For 
+       Unix version only.
+<H2> USAGE: </H2>
+<PRE>geoworld(regions=&quot;.&quot;, exact=F, boundary=T, fill=F, color=1, lwd=1,
+         lty=1, plot=T, type=&quot;l&quot;, pch=&quot;.&quot;, database=&quot;world.thin&quot;,
+         return.data=F)
+</PRE>
+
+<H2> OPTIONAL ARGUMENTS: </H2>
+<DL>
+<DT><B>regions</B>
+</DT><DD>
+ Allows plotting only a certain part of the  world  to
+       speed up the function, such as regions = "iceland".
+</DD>
+<DT><B>exact</B>
+</DT><DD>
+Draws a more exact plot.
+</DD>
+<DT><B>boundary</B>
+</DT><DD>
+ If true country boundaries  are  drawn.   Default  is
+       false.
+</DD>
+<DT><B>fill</B>
+</DT><DD>
+If true countries are colored.  Default is false.
+</DD>
+<DT><B>color</B>
+</DT><DD>
+Default is 1 (usually black).
+</DD>
+<DT><B>lwd</B>
+</DT><DD>
+Linewidth, default is 1.
+</DD>
+<DT><B>lty</B>
+</DT><DD>
+Linetype, default is 1.
+</DD>
+<DT><B>plot</B>
+</DT><DD>
+ If false a plot is not drawn.  Default is true.
+</DD>
+<DT><B>type</B>
+</DT><DD>
+ If lines or points  should  be  potted,  see  type  for
+       geoplot.
+</DD>
+<DT><B>pch</B>
+</DT><DD>
+The character to be used for plotting, see par.
+</DD>
+<DT><B>database</B>
+</DT><DD>
+The database the world plot  is  to  be  taken  from.
+       Currently  there  are  two  possible  databases  world and
+       world.thin  from  Ripley   and   Venables.    Default   is
+       world.thin.
+</DD>
+<DT><B>return.data</B>
+</DT><DD>
+ If true those points used to make the in the  plot
+       are return, default is F.
+</DD>
+</DL>
+<H2> VALUE: </H2>
+<DL>default none, see option return data.
+</DL>
+
+<H2> SIDE EFFECTS: </H2>
+the outlines of all countries who intersect  current  plot
+       are drawn.
+<H2> SEE ALSO: </H2>
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geoplot">
+<param name="text" value="geoplot">
+<param name="textColor" value="blue">
+</OBJECT>
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="fill.outside.boarder">
+<param name="text" value="fill.outside.boarder">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geopolygon">
+<param name="text" value="geopolygon">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="par">
+<param name="text" value="par">
+<param name="textColor" value="blue">
+</OBJECT>
+
+.
+<H2> EXAMPLES: </H2>
+ 
+<PRE>     geoplot(xlim=c(0,-53),ylim=c(53,75))
+     geoworld()
+
+     # Should plot in all countries who intersect the plot draw
+     # with geoplot.
+</PRE>
+
+<!-- s-docclass function -->
+<applet 
+ code=SgmlLink.class 
+  name=SgmlLink 
+width=0 
+ height=0 > 
+ <param name="INDEXFILE" value="index.txt"> 
+ </applet> 
+ </BODY>
+</HTML>

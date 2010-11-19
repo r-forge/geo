@@ -1,0 +1,89 @@
+<HTML>
+<head> 
+<style type="text/css"> 
+  body { font-size: 14pt ; font-family: SansSerif } 
+  p    { font-size: 14pt ; font-family: SansSerif } 
+  samp { font-size: small; font-family: Monospaced }
+  code { font-family: Monospaced }
+  tt   { font-family: Monospaced }
+  pre  { margin-top: 5; margin-bottom: 5; font-family: Monospaced}
+</style>
+<script language="JavaScript"> 
+<!-- 
+// searching is disabled until the applet is initialized 
+enableSearch = false; 
+function searchInIndex (srch_trm) { 
+theUrl = document.SgmlLink.search(srch_trm); 
+if (theUrl.length() == 0) { 
+alert("DOCUMENT NOT FOUND"); 
+} 
+else{ 
+coWindow =open(theUrl,"srch_trm","width=600,height=500,resizable=1,scrolling=1,statusbar=1,location=1,scrollbars=1");
+coWindow.location=theUrl; 
+coWindow.focus(); 
+} 
+return ; 
+} 
+//--> 
+</script> 
+</head> 
+  <body bgcolor='#FFFFFF'>
+<! geolocator >
+
+<H1>Locates points on a plot initialized by geoplot.
+</H1>
+<H2> DESCRIPTION: </H2>The function locates  points  on  a  plot  initialized  by
+       geoplot returning their latitude and longitude.
+<H2> USAGE: </H2>
+<PRE>geolocator(type=&quot; &quot;, n=0)
+</PRE>
+
+<H2> OPTIONAL ARGUMENTS: </H2>
+<DL>
+<DT><B>type</B>
+</DT><DD>
+Same parameter as in the  locator  function.   Type="l"
+       draws line between points.
+</DD>
+<DT><B>n</B>
+</DT><DD>
+Number of points. Default value is zero,  then  the  point
+       coordinates  are  located till the mouse' middle button is
+       clicked.
+</DD>
+</DL>
+<H2> VALUE: </H2>
+<DL>A list with components $lat  and  $lon.   or  ($x,  $y  if
+       geopar$projection = "none")
+</DL>
+<H2> SEE ALSO: </H2>
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geoplot">
+<param name="text" value="geoplot">
+<param name="textColor" value="blue">
+</OBJECT>
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="locator">
+<param name="text" value="locator">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geodefine">
+<param name="text" value="geodefine">
+<param name="textColor" value="blue">
+</OBJECT>
+
+.
+<!-- s-docclass function -->
+<applet 
+ code=SgmlLink.class 
+  name=SgmlLink 
+width=0 
+ height=0 > 
+ <param name="INDEXFILE" value="index.txt"> 
+ </applet> 
+ </BODY>
+</HTML>

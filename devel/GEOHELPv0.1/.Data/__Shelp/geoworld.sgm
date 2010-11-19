@@ -1,0 +1,95 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+<s-topic> geoworld </s-topic>
+</s-topics>
+<s-title>
+Plots rough outline of the world.
+</s-title>
+<s-description>
+  Plots roughly the outlines of those countries  which  have
+       borders  intersecting  the  current  plot  initialized  by
+       geoplot. The program is slow due to size of database.  For 
+       Unix version only.
+</s-description>
+<s-usage>
+<s-old-style-usage>
+geoworld(regions=".", exact=F, boundary=T, fill=F, color=1, lwd=1,
+         lty=1, plot=T, type="l", pch=".", database="world.thin",
+         return.data=F)
+</s-old-style-usage>
+</s-usage>
+<s-args-optional>
+<s-arg name="regions">
+ Allows plotting only a certain part of the  world  to
+       speed up the function, such as regions = "iceland".
+</s-arg>
+<s-arg name="exact">
+Draws a more exact plot.
+</s-arg>
+<s-arg name="boundary">
+ If true country boundaries  are  drawn.   Default  is
+       false.
+</s-arg>
+<s-arg name="fill">
+If true countries are colored.  Default is false.
+</s-arg>
+<s-arg name="color">
+Default is 1 (usually black).
+</s-arg>
+<s-arg name="lwd">
+Linewidth, default is 1.
+</s-arg>
+<s-arg name="lty">
+Linetype, default is 1.
+</s-arg>
+<s-arg name="plot">
+ If false a plot is not drawn.  Default is true.
+</s-arg>
+<s-arg name="type">
+ If lines or points  should  be  potted,  see  type  for
+       geoplot.
+</s-arg>
+<s-arg name="pch">
+The character to be used for plotting, see par.
+</s-arg>
+<s-arg name="database">
+The database the world plot  is  to  be  taken  from.
+       Currently  there  are  two  possible  databases  world and
+       world.thin  from  Ripley   and   Venables.    Default   is
+       world.thin.
+</s-arg>
+<s-arg name="return.data">
+ If true those points used to make the in the  plot
+       are return, default is F.
+</s-arg>
+</s-args-optional>
+<s-value>
+default none, see option return data.
+</s-value>
+<s-side-effects>
+the outlines of all countries who intersect  current  plot
+       are drawn.
+</s-side-effects>
+<s-see>
+<s-function name="geoplot.sgm">geoplot</s-function>,
+<s-function name="fill.outside.boarder.sgm">fill.outside.boarder</s-function>,
+<s-function name="geopolygon.sgm">geopolygon</s-function>,
+<s-function name="par.sgm">par</s-function>.
+</s-see>
+<s-examples>
+<s-example>
+     geoplot(xlim=c(0,-53),ylim=c(53,75))
+     geoworld()
+
+     # Should plot in all countries who intersect the plot draw
+     # with geoplot.
+</s-example>
+</s-examples>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

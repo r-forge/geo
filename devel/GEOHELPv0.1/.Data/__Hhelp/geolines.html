@@ -1,0 +1,176 @@
+<HTML>
+<head> 
+<style type="text/css"> 
+  body { font-size: 14pt ; font-family: SansSerif } 
+  p    { font-size: 14pt ; font-family: SansSerif } 
+  samp { font-size: small; font-family: Monospaced }
+  code { font-family: Monospaced }
+  tt   { font-family: Monospaced }
+  pre  { margin-top: 5; margin-bottom: 5; font-family: Monospaced}
+</style>
+<script language="JavaScript"> 
+<!-- 
+// searching is disabled until the applet is initialized 
+enableSearch = false; 
+function searchInIndex (srch_trm) { 
+theUrl = document.SgmlLink.search(srch_trm); 
+if (theUrl.length() == 0) { 
+alert("DOCUMENT NOT FOUND"); 
+} 
+else{ 
+coWindow =open(theUrl,"srch_trm","width=600,height=500,resizable=1,scrolling=1,statusbar=1,location=1,scrollbars=1");
+coWindow.location=theUrl; 
+coWindow.focus(); 
+} 
+return ; 
+} 
+//--> 
+</script> 
+</head> 
+  <body bgcolor='#FFFFFF'>
+<! geolines >
+
+<H1>Add lines to current plot initialized by geoplot.
+</H1>
+<H2> DESCRIPTION: </H2>Add lines to a plot initialized by geoplot. Data is stored as lat, lon
+or x,y. Lists are assumed to have the components $x and $y if projection in geoplot was "none", else $lat,$lon. The program transforms the data as specified in geoplot. Similar to the Splus function lies.
+<H2> USAGE: </H2>
+<PRE>geolines(lat, lon=0, col=1, lwd=0, lty=0, nx=1)
+</PRE>
+
+<H2> REQUIRED ARGUMENTS: </H2>
+<DL>
+<DT><B>lat</B>
+</DT><DD>
+Latitude of data. ( or x coordinate)
+</DD>
+</DL>
+<H2> OPTIONAL ARGUMENTS: </H2>
+<DL>
+<DT><B>lon</B>
+</DT><DD>
+Longitude of data. ( or y coordinate) Negative values mean western longitudes. Default value is zero. If lon is zero then the data is stored as lat$lat and lat$lon. (or lat$x and lat$y)
+</DD>
+<DT><B>col</B>
+</DT><DD>
+Colour number used for plotting the lines, default value is 1.
+</DD>
+<DT><B>lwd</B>
+</DT><DD>
+Line width. Default is to use the width set when the program was called.
+</DD>
+<DT><B>lty</B>
+</DT><DD>
+Line type. Default is to use the width set when the program was called. See Splus manuals for numbers corresponding to different linetypes and linewidths.
+</DD>
+<DT><B>nx</B>
+</DT><DD>
+Parameter only used with Lambert transform when lines in lat,lon are curves in x,y. If nx > 1, nx-1 points are put between each two datapoints in lat, lon before projection is done. For example :
+<PRE>              geolines(c(66,66),c(-30,-10),nx=50)
+</PRE>
+
+plots a line onto the 66 degree latitude from -30 to -10. The line is curved because it is made of 50 segments.
+</DD>
+</DL>
+<H2> VALUE: </H2>
+<DL>No values returned.
+</DL>
+
+<H2> SIDE EFFECTS: </H2>
+The projection is stored in geopar$projection and parameters for the transform in geopar$b0, geopar$b1 and geopar$l1.
+<H2> SEE ALSO: </H2>
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geoplot">
+<param name="text" value="geoplot">
+<param name="textColor" value="blue">
+</OBJECT>
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geopolygon">
+<param name="text" value="geopolygon">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geopoints">
+<param name="text" value="geopoints">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geotext">
+<param name="text" value="geotext">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geosymbols">
+<param name="text" value="geosymbols">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geocontour.fill">
+<param name="text" value="geocontour.fill">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geogrid">
+<param name="text" value="geogrid">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geoimage">
+<param name="text" value="geoimage">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geocontour">
+<param name="text" value="geocontour">
+<param name="textColor" value="blue">
+</OBJECT>
+
+.
+<H2> EXAMPLES: </H2>
+ 
+<PRE>       geolines(island)                      # plot iceland.
+       geolines(island$lat,island$lon,col=1) # same.
+
+       #######################################################
+
+       geoplot(xlim=c(0,-50),ylim=c(60,75),projection=&quot;Lambert&quot;)
+       # Set up a Lambert plot.       
+
+       geolines(c(66,66),c(-30,-10),nx=50,col=155,lwd=2)
+       # Draw a line with colour 155 and width 2.
+
+       geopolygon(island)
+       geolines(island,col=3,lwd=3)
+       geolines(eyjar,col=40)
+       geolines(faeroes,col=40)
+       geolines(greenland,col=3,lwd=3)
+       geolines(janmayen,col=40)
+       # Plot some more countries using geolines.
+
+</PRE>
+
+<!-- s-docclass function -->
+<applet 
+ code=SgmlLink.class 
+  name=SgmlLink 
+width=0 
+ height=0 > 
+ <param name="INDEXFILE" value="index.txt"> 
+ </applet> 
+ </BODY>
+</HTML>

@@ -1,0 +1,77 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+<s-topic> geogrid </s-topic>
+</s-topics>
+<s-title>
+Plots a grid.
+</s-title>
+<s-description>
+Plots a grid defined by the vectors lat,lon. The  grid  is
+plotted  on a graph initialized by geoplot.  lon gives the
+meridians plotted and lat the paralells plotted.
+</s-description>
+<s-usage>
+<s-old-style-usage>
+geogrid(lat, lon=0, col=1, type="l", lwd=0, lty=0, pch="+")
+</s-old-style-usage>
+</s-usage>
+<s-args-required>
+<s-arg name="lat,lon">
+Latitude  and  longitude  of  data  (  or  x  and  y
+       coordinates),  negative for southern latitudes and western
+       longitudes.  May be  supplied  as  two  vectors  or  as  a
+       dataframe lat (or x) including vectors lat$lat and lat$lon
+       (x$x and x$y if projection = none).
+</s-arg>
+</s-args-required>
+<s-args-optional>
+<s-arg name="col">
+Color number used, default value is 1 (black).
+</s-arg>
+<s-arg name="type">
+"l" means line and "p" points.  Default is "l".
+</s-arg>
+<s-arg name="lwd">
+Linewidth.  Default  value  is  the  value  set  when  the
+       program was called.
+</s-arg>
+<s-arg name="lty">
+Linetype.  Default value is the value set when the program
+       was called.
+</s-arg>
+<s-arg name="pch">
+Type of symbol at gridpoints default is "+".
+</s-arg>
+</s-args-optional>
+<s-value>
+No values returned.
+</s-value>
+<s-see>
+<s-function name="geoplot.sgm">geoplot</s-function>,
+<s-function name="geolines.sgm">geolines</s-function>,
+<s-function name="geopolygon.sgm">geopolygon</s-function>,
+<s-function name="geotext.sgm">geotext</s-function>,
+<s-function name="geosymbols.sgm">geosymbols</s-function>,
+<s-function name="geopar.sgm">geopar</s-function>,
+<s-function name="geolocator.sgm">geolocator</s-function>,
+<s-function name="geocontour.sgm">geocontour</s-function>.
+</s-see>
+<s-examples>
+<s-example>
+
+       geogrid(latgr,longgr)
+
+       codgrd <- list(lat=seq(62,68,by=0.1),lon=seq(-28,-10,0.25))
+       geogrid(codgrd)   # a fine grid of Iceland and neighbouring seas
+       geoplot(new=T)   
+
+</s-example>
+</s-examples>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

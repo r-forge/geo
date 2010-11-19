@@ -1,0 +1,72 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+<s-topic> bwps </s-topic>
+</s-topics>
+<s-title>
+Open a postscript device with the color scheme given by
+geoplotbwpalette. (black and white) 
+</s-title>
+<s-description>
+The function starts a postscript device and the arguments are the
+same as the arguments to postscript (height, width, file, bg etc)
+. The color scheme is 1 black, 2-155 white to black in even steps.   
+</s-description>
+<s-usage>
+<s-old-style-usage>
+bwps(...)
+</s-old-style-usage>
+</s-usage>
+<s-args-required>
+No arguments are required
+</s-args-required>
+<s-args-optional>
+The arguments to postscript are optional. See help postscript.  
+</s-args-optional>
+<s-value>
+No value returned.  
+</s-value>
+<s-side-effects>
+A graphics device is opened (often a file).  It must be closed again
+by dev.off()
+</s-side-effects>
+<s-details>
+<!--explain details here-->
+</s-details>
+<s-section name = "REFERENCES">
+</s-section>
+<s-see>
+postscript, geoplotbwpalette,litir
+</s-see>
+<s-examples>
+<s-example>
+bwps(file="map1.ps",height=6,width=5) 
+geoplot(xlim=c(-28,-10),ylim=c(64,69))
+geosymbols(data,z=data$value,circles=0.2,sqrt=T)
+geopolygon(island,col="white")# paint white over the symbols 
+geolines(island) # that are inside the country.  (island) 
+dev.off() 
+</s-example>
+
+<s-example>
+# same example in a different way.  
+bwps(file="map1.ps",height=6,width=5,bg="white") 
+geoplot(xlim=c(-28,-10),ylim=c(64,69))
+geosymbols(data,z=data$value,circles=0.2,sqrt=T)
+geopolygon(island,col=0)#col 0 is now white
+geolines(island) # was transparent earlier
+dev.off() 
+</s-example>
+</s-examples>
+<s-keywords>
+<s-keyword>
+<!--Put one or more s-keyword tags here-->
+</s-keyword>
+</s-keywords>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

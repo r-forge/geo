@@ -1,0 +1,173 @@
+<HTML>
+<head> 
+<style type="text/css"> 
+  body { font-size: 14pt ; font-family: SansSerif } 
+  p    { font-size: 14pt ; font-family: SansSerif } 
+  samp { font-size: small; font-family: Monospaced }
+  code { font-family: Monospaced }
+  tt   { font-family: Monospaced }
+  pre  { margin-top: 5; margin-bottom: 5; font-family: Monospaced}
+</style>
+<script language="JavaScript"> 
+<!-- 
+// searching is disabled until the applet is initialized 
+enableSearch = false; 
+function searchInIndex (srch_trm) { 
+theUrl = document.SgmlLink.search(srch_trm); 
+if (theUrl.length() == 0) { 
+alert("DOCUMENT NOT FOUND"); 
+} 
+else{ 
+coWindow =open(theUrl,"srch_trm","width=600,height=500,resizable=1,scrolling=1,statusbar=1,location=1,scrollbars=1");
+coWindow.location=theUrl; 
+coWindow.focus(); 
+} 
+return ; 
+} 
+//--> 
+</script> 
+</head> 
+  <body bgcolor='#FFFFFF'>
+<! geoidentify >
+
+<H1>Identifies points on plots using lat and lon coordinates.
+</H1>
+<H2> DESCRIPTION: </H2> Works the same way as identify except that it also accepts
+       coordinates  as  lat and lon.  Identifies points on a plot
+       identified by the user.
+<H2> USAGE: </H2>
+<PRE>geoidentify(lat, lon=NULL, labels=1, n=0, plot=T, 
+            atpen=T, offset=0.5, col=1, csi=0.12)
+</PRE>
+
+<H2> REQUIRED ARGUMENTS: </H2>
+<DL>
+<DT><B>lat,lon</B>
+</DT><DD>
+Coordinates of points.  The coordinates can be  given
+       by  two  vectors  or  a  matrix containin vectors $lat and
+       $lon.
+</DD>
+</DL>
+<H2> OPTIONAL ARGUMENTS: </H2>
+<DL>
+<DT><B>labels</B>
+</DT><DD>
+Vector giving  labels  for  each  of  the  points.   If
+       supplied,  this  must have the same length as lat and lon.
+       As a default the vector indece number of the  points  will
+       be used.
+</DD>
+<DT><B>n</B>
+</DT><DD>
+Maximum number of points to be identified.
+</DD>
+<DT><B>plot</B>
+</DT><DD>
+If true, geoidentify plots the  labels  if  the  points
+       identified.
+</DD>
+<DT><B>atpen</B>
+</DT><DD>
+If true, plotted identification is relative to  locator
+       position when the point is identified; otherwise, plotting
+       is relative to the identified lat,lon value. This  can  be
+       useful when points are crowded.  Default is true.
+</DD>
+<DT><B>offset</B>
+</DT><DD>
+Identification is  plotted  as  a  text  string,  moved
+       offset  charecter from the point.  If the locator was left
+       (right) of the nearest point, the label will be offset  to
+       the left (right) of the point.
+</DD>
+<DT><B>col</B>
+</DT><DD>
+The color of the labels.
+</DD>
+<DT><B>csi</B>
+</DT><DD>
+Character size, the size of the label characters.
+</DD>
+</DL>
+<H2> VALUE: </H2>
+<DL> Indeces (in lat and lon) corresponding to  the  identified
+       points.
+</DL>
+
+<H2> SIDE EFFECTS: </H2>
+Labels are placed on the current plot if plot is true.
+<H2>DETAILS:</H2>
+ <P>
+Observations that have missing values in either lat  or
+       lon are
+              treated as if they were not given.
+
+              When using the X11  driver  under  the   X   Window
+       System,  a
+              point  is  identified  by  positioning  the  cursor
+       over the
+              point and pressing the  left   button.    To   exit
+       identify
+              press  the  middle  button  (both  buttons on a two
+       button
+              mouse)  while  the  cursor  is  in  the    graphics
+       window.   The
+              same   procedure   is   used  under  the   suntools
+       driver.  This
+              function may also be used with the "tek" drivers.
+
+              Some devices that do not allow  interaction  prompt
+       you  for
+              an x,y pair.
+
+              The nearest  point  to  the  locator  position   is
+       identified,
+              but must be at most 0.5 inches away.   In  case  of
+       ties, the
+              earliest point is identified.
+</P>
+
+<H2> SEE ALSO: </H2>
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="identify">
+<param name="text" value="identify">
+<param name="textColor" value="blue">
+</OBJECT>
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geolocator">
+<param name="text" value="geolocator">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geotext">
+<param name="text" value="geotext">
+<param name="textColor" value="blue">
+</OBJECT>
+
+.
+<H2> EXAMPLES: </H2>
+ 
+<PRE>
+       geoidentify(stations,labels=stations$temp)
+       # plots the temperature in the closest measuring point.
+
+       geoidentify(stations,atpen=F) 
+       # plots the indece number of the station closest to
+       # where pointed at the stations position.
+
+</PRE>
+
+<!-- s-docclass function -->
+<applet 
+ code=SgmlLink.class 
+  name=SgmlLink 
+width=0 
+ height=0 > 
+ <param name="INDEXFILE" value="index.txt"> 
+ </applet> 
+ </BODY>
+</HTML>

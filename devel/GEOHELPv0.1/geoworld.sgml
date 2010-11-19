@@ -1,0 +1,126 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+<s-topic> geoworld </s-topic>
+</s-topics>
+<s-title>
+Plots rough outline of the world.
+</s-title>
+<s-description>
+  Plots roughly the outlines of those countries  which  have
+       borders  intersecting  the  current  plot  initialized  by
+       geoplot.  The countries can also be filled.  
+</s-description>
+<s-usage>
+<s-old-style-usage>
+geoworld(regions=".", exact=F, boundary=T, fill=F, color=1, lwd=1,
+         lty=1, plot=T, type="l", pch=".", database="world.thin",
+         return.data=F)
+</s-old-style-usage>
+</s-usage>
+<s-args-optional>
+<s-arg name="regions">
+ Allows plotting only a certain part of the  world  to
+       speed up the function, such as regions = "iceland". Default is
+       plotting what is insidie the map.  
+</s-arg>
+<s-arg name="exact">
+Draws a more exact plot.
+</s-arg>
+<s-arg name="boundary">
+ If true country boundaries  are  drawn.   Default  is
+       false.
+</s-arg>
+<s-arg name="fill">
+If true countries are filled with a color.  Default is false.
+</s-arg>
+<s-arg name="color">
+Default is 1 (usually black).
+</s-arg>
+<s-arg name="lwd">
+Linewidth, default is 1.
+</s-arg>
+<s-arg name="lty">
+Linetype, default is 1.
+</s-arg>
+<s-arg name="plot">
+ If false a plot is not drawn.  Default is true.
+</s-arg>
+<s-arg name="type">
+ If lines or points  should  be  potted,  see  type  for
+       geoplot.
+</s-arg>
+<s-arg name="pch">
+The character to be used for plotting, see par.
+</s-arg>
+<s-arg name="database">
+The database the world plot  is  to  be  taken  from.
+       Currently  there  are  two  possible  databases  world and
+       worldHires.  world is in the map library and worlHires in the
+       mapdata library and is much more precies.  
+</s-arg>
+<s-arg name="return.data">
+ If true those points used to make the in the  plot
+       are return, default is F. Can be used to save the coastlines of
+       specified countries.  
+</s-arg>
+<s-arg name="outside=F">
+If T data are plotted outside the borders.  Default is F. 
+</s-arg>
+<s-arg name="allowed.size">
+Maximum size of polygon that can be filled.  Default is 80 000 which
+is rather large polygon but this value is rapidly changing by more
+powerful hardware.  
+</s-arg>
+</s-args-optional>
+<s-value>
+default none, see option return data.
+</s-value>
+<s-side-effects>
+the outlines of all countries who intersect  current  plot
+       are drawn.
+</s-side-effects>
+<s-see>
+<s-function name="geoplot.sgm">geoplot</s-function>,
+<s-function name="fill.outside.border.sgm">fill.outside.border</s-function>,
+<s-function name="geopolygon.sgm">geopolygon</s-function>,
+<s-function name="par.sgm">par</s-function>.
+</s-see>
+<s-examples>
+<s-example>
+     geoplot(xlim=c(0,-53),ylim=c(53,75))
+     geoworld()
+
+     # Should plot in all countries who intersect the plot draw
+     # with geoplot.
+</s-example>
+<s-example>
+
+# The packages maps and mapdata need to be installed
+# worldHires is a very detailed database of coastlines from the 
+# package mapdata.  Could be problematic if used with fill=T)
+# Allowed.size is the maximum allowed size of polygons.  
+library(map) # world coastlines and programs 
+library(mapdata) # more detailed coastlines
+geoplot(xlim=c(20,70),ylim=c(15,34))
+geoworld(database="worldHires",fill=T,col=30,allowed.size=100000) #
+
+geoplot(xlim=c(20,70),ylim=c(15,34),dlat=10,dlon=10)
+geoworld(database="world",fill=T,col=30) #
+
+geoplot(xlim=c(-10,70),ylim=c(71,81),b0=80,dlat=2,dlon=10) # 0 must be high here else
+geoworld(database="world",fill=T,col=30) #the plot fails.  
+
+# Lambert projection,
+geoplot(xlim=c(-10,70),ylim=c(71,81),dlat=2,dlon=10,projection="Lambert")
+geoworld(database="world",fill=T,col=30) 
+</s-example>
+
+</s-examples>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

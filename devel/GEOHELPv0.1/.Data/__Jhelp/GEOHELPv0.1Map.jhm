@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<!DOCTYPE map
+  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Map Version 1.0//EN"
+         "http://java.sun.com/products/javahelp/map_1_0.dtd">
+
+<map version="1.0">
+      <mapID target="jhgif_toplevel" url="gifs/jhgif_toplevel.gif"/>
+
+
+      <mapID target="arcdist" url="../__Hhelp/arcdist.html"/>
+      <mapID target="combine.rt" url="../__Hhelp/combine.rt.html"/>
+      <mapID target="fill.outside.border" url="../__Hhelp/fill.outside.border.html"/>
+      <mapID target="gbplot" url="../__Hhelp/gbplot.html"/>
+      <mapID target="geoarea" url="../__Hhelp/geoarea.html"/>
+      <mapID target="geocontour.fill" url="../__Hhelp/geocontour.fill.html"/>
+      <mapID target="geocontour" url="../__Hhelp/geocontour.html"/>
+      <mapID target="geocurve" url="../__Hhelp/geocurve.html"/>
+      <mapID target="geodefine" url="../__Hhelp/geodefine.html"/>
+      <mapID target="geodezoom" url="../__Hhelp/geodezoom.html"/>
+      <mapID target="geoexpand" url="../__Hhelp/geoexpand.html"/>
+      <mapID target="geogrid" url="../__Hhelp/geogrid.html"/>
+      <mapID target="geoidentify" url="../__Hhelp/geoidentify.html"/>
+      <mapID target="geoinside" url="../__Hhelp/geoinside.html"/>
+      <mapID target="geolegend" url="../__Hhelp/geolegend.html"/>
+      <mapID target="geolines" url="../__Hhelp/geolines.html"/>
+      <mapID target="geolocator" url="../__Hhelp/geolocator.html"/>
+      <mapID target="geopar" url="../__Hhelp/geopar.html"/>
+      <mapID target="geoplot" url="../__Hhelp/geoplot.html"/>
+      <mapID target="geopoints" url="../__Hhelp/geopoints.html"/>
+      <mapID target="geopolygon" url="../__Hhelp/geopolygon.html"/>
+      <mapID target="geosubplot" url="../__Hhelp/geosubplot.html"/>
+      <mapID target="geosymbols" url="../__Hhelp/geosymbols.html"/>
+      <mapID target="geotext" url="../__Hhelp/geotext.html"/>
+      <mapID target="geoworld" url="../__Hhelp/geoworld.html"/>
+      <mapID target="geozoom" url="../__Hhelp/geozoom.html"/>
+      <mapID target="grid" url="../__Hhelp/grid.html"/>
+      <mapID target="invProj" url="../__Hhelp/invProj.html"/>
+      <mapID target="orthproj" url="../__Hhelp/orthproj.html"/>
+      <mapID target="plvar" url="../__Hhelp/plvar.html"/>
+      <mapID target="pointkriging" url="../__Hhelp/pointkriging.html"/>
+      <mapID target="Proj" url="../__Hhelp/Proj.html"/>
+      <mapID target="reitaplott" url="../__Hhelp/reitaplott.html"/>
+      <mapID target="s2pre" url="../__Hhelp/s2pre.html"/>
+      <mapID target="selpos" url="../__Hhelp/selpos.html"/>
+      <mapID target="variofit" url="../__Hhelp/variofit.html"/>
+      <mapID target="variogram" url="../__Hhelp/variogram.html"/>
+
+</map>

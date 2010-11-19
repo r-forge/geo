@@ -1,0 +1,362 @@
+<HTML>
+<head> 
+<style type="text/css"> 
+  body { font-size: 14pt ; font-family: SansSerif } 
+  p    { font-size: 14pt ; font-family: SansSerif } 
+  samp { font-size: small; font-family: Monospaced }
+  code { font-family: Monospaced }
+  tt   { font-family: Monospaced }
+  pre  { margin-top: 5; margin-bottom: 5; font-family: Monospaced}
+</style>
+<script language="JavaScript"> 
+<!-- 
+// searching is disabled until the applet is initialized 
+enableSearch = false; 
+function searchInIndex (srch_trm) { 
+theUrl = document.SgmlLink.search(srch_trm); 
+if (theUrl.length() == 0) { 
+alert("DOCUMENT NOT FOUND"); 
+} 
+else{ 
+coWindow =open(theUrl,"srch_trm","width=600,height=500,resizable=1,scrolling=1,statusbar=1,location=1,scrollbars=1");
+coWindow.location=theUrl; 
+coWindow.focus(); 
+} 
+return ; 
+} 
+//--> 
+</script> 
+</head> 
+  <body bgcolor='#FFFFFF'>
+<! geoplot >
+
+<H1>Plots lat and lon coordinates using Mercator or Lambert
+transformation.
+</H1>
+<H2> DESCRIPTION: </H2>Creates a plot of given data, as the "plot" function but allows input
+data to have latitude and longitude coordinates.Coordinates are
+latitude and longitude in degrees (default) or x,y in m (or other units).
+
+The program performs the Mercator(default) or Lambert transformation
+of the data in degrees and plots it. The plot is scaled such that 1cm
+in  vertical and horizontal directions correspond to the same
+distance. The program is used to initialize drawings to be used by programs,
+i.e. geolines, geopolygon, geopoints, geotext, geosymbol, geogrid,
+geocontour.fill,geoimage and geocontour. The inputs to the program
+are decimal numbers negative for western longitudes e.g.lat=65.75
+lon=-25.8. Whether the program interprets data as lat,lon or x,y
+depends on the parameter projection. If projection is "none" data is
+interpreted as x,y else lat, lon. When the data is interpreted as x,y
+lists are assumed to have the components $x and $y,else $lat and
+$lon.Geoplot is often used with type = "n" so the datapoints used to
+set up the drawing are not seen. Calling geoplot  with  col=0 (white)
+sets up the drawing without putting anything on the screen ( or page).
+<H2> USAGE: </H2>
+<PRE>geoplot(lat=NULL, lon=0, type=&quot;p&quot;, pch=&quot;*&quot;, xlim=c(0, 0), ylim=c(0,0),
+        b0=65, r=1.05, country=&quot;default&quot;, xlab=&quot; &quot;, ylab=&quot; &quot;,
+        option=&quot;cut&quot;, grid=T, new=F, cont=F, csi=0.1, col=1,
+        lcont=c(0.13, 0.21), plotit=T, reitur=F, smareitur=F,
+        reittext=F, csirt=0.1, axratio=1, lwd=0, lwd1=0, locator=F,
+        axlabels=T, projection=&quot;Mercator&quot;, b1=b0, dlat=0, dlon=0, jitter=0, zoom)
+</PRE>
+
+<H2> REQUIRED ARGUMENTS: </H2>
+<DL>
+<DT><B>lat,lon</B>
+</DT><DD>
+Latitude and longitude of data (or x and y coordinates), negative for
+southern latitudes and western longitudes. May be supplied as two
+vectors or as a list lat (or x) including vectors lat$lat and lat$lon
+(x$x and x$y if projection = none).
+</DD>
+</DL>
+<H2> OPTIONAL ARGUMENTS: </H2>
+<DL>
+<DT><B>type</B>
+</DT><DD>
+Options are type="l" for lines, type="p" for points. Default value is "p"
+</DD>
+<DT><B>pch</B>
+</DT><DD>
+Type of symbol drawn in points. Default is "*". Any other character or
+symbol  can be used. If the user does not want the data points on the
+plot, i.e. in contourplots, then  " " is used. In those cases geoplot
+is used to plot axes and initialize the drawing.
+</DD>
+<DT><B>xlim</B>
+</DT><DD>
+x limits of drawing (longitudinal direction). Program finds the default values from the range of the data.
+</DD>
+<DT><B>ylim</B>
+</DT><DD>
+y limits of drawing (latitudinal  direction). Program finds the default values from the range of the data.
+</DD>
+<DT><B>b0</B>
+</DT><DD>
+Base latitude for the Mercator or Lambert transform.
+</DD>
+<DT><B>r</B>
+</DT><DD>
+Size of area which is plotted. r = 1.0 means exactly the range of the datapoints, but r=1.5 means that the range is 1.5 times the range of data. Default value is 1.05.
+</DD>
+<DT><B>country</B>
+</DT><DD>
+Country that is plotted.  Options are:
+<PRE>               1. island       1300   points  (iceland)
+               2. bisland      20000  points (iceland fine)
+               3. greenland    62000  points
+               4. faeroes      2100   points
+               5. eyjar        2200   points(islands around iceland)
+</PRE>
+
+Which map is used depends on the size of the area plotted.
+If  small  part of the coast is seen bisland is used, else
+Iceland. Ilands can be added later by geolines(eyjar). Default is
+island (iceland).
+</DD>
+<DT><B>xlab</B>
+</DT><DD>
+X-label. Default value is "Longitude" or "x" if projection="none"
+</DD>
+<DT><B>ylab</B>
+</DT><DD>
+Y-label. Default value is "Latitude" or "y" if projection="none
+</DD>
+<DT><B>option</B>
+</DT><DD>
+Can be either "cut" or "nocut". If "nocut" the plot always fills the plotted area but if "cut" the plot does not fill it in the direction where the range of data is minimum. It has to be kept in mind that the program always keeps the same scale vertically and horizontally. Default value is "cut". Not effective when contourplots are plotted.
+</DD>
+<DT><B>grid</B>
+</DT><DD>
+If grid is T meridians and paralells are plotted, else not. Default value is T.
+</DD>
+<DT><B>new</B>
+</DT><DD>
+If new is F the plot is added to the current plot otherwise a new plot is made. Default value is F. Similar to the Splus command "par(new=T)".
+</DD>
+<DT><B>cont</B>
+</DT><DD>
+A parameter to indicate whether contourlines are to be plotted on the graph (by the program geocontour.fill). In that case space for labels is made on the left side of the graph. Default value is F but cont has to be T if geocontour.fill is used afterwards.
+</DD>
+<DT><B>csi</B>
+</DT><DD>
+Size of character and symbols. Similar to Splus "par(csi=csi)". Default value is 0.12.
+</DD>
+<DT><B>col</B>
+</DT><DD>
+The color number used to for the plot. Default value is 1.
+</DD>
+<DT><B>lcont</B>
+</DT><DD>
+Limits of area preserved for lables and contour plot as ration of plotting area. Default value is c(0.13,0.21). That means that the labels take 13% of the plotting area but the figure 79%. (Labels to left, figure to left.) 0.08 to 0.1 is a reasonable difference. Only used in connection with geocontour.fill when cont=T. Geocontour.Fill can also be used with labels put somewhere on the plot but not to the left of it.
+</DD>
+<DT><B>plotit</B>
+</DT><DD>
+If F plot is only initialized but not plotted. Used in connection with geocontour.fill to fewer files but the plot command is given again with new = T when geocontour.fill is called. Plot = F does not work if axeslabels=F. Something seems to have to be on the graph for proper setup.
+</DD>
+<DT><B>reitur</B>
+</DT><DD>
+If true the division of the axes is idendical to the distribution of the ocean around Iceland in squares. dlat=0.5;dlon=1
+</DD>
+<DT><B>smareitur</B>
+</DT><DD>
+If true the division of the axes is idendical to the distribution of the ocean around Iceland in subsquares.dlat=0.25;dlon=0.5
+</DD>
+<DT><B>reittext</B>
+</DT><DD>
+If true the number of each square is written in the center of the square.
+</DD>
+<DT><B>csirt</B>
+</DT><DD>
+Size of reittext. Default value is 0.1.
+</DD>
+<DT><B>axratio</B>
+</DT><DD>
+Parameter usually not changed by the user.
+</DD>
+<DT><B>lwd</B>
+</DT><DD>
+Line width for plot (grid and axes). Default value is the value set when the program was called.(usually 1). Higher values correspond to wider lines.
+</DD>
+<DT><B>lwd1</B>
+</DT><DD>
+Line width for plot country. Default value is the value set when the program was called (usually 1). Higher values correspond to wider lines.
+</DD>
+<DT><B>locator</B>
+</DT><DD>
+Some kind of a simple zoom command. If locator is T the user points with the mouse on the limits of the plot he wants to make. Needs a plot made by geoplot on the screen.
+</DD>
+<DT><B>axlabels</B>
+</DT><DD>
+If F no numbers are plotted on the axes. Default value is T.
+</DD>
+<DT><B>projection</B>
+</DT><DD>
+Projection used to make the plot. Options are "Mercator", "none" and "Lambert". Default value is "Mercator". If projection = "none" data is assumed to be x,y.
+</DD>
+<DT><B>dlat</B>
+</DT><DD>
+Defines the grid, to make a grid on the lat axis, 1 is a
+number on axis and a line at every deg. Not usualy set by user.
+</DD>
+<DT><B>dlon</B>
+</DT><DD>
+Same as dlat, but for lon.
+</DD>
+<DT><B>jitter</B>
+</DT><DD>
+useful if many datapoints have the same coordinates, points are jittered randomly to make common values look bigger. jitter=0.016 is often about right but you may want to have jitter smaller or bigger varying on plot.
+</DD>
+</DL>
+<H2> VALUE: </H2>
+<DL>No values are returned. The graphical setup is stored in a global list called geopar. That list is accessed by other program that use the same setup.
+</DL>
+
+<H2> SIDE EFFECTS: </H2>
+There should be no side effects. The program changes a number of graphical parameters but the old parameters are restored before.
+<H2> SEE ALSO: </H2>
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geolines">
+<param name="text" value="geolines">
+<param name="textColor" value="blue">
+</OBJECT>
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geopolygon">
+<param name="text" value="geopolygon">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geotext">
+<param name="text" value="geotext">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geosymbols">
+<param name="text" value="geosymbols">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geogrid">
+<param name="text" value="geogrid">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geopar">
+<param name="text" value="geopar">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geocontour.fill">
+<param name="text" value="geocontour.fill">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geolocator">
+<param name="text" value="geolocator">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geocontour">
+<param name="text" value="geocontour">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="reitaplott">
+<param name="text" value="reitaplott">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="define.area">
+<param name="text" value="define.area">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="Proj">
+<param name="text" value="Proj">
+<param name="textColor" value="blue">
+</OBJECT>
+
+.
+<H2> EXAMPLES: </H2>
+ 
+<PRE>
+geoplot(deg) 
+# plots the points of a list deg$lat & deg$lon
+# plots meridians, paralells and a map of Iceland over contourlines.
+
+</PRE>
+ 
+<PRE>
+geoplot(x$x,x$y,projection=&quot;none&quot;,type=&quot;n&quot;)
+# plot x,y data
+
+</PRE>
+ 
+<PRE>
+geoplot(x,projection=&quot;none&quot;,type=&quot;n&quot;) 
+# does the same thing.
+
+</PRE>
+
+<PRE>
+geoplot(deg$lat,deg$lon,type=&quot;l&quot;,country=bisland,cont=T)
+# initializes a plot for contour lines, leaves space on left of plot 
+# for legend.
+
+</PRE>
+
+<PRE>
+geoplot(deg$lat,deg$lon,pch=&quot; &quot;,country=bisland,cont=T,new=T,projection=&quot;Lambert&quot;)
+# plots meridians, paralells and a map of Iceland over contourlines.
+
+</PRE>
+
+<PRE>
+geoplot(x$x,x$y,projection=&quot;none&quot;,type=&quot;n&quot;)
+# plot x,y data
+
+</PRE>
+ 
+<PRE>
+geoplot(x,projection=&quot;none&quot;,type=&quot;n&quot;) 
+# does the same thing.
+</PRE>
+  
+<PRE> 
+
+geoplot(lodna.2,reitur=T,reittext=T) 
+# plot squares with number in the middle.
+
+</PRE>
+  
+<!-- s-docclass function -->
+<applet 
+ code=SgmlLink.class 
+  name=SgmlLink 
+width=0 
+ height=0 > 
+ <param name="INDEXFILE" value="index.txt"> 
+ </applet> 
+ </BODY>
+</HTML>

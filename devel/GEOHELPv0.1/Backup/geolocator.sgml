@@ -1,0 +1,44 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+<s-topic> geolocator </s-topic>
+</s-topics>
+<s-title>
+Locates points on a plot initialized by geoplot.
+</s-title>
+<s-description>
+The function locates  points  on  a  plot  initialized  by
+       geoplot returning their latitude and longitude.
+</s-description>
+<s-usage>
+<s-old-style-usage>
+geolocator(type=" ", n=0)
+</s-old-style-usage>
+</s-usage>
+<s-args-optional>
+<s-arg name="type">
+Same parameter as in the  locator  function.   Type="l"
+       draws line between points.
+</s-arg>
+<s-arg name="n">
+Number of points. Default value is zero,  then  the  point
+       coordinates  are  located till the mouse' middle button is
+       clicked.
+</s-arg>
+</s-args-optional>
+<s-value>
+A list with components $lat  and  $lon.   or  ($x,  $y  if
+       geopar$projection = "none")
+</s-value>
+<s-see>
+<s-function name="geoplot.sgm">geoplot</s-function>,
+<s-function name="locator.sgm">locator</s-function>,
+<s-function name="geodefine.sgm">geodefine</s-function>.
+</s-see>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

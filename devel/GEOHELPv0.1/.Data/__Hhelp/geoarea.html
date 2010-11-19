@@ -1,0 +1,116 @@
+<HTML>
+<head> 
+<style type="text/css"> 
+  body { font-size: 14pt ; font-family: SansSerif } 
+  p    { font-size: 14pt ; font-family: SansSerif } 
+  samp { font-size: small; font-family: Monospaced }
+  code { font-family: Monospaced }
+  tt   { font-family: Monospaced }
+  pre  { margin-top: 5; margin-bottom: 5; font-family: Monospaced}
+</style>
+<script language="JavaScript"> 
+<!-- 
+// searching is disabled until the applet is initialized 
+enableSearch = false; 
+function searchInIndex (srch_trm) { 
+theUrl = document.SgmlLink.search(srch_trm); 
+if (theUrl.length() == 0) { 
+alert("DOCUMENT NOT FOUND"); 
+} 
+else{ 
+coWindow =open(theUrl,"srch_trm","width=600,height=500,resizable=1,scrolling=1,statusbar=1,location=1,scrollbars=1");
+coWindow.location=theUrl; 
+coWindow.focus(); 
+} 
+return ; 
+} 
+//--> 
+</script> 
+</head> 
+  <body bgcolor='#FFFFFF'>
+<! geoarea >
+
+<H1>Calculates the area of a given region.
+</H1>
+<H2> DESCRIPTION: </H2>Calculates  the  area  of  a  given  region  to  a   given
+       precision.
+<H2> USAGE: </H2>
+<PRE>geoarea(data, Projection=&quot;Lambert&quot;, old.method=F, ngrdpts=2000, robust=T)
+</PRE>
+
+<H2> REQUIRED ARGUMENTS: </H2>
+<DL>
+<DT><B> data </B>
+</DT><DD>
+The region, should contain $lat and $lon.
+</DD>
+<DT><B> ngrdpts </B>
+</DT><DD>
+The precision of the calculation.
+</DD>
+</DL>
+<H2> OPTIONAL ARGUMENTS: </H2>
+<DL>
+<DT><B> Projection </B>
+</DT><DD>
+Which projection is beeing used.
+</DD>
+<DT><B> old.method </B>
+</DT><DD>
+If true an older version of this program is used. Default is False.
+</DD>
+<DT><B> robust </B>
+</DT><DD>
+If true a more robust method is used, default is True.
+</DD>
+</DL>
+<H2> VALUE: </H2>
+<DL>The area of the region given.
+</DL>
+
+<H2> SIDE EFFECTS: </H2>
+None
+<H2> SEE ALSO: </H2>
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geodefine">
+<param name="text" value="geodefine">
+<param name="textColor" value="blue">
+</OBJECT>
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geolocator">
+<param name="text" value="geolocator">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geoinside">
+<param name="text" value="geoinside">
+<param name="textColor" value="blue">
+</OBJECT>
+
+.
+<H2> EXAMPLES: </H2>
+ 
+<PRE>
+         geoarea(island)         # Calculates the area of Iceland up to 
+                                 # an with default precision.
+
+         geoarea(island,10000)   # Calculates the area of Iceland up to 
+                                 # an adiquite precision.
+
+         geoarea(geodefine(),10) # Calculates the area of a region specified 
+                                 # by the user.
+</PRE>
+
+<!-- s-docclass function -->
+<applet 
+ code=SgmlLink.class 
+  name=SgmlLink 
+width=0 
+ height=0 > 
+ <param name="INDEXFILE" value="index.txt"> 
+ </applet> 
+ </BODY>
+</HTML>

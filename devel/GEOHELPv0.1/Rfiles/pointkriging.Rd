@@ -1,0 +1,172 @@
+\name{pointkriging}
+\alias{pointkriging}
+\title{
+  interpolates regularly spaced data on a grid.
+}
+\description{
+The function interpolates regularly spaced data on a grid.
+       The  program  uses  inverse  distance  method  that  takes
+       clustering into account.  Under  certain  conditions  this
+       method  can  be  called  kriging.   For each gridpoint the
+       program  looks  for  neighbourhood  points  according   to
+       certain  criteria.   The  program  has  a  possibility  to
+       prevent smearing data out from one area to  another  where
+       it is not wanted like between two fjords.  The program has
+       the possibility of universal kriging  with  the  drift  in
+       lat,lon or due to an external variable.
+}
+\usage{
+pointkriging(lat, lon, z, xgr, vagram, maxnumber=16, scale="km",
+             option=1, maxdist=0, rat=3, nb=8, set=0, areas=0,
+             varcalc=F, sill=0, minnumber=2, suboption=1, outside=T,
+             degree=0, lognormal=F, zeroset=F)
+}
+\arguments{
+\item{lat}{
+Latitude of datapoints.
+}
+\item{lon}{
+Longitude of datapoints.
+}
+\item{z}{
+Values at datapoints.
+}
+\item{xgr}{
+Description of the grid. Can be output from program grid
+or just a list with components \$lat and \$lon.
+}
+\item{vagram}{
+Components of the variogram, a  list  with  a  least 3 components, \$sill, \$nugget & \$rang1.
+}
+\item{maxnumber}{
+Number of neighbourhood points used ,  default  is
+       16.  In some cases 16 points are not found.
+}
+\item{scale}{
+Scale "km" or "miles", default is "miles".
+}
+\item{option}{
+Option  used  for  selecting   neighbourhood   points.
+       Allowed  values  1,2,3  and 4.  Default value is one.  For
+       further information see below.
+}
+\item{maxdist}{
+If option = 4 all points within maxdist are used.  If
+       option  =  4  the default value of maxdist is the range of
+       the variogram.  maxdist has also meaning when option = 1,2
+       or  3.   In  those  cases  points  further  away  from any
+       datapoint than maxdist are set to zero,  mean z or NA.
+}
+\item{rat}{
+The number of points in the first step of  the  search  is
+       rat*maxnumber.
+}
+\item{nb}{
+Parameter  describing  the  extent  of  the  area   where
+       neighbourhood  points  are  searched  in  the first round.
+       Default value is 8 which means  that  and  area  of  16x16
+       gridpoints is searched.
+}
+\item{set}{
+Points outside region or further away  than  maxdist  from
+       any  datapoint   are set to either zero (set=0) or mean(z)
+       set=1 or NA set =-1.
+}
+\item{areas}{
+A list defining a  number  of  areas.   NA  is  between
+       areas.    Points   in   different  areas  are  treated  as
+       independed.  Two neighbourhood fjords could be defined  as
+       different  areas  so  the  program  does  not  interpolate
+       between them.
+}
+\item{varcalc}{
+If varcalc is true the estimation  variance  at  each
+       datapoint is calculated. Default value is F.
+}
+\item{sill}{
+ Sill in variance calculations.  Default  value  is  the
+       sill of the variogram.
+}
+\item{minnumber}{
+If number of neighbourhood points  found  is  less
+       than or equal to minnumber the point is considered outside
+       the areas covered by the datapoints and  set  to  NA,0  or
+       mean(z)
+}
+\item{suboption}{
+ If option = 4 and more than maxnumber  points  are
+       found in the area the program switches to option 1, 2 or 3
+       in the point search.  Default value is 1.
+}
+\item{outside}{
+ If outside is T points further  away  from  the  area
+       than  nb*dx  are  excluded.  dx is the grid interval.  Too
+       many points outside of the area can problems in the search
+       because the grid is used to divide the area in squares and
+       everything left and  below  the  first  gridpoint  is  for
+       example one square.
+}
+\item{degree}{
+Degree of drift polynomial for universal kriging.  0, 1
+       or 2.  Default 0.
+}
+\item{lognormal}{
+
+}
+\item{zeroset}{
+
+}
+}
+\value{
+A vector with the calculated values at the gridpoints.
+}
+\section{Side Effects}{
+The program is partly written in C so if it crashes  Splus
+       is exited.
+}
+\section{Details}{
+       The area covered  by  the  gridpoints  is   divided   into
+       rectangular elements with the gridpoints at the corners of
+       the  elements.   For  each  gridpoints  the   search   for
+       neighbourhood points is done in two steps.
+       <s-example>
+
+              1. Neighbourhood elements searched for points.  How
+                 far away the element searched are is defined  by 
+                 the parameter nb. This step returns in most cases
+                 more points than will be used.
+
+              2. Select the final list of  neighbourhood  points.
+                 4 different algorithms are available.
+                  1.  Select the nearest points.
+                  2.  4 directions are selected 0 - 90, 90 - 180,
+                      180 - 270 and 270 - 360 degrees. The program
+                      selects the nearest points but weighs more
+                      points in  direction with few points.
+                  3.  8 direction selected.
+                  4.  All points within maxdist selected.
+       </s-example>
+       If too many points are  found  in  option  4  the  program
+       switches to some other options.
+
+       When the neighbourhood points have been selected the value
+       is  calculated  using  kriging.   The  user can either use
+       variogram found from the data or some other variogram.  By
+       changing nugget/sill and range the degree of smoothing can
+       be controlled.   High  nugget/sill  generally  means  much
+       smoothing.   It  is  not  desirable to use low nugget/sill
+       (lower than 0.01 - 0.05) if any two  datapoints  are  near
+       each  other.   If  nugget/sill >= 0.01 - 0.05 two datapoints
+       can be in the same location  without  problems. Two too much correlated datapoints cause numerical problems.
+}
+\seealso{
+\code{\link{variogram}},
+\code{\link{variofit}},
+\code{\link{grid}},
+\code{\link{geocontour.fill}}.
+}
+\examples{
+      See geocontour.fill
+}
+% docclass is function
+% Converted by Sd2Rd version 43268.

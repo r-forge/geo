@@ -1,0 +1,157 @@
+<HTML>
+<head> 
+<style type="text/css"> 
+  body { font-size: 14pt ; font-family: SansSerif } 
+  p    { font-size: 14pt ; font-family: SansSerif } 
+  samp { font-size: small; font-family: Monospaced }
+  code { font-family: Monospaced }
+  tt   { font-family: Monospaced }
+  pre  { margin-top: 5; margin-bottom: 5; font-family: Monospaced}
+</style>
+<script language="JavaScript"> 
+<!-- 
+// searching is disabled until the applet is initialized 
+enableSearch = false; 
+function searchInIndex (srch_trm) { 
+theUrl = document.SgmlLink.search(srch_trm); 
+if (theUrl.length() == 0) { 
+alert("DOCUMENT NOT FOUND"); 
+} 
+else{ 
+coWindow =open(theUrl,"srch_trm","width=600,height=500,resizable=1,scrolling=1,statusbar=1,location=1,scrollbars=1");
+coWindow.location=theUrl; 
+coWindow.focus(); 
+} 
+return ; 
+} 
+//--> 
+</script> 
+</head> 
+  <body bgcolor='#FFFFFF'>
+<! geogrid >
+
+<H1>Plots a grid.
+</H1>
+<H2> DESCRIPTION: </H2>Plots a grid defined by the vectors lat,lon. The  grid  is
+plotted  on a graph initialized by geoplot.  lon gives the
+meridians plotted and lat the paralells plotted.
+<H2> USAGE: </H2>
+<PRE>geogrid(lat, lon=0, col=1, type=&quot;l&quot;, lwd=0, lty=0, pch=&quot;+&quot;)
+</PRE>
+
+<H2> REQUIRED ARGUMENTS: </H2>
+<DL>
+<DT><B>lat,lon</B>
+</DT><DD>
+Latitude  and  longitude  of  data  (  or  x  and  y
+       coordinates),  negative for southern latitudes and western
+       longitudes.  May be  supplied  as  two  vectors  or  as  a
+       dataframe lat (or x) including vectors lat$lat and lat$lon
+       (x$x and x$y if projection = none).
+</DD>
+</DL>
+<H2> OPTIONAL ARGUMENTS: </H2>
+<DL>
+<DT><B>col</B>
+</DT><DD>
+Color number used, default value is 1 (black).
+</DD>
+<DT><B>type</B>
+</DT><DD>
+"l" means line and "p" points.  Default is "l".
+</DD>
+<DT><B>lwd</B>
+</DT><DD>
+Linewidth.  Default  value  is  the  value  set  when  the
+       program was called.
+</DD>
+<DT><B>lty</B>
+</DT><DD>
+Linetype.  Default value is the value set when the program
+       was called.
+</DD>
+<DT><B>pch</B>
+</DT><DD>
+Type of symbol at gridpoints default is "+".
+</DD>
+</DL>
+<H2> VALUE: </H2>
+<DL>No values returned.
+</DL>
+<H2> SEE ALSO: </H2>
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geoplot">
+<param name="text" value="geoplot">
+<param name="textColor" value="blue">
+</OBJECT>
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geolines">
+<param name="text" value="geolines">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geopolygon">
+<param name="text" value="geopolygon">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geotext">
+<param name="text" value="geotext">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geosymbols">
+<param name="text" value="geosymbols">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geopar">
+<param name="text" value="geopar">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geolocator">
+<param name="text" value="geolocator">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geocontour">
+<param name="text" value="geocontour">
+<param name="textColor" value="blue">
+</OBJECT>
+
+.
+<H2> EXAMPLES: </H2>
+ 
+<PRE>
+       geogrid(latgr,longgr)
+
+       codgrd &lt;- list(lat=seq(62,68,by=0.1),lon=seq(-28,-10,0.25))
+       geogrid(codgrd)   # a fine grid of Iceland and neighbouring seas
+       geoplot(new=T)   
+
+</PRE>
+
+<!-- s-docclass function -->
+<applet 
+ code=SgmlLink.class 
+  name=SgmlLink 
+width=0 
+ height=0 > 
+ <param name="INDEXFILE" value="index.txt"> 
+ </applet> 
+ </BODY>
+</HTML>

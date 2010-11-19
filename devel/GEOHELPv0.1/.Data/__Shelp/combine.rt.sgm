@@ -1,0 +1,136 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+<s-topic> combine.rt </s-topic>
+</s-topics>
+<s-section name = "">
+Function that smooths data so data.  In each given  square  where
+the  number  of  points exceeds certain minimum the program gives
+the mean, sum, variance  or median   of  the  points  within  the
+square  as  well  as  the  number of points and indication if the
+minimum  number  of  points  was  reached.  For  each   datapoint
+latitude,  longitude  and z has to be given.  The program returns
+the mean and mean longitude for points within a square,  as  well
+as  the  number of points behind that point. The program also has
+the possibility to remove outliers within each square.
+</s-section>
+<s-description>
+       This program can be used to prepare data for  the  program
+       pointkriging  if  the  data  is so dense in certain places
+       that it disturbs the neighbourhood search or if there  are
+       +10000 datapoints.
+
+       It can also be used to find sums  or  averages  of  points
+       within squares.
+
+       The program works quite fast even for very large datasets.
+</s-description>
+<s-usage>
+<s-old-style-usage>
+combine.rt(lat, lon, z, grlat, grlon=0, fun, fill=F, reg=0, minnumber=2, wsp=0, wz=0, wlat=0, xy=F, rat=0.2, type)
+</s-old-style-usage>
+</s-usage>
+<s-args-required>
+<s-arg name="lat">
+Latitude of datapoints. ( or x coordinates)
+</s-arg>
+<s-arg name="lon">
+Longitude of datapoints. (or y coordinate)
+</s-arg>
+<s-arg name="z">
+Values at datapoints.
+</s-arg>
+<s-arg name="grlat">
+Latitude of defined grid.
+</s-arg>
+</s-args-required>
+<s-args-optional>
+<s-arg name="grlon">
+Longitude of defined grid.  If 0 grlat is a  list  with
+       components $lat and $lon.
+</s-arg>
+<s-arg name="fun">
+
+</s-arg>
+<s-arg name="fill">
+If fill is T the center points  of  squares  where  the
+       number  of  points  does  not  reach the minimum is set to
+       zero.  Good for data like trawlers report where it can  be
+       assumed that there is little fish where they do not try.
+</s-arg>
+<s-arg name="reg">
+List with two components $lat and  $lon.   Points  outside
+       region  are  not  returned.   The list is typically output
+       from the program define.area.
+</s-arg>
+<s-arg name="minnumber">
+Minimum number of points needed for the square  to
+       be valid. Default value is 2.
+</s-arg>
+<s-arg name="wsp">
+Workspace.  Not of interest.
+</s-arg>
+<s-arg name="wz">
+Weighing for the z values.  If one is trying to  find  the
+       mean  tons/hour  in  an  area  is  it  reasonable to weigh
+       tons/hour by the catch.  If the weight is  zero  within  a
+       square unweighed mean is used.
+</s-arg>
+<s-arg name="wlat">
+Weighing to find the mean latitude and mean  longitude.
+       It  is  often  reasonable  to  weigh  the latitude and the
+       longitude by the catch.
+</s-arg>
+<s-arg name="xy">
+
+</s-arg>
+<s-arg name="rat">
+Ratio for "rm.outliers".  If rat is for example 0.2 20% of
+       the  points  on  each side are moved.  i.e. the middle 60%
+       are kept.  Default value is 0.6.
+</s-arg>
+<s-arg name="type">
+
+</s-arg>
+</s-args-optional>
+<s-section name = "VALUE">
+<s-example>
+      List with components $lat,$lon,$z,$n and $fill.
+              $lat   mean latitude  of points within each square.
+              $lon   mean longitude of points within each square
+              $z     sum, mean, variance or median of data
+              $n     Number of points behind point. 
+
+     If type = "rm.outliers" $n this component stores the number of
+     the square corresponding to each point. $fill If 0 there are
+     datapoints behind the points else it is an artificial point. (fill = T)
+</s-example>
+</s-section>
+<s-side-effects>
+Part of program is written in C so it can crash with style
+       but should not.
+</s-side-effects>
+<s-see>
+<s-function name="variogram.sgm">variogram</s-function>,
+<s-function name="variofit.sgm">variofit</s-function>,
+<s-function name="pointkriging.sgm">pointkriginh</s-function>,
+<s-function name="grid.sgm">grid</s-function>,
+<s-function name="geocontour.fill.sgm">geocontour.fill</s-function>.
+</s-see>
+<s-examples>
+<s-example>
+
+</s-example>
+</s-examples>
+<s-keywords>
+<s-keyword>
+<!--Put one or more s-keyword tags here-->
+</s-keyword>
+</s-keywords>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

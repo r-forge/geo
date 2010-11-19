@@ -1,0 +1,86 @@
+<HTML>
+<head> 
+<style type="text/css"> 
+  body { font-size: 14pt ; font-family: SansSerif } 
+  p    { font-size: 14pt ; font-family: SansSerif } 
+  samp { font-size: small; font-family: Monospaced }
+  code { font-family: Monospaced }
+  tt   { font-family: Monospaced }
+  pre  { margin-top: 5; margin-bottom: 5; font-family: Monospaced}
+</style>
+<script language="JavaScript"> 
+<!-- 
+// searching is disabled until the applet is initialized 
+enableSearch = false; 
+function searchInIndex (srch_trm) { 
+theUrl = document.SgmlLink.search(srch_trm); 
+if (theUrl.length() == 0) { 
+alert("DOCUMENT NOT FOUND"); 
+} 
+else{ 
+coWindow =open(theUrl,"srch_trm","width=600,height=500,resizable=1,scrolling=1,statusbar=1,location=1,scrollbars=1");
+coWindow.location=theUrl; 
+coWindow.focus(); 
+} 
+return ; 
+} 
+//--> 
+</script> 
+</head> 
+  <body bgcolor='#FFFFFF'>
+<! geozoom >
+
+<H1>Zoom into plots.
+</H1>
+<H2> DESCRIPTION: </H2>Zoom into current geoplot, redraws  current  geoplot  with
+       area defined by user.  The current plot can be restored by
+       using geodezoom.
+<H2> USAGE: </H2>
+<PRE>geozoom()
+</PRE>
+
+<H2> VALUE: </H2>
+<DL>none.
+</DL>
+
+<H2> SIDE EFFECTS: </H2>
+The last  call  to  geoplot  is  recalled  with  different
+       borders for x and y.
+<H2> SEE ALSO: </H2>
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geoplot">
+<param name="text" value="geoplot">
+<param name="textColor" value="blue">
+</OBJECT>
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geodezoom">
+<param name="text" value="geodezoom">
+<param name="textColor" value="blue">
+</OBJECT>
+
+.
+<H2> EXAMPLES: </H2>
+ 
+<PRE>
+    geoplot()
+    geozoom()
+    # Click with mouse as when placing legend i.e. first place the
+    # mouse where the upper left corner is supposed to be and click
+    # once, then move to where the lower right corner is supposed to
+    # be and also press once.
+    geodezoom()
+    # Return to previous plot, here geoplot().
+
+</PRE>
+
+<!-- s-docclass function -->
+<applet 
+ code=SgmlLink.class 
+  name=SgmlLink 
+width=0 
+ height=0 > 
+ <param name="INDEXFILE" value="index.txt"> 
+ </applet> 
+ </BODY>
+</HTML>

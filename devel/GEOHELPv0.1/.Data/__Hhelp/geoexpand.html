@@ -1,0 +1,81 @@
+<HTML>
+<head> 
+<style type="text/css"> 
+  body { font-size: 14pt ; font-family: SansSerif } 
+  p    { font-size: 14pt ; font-family: SansSerif } 
+  samp { font-size: small; font-family: Monospaced }
+  code { font-family: Monospaced }
+  tt   { font-family: Monospaced }
+  pre  { margin-top: 5; margin-bottom: 5; font-family: Monospaced}
+</style>
+<script language="JavaScript"> 
+<!-- 
+// searching is disabled until the applet is initialized 
+enableSearch = false; 
+function searchInIndex (srch_trm) { 
+theUrl = document.SgmlLink.search(srch_trm); 
+if (theUrl.length() == 0) { 
+alert("DOCUMENT NOT FOUND"); 
+} 
+else{ 
+coWindow =open(theUrl,"srch_trm","width=600,height=500,resizable=1,scrolling=1,statusbar=1,location=1,scrollbars=1");
+coWindow.location=theUrl; 
+coWindow.focus(); 
+} 
+return ; 
+} 
+//--> 
+</script> 
+</head> 
+  <body bgcolor='#FFFFFF'>
+<! geoexpand >
+
+<H1>expands a grid to a dataframe.
+</H1>
+<H2> DESCRIPTION: </H2>Expands a grid to a dataframe simular to expand.grid.
+<H2> USAGE: </H2>
+<PRE>geoexpand(grid)
+</PRE>
+
+<H2> REQUIRED ARGUMENTS: </H2>
+<DL>
+<DT><B>grid</B>
+</DT><DD>
+The grid to be expanded, a list containing vectors $lat
+       and $lon.
+</DD>
+</DL>
+<H2> VALUE: </H2>
+<DL>A dataframe of the grid.
+</DL>
+
+<H2> SIDE EFFECTS: </H2>
+None.
+<H2> SEE ALSO: </H2>
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="expand.grid">
+<param name="text" value="expand.grid">
+<param name="textColor" value="blue">
+</OBJECT>
+.
+<H2> EXAMPLES: </H2>
+ 
+<PRE>       grd &lt;- list(lat=seq(63,67,length=30),lon=seq(-28,-10,length=50))
+       # a list with length(lat) = 30 and length(lon) = 50
+
+       grd1&lt;- geoexpand(grd)
+       # a 30 by 50 dataframe made.
+
+       # See also examples in geocontour.
+</PRE>
+
+<!-- s-docclass function -->
+<applet 
+ code=SgmlLink.class 
+  name=SgmlLink 
+width=0 
+ height=0 > 
+ <param name="INDEXFILE" value="index.txt"> 
+ </applet> 
+ </BODY>
+</HTML>

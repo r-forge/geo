@@ -1,0 +1,16 @@
+Sæll aftur
+
+Hérna er geohjalpin fyrir LINUX og hvernig á að installa henni. Í möppunni
+þar sem geo er á að setja allar .sgml skránar. Síðan þarf að skrifa
+
+.../(Splus CHAPTER (ef það er ekki búið))
+.../Splus HINSTALL .Data *.sgml
+.../Splus BUILD_JHELP
+
+þá á að vera komin hjálp við þau föll sem .sgml skár voru fyrir.
+
+Einnig er .txt skrá í zip skránni, sem lýsir því hvað vantar í hjálpina og
+hverju mætti bæta við.
+
+Kveðja
+Snorr Páll

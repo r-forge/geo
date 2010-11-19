@@ -1,0 +1,71 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+<s-topic> geolegend </s-topic>
+</s-topics>
+<s-title>
+Put a legend on a plot in the geo series.
+</s-title>
+<s-description>
+Adds a  legend  to  current  plot.  The  location  can  be
+       specified  with  $lat  and  $lon.   Allows  all  the  same
+       parameters as legend.
+</s-description>
+<s-usage>
+<s-old-style-usage>
+geolegend(pos, legend, ...)
+</s-old-style-usage>
+</s-usage>
+<s-args-required>
+<s-arg name="pos">
+The position of the text, should include  $lat  and  $lon.
+       If  $lat  and  $lon  are llength 1, they determine the top
+       left corner of  the  rectangle;  if  theey  are  length  2
+       vectors,  the  give  opposite  corners  of the rectangular
+       area.  A list containing x and y values may be supplied.
+</s-arg>
+<s-arg name="legend">
+Vector of character strings to be associated with plot.
+</s-arg>
+</s-args-required>
+<s-args-optional>
+<s-arg name="...">
+The function allows any optional argument  to  the  legend
+       function to be taken.
+</s-arg>
+</s-args-optional>
+<s-value>
+None.
+</s-value>
+<s-side-effects>
+Draws a box at specified coordinates and puts  inside  (if
+       possible)  examples  of lin, points, marks and/or shading,
+       each identified with a user-specified text string.
+</s-side-effects>
+<s-details>
+See legend.
+</s-details>
+<s-see>
+<s-function name="legend.sgm">legend</s-function>.
+</s-see>
+<s-examples>
+<s-example>
+           # The function is currently defined as
+       function(pos, legend, ...)
+       {
+                      oldpar <- par()
+                      par(geopar$gpar)
+                      on.exit(par(oldpar))
+                      xx <- Proj(pos$lat, pos$lon)
+                      legend(xx$x, xx$y, legend = legend, ...)
+       }
+
+</s-example>
+</s-examples>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

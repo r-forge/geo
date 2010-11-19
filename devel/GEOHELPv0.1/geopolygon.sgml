@@ -1,0 +1,113 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+<s-topic> geopolygon </s-topic>
+</s-topics>
+<s-title>
+Fill an area.
+</s-title>
+<s-description>
+The program fills an area. The program is similar to the polygon function except the data is in lat,lon and the transform of the data specified in geoplot is used. Also there are some additional parameters. The graph has to be initialized by geoplot.
+</s-description>
+<s-usage>
+<s-old-style-usage>
+geopolygon(lat, lon=NULL, col=0, border=F, exterior=F, nx=1,
+           outside=F, plot=T, save=F, rat=0.005, density=-1,
+           Projection=NULL, angle=45, allowed.size=4000, option=1)
+</s-old-style-usage>
+</s-usage>
+<s-args-required>
+<s-arg name="lat,lon">
+Latitude and longitude of data ( or x and y coordinates),  negative for southern latitudes and western longitudes. May be supplied as two vectors or as a list lat (or x) including vectors lat$lat and lat$lon (x$x and x$y if projection = none).
+</s-arg>
+</s-args-required>
+<s-args-optional>
+<s-arg name="col">
+Color number used.  Default value is 0 (often white).
+</s-arg>
+<s-arg name="border">
+If T borders around the polygon are drawn. Default value is F.
+</s-arg>
+<s-arg name="exterior">
+If T everything that is outside the polygon is painted , else everything inside. Default value is F. If exterior = T axes and grid often need refreshing by calling geoplot again with new=T.
+</s-arg>
+<s-arg name="nx">
+See geolines for further details.
+</s-arg>
+<s-arg name="outside">
+if T what is outside of the polygon is colored else what is inside. Default value is T.
+</s-arg>
+<s-arg name="plot">
+if T the polygon is plotted. Default is T.
+</s-arg>
+<s-arg name="save">
+if T the points plotted are returned. Default is F.
+</s-arg>
+<s-arg name="rat">
+the ratio of the plot to what is plotted. Default is 0.005 meaning that the plot is 0.5% bigger than what is plotted.
+</s-arg>
+<s-arg name="density">
+see polygon.
+</s-arg>
+<s-arg name="Projection">
+the projection to be used. Default is the one defined by current plot.
+</s-arg>
+<s-arg name="angle">
+see polygon.
+</s-arg>
+<s-arg name="allowed.size">
+printers are limited to printing polygons of certain size, when the polygons size is actually too big for your printer you can enter the tedious task of splitting up the polygon. Default is 4000.
+</s-arg>
+</s-args-optional>
+<s-value>
+The points plotted are returned if save=T.
+</s-value>
+<s-see>
+<s-function name="polygon.sgm">polygon</s-function>,
+<s-function name="geoplot.sgm">geoplot</s-function>,
+<s-function name="geolines.sgm">geolines</s-function>,
+<s-function name="geopoints.sgm">geopoints</s-function>,
+<s-function name="geotext.sgm">geotext</s-function>,
+<s-function name="geosymbols.sgm">geosymbols</s-function>,
+<s-function name="geocontour.fill.sgm">geocontour.fill</s-function>,
+<s-function name="geogrid.sgm">geogrid</s-function>,
+<s-function name="geocontour.sgm">geocontour</s-function>.
+</s-see>
+<s-examples>
+<s-example>
+     geopolygon(island)              # Paint iceland with 
+                                     # color #0 (often white).
+
+     geopolygon(island,col=0,exterior=T)
+
+     geopolygon(geolocator(),col=1)  # Paints a region defined 
+                                     # by pointing on map black.
+
+     # Of the maps available island (iceland) is about the only that
+     # is correctly defined as closed polygon so it is the only one that 
+     # can be painted by geopolygon.
+
+     geoplot(grid=F,type="n")
+     # Star by setting up the plot.
+     geopolygon(gbdypif.500,col=4,exterior=F,r=0)
+     # Use geopolygon to draw the 500 m area. 
+     geopolygon(gbdypif.100,col=155,exterior=F,r=0)
+     # Draw 100 m are over the 500 m. 
+     geolines(eyjar,col=115)
+     # Add islands around Iceland.
+     gbplot(c(100,500),depthlab=T)
+     # Draw the depth lines, labels on lines.
+     geopolygon(island,col=115,outside=T,r=0)
+     # Draw Iceland over.
+     geoplot(grid=F,new=T)
+     # Draw lines around Iceland, could also use geolines.
+
+</s-example>
+</s-examples>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

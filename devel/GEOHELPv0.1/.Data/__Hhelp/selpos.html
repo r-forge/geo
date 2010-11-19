@@ -1,0 +1,114 @@
+<HTML>
+<head> 
+<style type="text/css"> 
+  body { font-size: 14pt ; font-family: SansSerif } 
+  p    { font-size: 14pt ; font-family: SansSerif } 
+  samp { font-size: small; font-family: Monospaced }
+  code { font-family: Monospaced }
+  tt   { font-family: Monospaced }
+  pre  { margin-top: 5; margin-bottom: 5; font-family: Monospaced}
+</style>
+<script language="JavaScript"> 
+<!-- 
+// searching is disabled until the applet is initialized 
+enableSearch = false; 
+function searchInIndex (srch_trm) { 
+theUrl = document.SgmlLink.search(srch_trm); 
+if (theUrl.length() == 0) { 
+alert("DOCUMENT NOT FOUND"); 
+} 
+else{ 
+coWindow =open(theUrl,"srch_trm","width=600,height=500,resizable=1,scrolling=1,statusbar=1,location=1,scrollbars=1");
+coWindow.location=theUrl; 
+coWindow.focus(); 
+} 
+return ; 
+} 
+//--> 
+</script> 
+</head> 
+  <body bgcolor='#FFFFFF'>
+<! selpos >
+
+<H1>Geographical point selection.
+</H1>
+<H2> DESCRIPTION: </H2>Select geographical data points by arbitrary criterion.
+<H2> USAGE: </H2>
+<PRE>selpos(lat, lon=NULL, ind)
+</PRE>
+
+<H2> REQUIRED ARGUMENTS: </H2>
+<DL>
+<DT><B>lat</B>
+</DT><DD>
+Latitude of points or list containing lat,lon.
+</DD>
+<DT><B>ind</B>
+</DT><DD>
+Selection criterion.
+</DD>
+</DL>
+<H2> OPTIONAL ARGUMENTS: </H2>
+<DL>
+<DT><B>lon</B>
+</DT><DD>
+Longitude of data points. If missing, this must be
+               part of the lat argument.
+</DD>
+</DL>
+<H2> VALUE: </H2>
+<DL>Returns list  with  elements  lat,lon  which  satisfy  the
+       criterion.
+</DL>
+<H2>DETAILS:</H2>
+ <P>
+The normal way of working with  geographical  data  is  to
+       store  positions as a list with names lat and lon. This is
+       easier for most applications, except selection of subsets,
+       where  it  is essential to access individual elements. The
+       purpose of this routine is merely to  ease  the  selection
+       process.
+</P>
+
+<H2> SEE ALSO: </H2>
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geoplot">
+<param name="text" value="geoplot">
+<param name="textColor" value="blue">
+</OBJECT>
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="selreg">
+<param name="text" value="selreg">
+<param name="textColor" value="blue">
+</OBJECT>
+
+.
+<H2> EXAMPLES: </H2>
+ 
+<PRE>
+             subs&lt;-selpos(pos,,z&gt;6)# Select positions where z&gt;6
+
+       The Function is trivially defined as
+       function(lat, lon = NULL, ind)
+       {
+                      if(is.null(lon)) {
+                           lon &lt;- lat$lon
+                           lat &lt;- lat$lat
+                      }
+                      lat &lt;- lat[ind]
+                      lon &lt;- lon[ind]
+                      return(lat, lon)
+       }
+</PRE>
+
+<!-- s-docclass function -->
+<applet 
+ code=SgmlLink.class 
+  name=SgmlLink 
+width=0 
+ height=0 > 
+ <param name="INDEXFILE" value="index.txt"> 
+ </applet> 
+ </BODY>
+</HTML>

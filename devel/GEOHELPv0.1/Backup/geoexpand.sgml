@@ -1,0 +1,49 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+<s-topic> geoexpand </s-topic>
+</s-topics>
+<s-title>
+expands a grid to a dataframe.
+</s-title>
+<s-description>
+Expands a grid to a dataframe simular to expand.grid.
+</s-description>
+<s-usage>
+<s-old-style-usage>
+geoexpand(grid)
+</s-old-style-usage>
+</s-usage>
+<s-args-required>
+<s-arg name="grid">
+The grid to be expanded, a list containing vectors $lat
+       and $lon.
+</s-arg>
+</s-args-required>
+<s-value>
+A dataframe of the grid.
+</s-value>
+<s-side-effects>
+None.
+</s-side-effects>
+<s-see>
+<s-function name="expand.grid.sgm">expand.grid</s-function>.
+</s-see>
+<s-examples>
+<s-example>
+       grd <- list(lat=seq(63,67,length=30),lon=seq(-28,-10,length=50))
+       # a list with length(lat) = 30 and length(lon) = 50
+
+       grd1<- geoexpand(grd)
+       # a 30 by 50 dataframe made.
+
+       # See also examples in geocontour.
+</s-example>
+</s-examples>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

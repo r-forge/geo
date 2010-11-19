@@ -1,0 +1,175 @@
+<HTML>
+<head> 
+<style type="text/css"> 
+  body { font-size: 14pt ; font-family: SansSerif } 
+  p    { font-size: 14pt ; font-family: SansSerif } 
+  samp { font-size: small; font-family: Monospaced }
+  code { font-family: Monospaced }
+  tt   { font-family: Monospaced }
+  pre  { margin-top: 5; margin-bottom: 5; font-family: Monospaced}
+</style>
+<script language="JavaScript"> 
+<!-- 
+// searching is disabled until the applet is initialized 
+enableSearch = false; 
+function searchInIndex (srch_trm) { 
+theUrl = document.SgmlLink.search(srch_trm); 
+if (theUrl.length() == 0) { 
+alert("DOCUMENT NOT FOUND"); 
+} 
+else{ 
+coWindow =open(theUrl,"srch_trm","width=600,height=500,resizable=1,scrolling=1,statusbar=1,location=1,scrollbars=1");
+coWindow.location=theUrl; 
+coWindow.focus(); 
+} 
+return ; 
+} 
+//--> 
+</script> 
+</head> 
+  <body bgcolor='#FFFFFF'>
+<! geosubplot >
+
+<H1>Adds a plot to an existing plot initialized by geoplot.
+</H1>
+<H2> DESCRIPTION: </H2>Adds a plot, of  any  kind,  to  the  current  plot  at  a
+     location specified by the user.
+<H2> USAGE: </H2>
+<PRE>geosubplot(fun, pos, size=c(2, 2), fill, fillcol, ...)
+</PRE>
+
+<H2> REQUIRED ARGUMENTS: </H2>
+<DL>
+<DT><B>fun</B>
+</DT><DD>
+a call to the function to be subplotted.  Be sure to  call
+       geoplot with new = T.
+</DD>
+<DT><B>pos</B>
+</DT><DD>
+Position of the plot.  Should include $lat  and  $lon,  if
+       length($lat)  =  1 that point will determine the middle of
+       the subplot, if length($lat)=2 the points  will  determine
+       oppesite corners of the subplots position.
+</DD>
+</DL>
+<H2> OPTIONAL ARGUMENTS: </H2>
+<DL>
+<DT><B>size</B>
+</DT><DD>
+ The  width   and   the   height   of   the   plot   if
+       length(pos$lat)=1.  Default is 2,2.
+</DD>
+<DT><B>fill</B>
+</DT><DD>
+If true the background of  the  subplot  area  will  be
+       filled.  Default is F.
+</DD>
+<DT><B>fillcol</B>
+</DT><DD>
+fill colour, the colour  of  the  background  of  the
+       subplot area, default is 0 (usually white)
+</DD>
+<DT><B>...</B>
+</DT><DD>
+The program accepts any parameter that the subplot program
+       will accept.
+</DD>
+</DL>
+<H2> VALUE: </H2>
+<DL> none
+</DL>
+
+<H2> SIDE EFFECTS: </H2>
+ A plot added to the current plot.
+<H2>DETAILS:</H2>
+ <P>
+The geo S-plus programs rely on the parameters  in  geopar
+       for  plotting.   Every time geoplot is called a new set of
+       geopar is made and the current  erased.  If  you  want  to
+       change  the  parameters  in  the background plot after you
+       call geosubplot you have to save the current geopar before
+       calling geosubplot. When reassigning geopar, the command assign()
+must be use, it does not suffice to use <- See examples.
+</P>
+
+<H2> SEE ALSO: </H2>
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="subplot">
+<param name="text" value="subplot">
+<param name="textColor" value="blue">
+</OBJECT>
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geoplot">
+<param name="text" value="geoplot">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geopar">
+<param name="text" value="geopar">
+<param name="textColor" value="blue">
+</OBJECT>
+
+.
+<H2> EXAMPLES: </H2>
+ 
+<PRE>      #####################################################
+      # Example 1                                         #
+      #####################################################
+
+      geoplot()
+      pos&lt;- list(lat = 63.5,lon=-11.75)
+      geosubplot(geoplot(faeroes,pch=&quot; &quot;,country =faeroes,new=T)
+                 ,pos,fill=T)
+      # Plots the Faeroes on a plot with Iceland. Be sure to
+      # use new = T if geoplot is called again.
+
+      #####################################################
+      # Example 2                                         #
+      #####################################################
+
+      geoplot()
+      large.geopar &lt;- geopar             # Parameters saved.
+      pos &lt;- list(lat=c(63,64),lon=c(-27,-24))
+      geosubplot(geoplot(island, new=T,grid=F,type=&quot;l&quot;),pos)
+  
+      geotext(65,-18,&quot;subplot&quot;)           # Text on subplot.
+      small.geopar &lt;- geopar # Parameters for subplot saved.
+      
+      # geopar &lt;- large.geopar       # Make big plot active.
+      # Unless you are working directly with the .Data dir of the 
+      # geolibrary this assignment will not work, must use:
+      assign(&quot;geopar&quot;,large.geopar,where=0)
+
+      geotext(65,-18,&quot;Big plot&quot;)         # Text on big plot.
+
+      # Another subplot.
+
+      pos &lt;- list(lat=c(63,64),lon=c(-17,-14))
+      geosubplot(geoplot(island,new=T,grid=F,type=&quot;l&quot;),pos,fill=T)
+      # Another subplot drawn.
+      geotext(65,-18,&quot;subplot # 2&quot;)
+       
+      small.geopar.2 &lt;- geopar # parameters for subplot # 2 saved.
+      # geopar &lt;- large.geopar # Big plot made active again
+      # Same as above, instead use:
+      assign(&quot;geopar&quot;,large.geopar,where=0)
+
+      # See also similar example in geopar.
+
+
+</PRE>
+
+<!-- s-docclass function -->
+<applet 
+ code=SgmlLink.class 
+  name=SgmlLink 
+width=0 
+ height=0 > 
+ <param name="INDEXFILE" value="index.txt"> 
+ </applet> 
+ </BODY>
+</HTML>

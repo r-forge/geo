@@ -1,0 +1,96 @@
+<HTML>
+<head> 
+<style type="text/css"> 
+  body { font-size: 14pt ; font-family: SansSerif } 
+  p    { font-size: 14pt ; font-family: SansSerif } 
+  samp { font-size: small; font-family: Monospaced }
+  code { font-family: Monospaced }
+  tt   { font-family: Monospaced }
+  pre  { margin-top: 5; margin-bottom: 5; font-family: Monospaced}
+</style>
+<script language="JavaScript"> 
+<!-- 
+// searching is disabled until the applet is initialized 
+enableSearch = false; 
+function searchInIndex (srch_trm) { 
+theUrl = document.SgmlLink.search(srch_trm); 
+if (theUrl.length() == 0) { 
+alert("DOCUMENT NOT FOUND"); 
+} 
+else{ 
+coWindow =open(theUrl,"srch_trm","width=600,height=500,resizable=1,scrolling=1,statusbar=1,location=1,scrollbars=1");
+coWindow.location=theUrl; 
+coWindow.focus(); 
+} 
+return ; 
+} 
+//--> 
+</script> 
+</head> 
+  <body bgcolor='#FFFFFF'>
+<! orthproj >
+
+<H1>Performs an orthogonal projection to a curve.
+</H1>
+<H2> DESCRIPTION: </H2>Finds curve coordinates of  points,  given  points  and  a
+       curve  it  returns  the  length  of  the  points orhogonal
+       projection and the distance  traveled  to  the  projection
+       from a given origin on the curve.
+<H2> USAGE: </H2>
+<PRE>orthproj(pts, curve)
+</PRE>
+
+<H2> REQUIRED ARGUMENTS: </H2>
+<DL>
+<DT><B>pts</B>
+</DT><DD>
+A list containing the points as $lat  and  $lon,  you  may
+       also use geolocator.
+</DD>
+<DT><B>curve</B>
+</DT><DD>
+The curve to be used for projection.
+</DD>
+</DL>
+<H2> VALUE: </H2>
+<DL>Returns  a  dataframe  with  vectors  pardist  (length  of
+       orthogonal  projection)  and  perdist  (how  far  traveled
+       alongst the curve).
+</DL>
+
+<H2> SIDE EFFECTS: </H2>
+ None.
+<H2> SEE ALSO: </H2>
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geocurve">
+<param name="text" value="geocurve">
+<param name="textColor" value="blue">
+</OBJECT>
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geolocator">
+<param name="text" value="geolocator">
+<param name="textColor" value="blue">
+</OBJECT>
+
+.
+<H2> EXAMPLES: </H2>
+ 
+<PRE>
+       
+       geoplot(my.curve)     # Plot curve and initialize plot.
+       geocurve(geolocator(),my.curve)         # Mark points.
+
+
+</PRE>
+
+<!-- s-docclass function -->
+<applet 
+ code=SgmlLink.class 
+  name=SgmlLink 
+width=0 
+ height=0 > 
+ <param name="INDEXFILE" value="index.txt"> 
+ </applet> 
+ </BODY>
+</HTML>

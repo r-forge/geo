@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<!DOCTYPE index
+  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Index Version 1.0//EN"
+         "http://java.sun.com/products/javahelp/index_1_0.dtd">
+
+<index version="1.0">
+  <indexitem text="GEOHELPv0.1 Index" image="jhgif_toplevel">
+      <indexitem text="arcdist" target="arcdist"/>
+      <indexitem text="combine.rt" target="combine.rt"/>
+      <indexitem text="fill.outside.border" target="fill.outside.border"/>
+      <indexitem text="gbplot" target="gbplot"/>
+      <indexitem text="geoarea" target="geoarea"/>
+      <indexitem text="geocontour" target="geocontour"/>
+      <indexitem text="geocontour.fill" target="geocontour.fill"/>
+      <indexitem text="geocurve" target="geocurve"/>
+      <indexitem text="geodefine" target="geodefine"/>
+      <indexitem text="geodezoom" target="geodezoom"/>
+      <indexitem text="geoexpand" target="geoexpand"/>
+      <indexitem text="geogrid" target="geogrid"/>
+      <indexitem text="geoidentify" target="geoidentify"/>
+      <indexitem text="geoinside" target="geoinside"/>
+      <indexitem text="geolegend" target="geolegend"/>
+      <indexitem text="geolines" target="geolines"/>
+      <indexitem text="geolocator" target="geolocator"/>
+      <indexitem text="geopar" target="geopar"/>
+      <indexitem text="geoplot" target="geoplot"/>
+      <indexitem text="geopoints" target="geopoints"/>
+      <indexitem text="geopolygon" target="geopolygon"/>
+      <indexitem text="geosubplot" target="geosubplot"/>
+      <indexitem text="geosymbols" target="geosymbols"/>
+      <indexitem text="geotext" target="geotext"/>
+      <indexitem text="geoworld" target="geoworld"/>
+      <indexitem text="geozoom" target="geozoom"/>
+      <indexitem text="grid" target="grid"/>
+      <indexitem text="invProj" target="invProj"/>
+      <indexitem text="orthproj" target="orthproj"/>
+      <indexitem text="plvar" target="plvar"/>
+      <indexitem text="pointkriging" target="pointkriging"/>
+      <indexitem text="Proj" target="Proj"/>
+      <indexitem text="reitaplott" target="reitaplott"/>
+      <indexitem text="s2pre" target="s2pre"/>
+      <indexitem text="selpos" target="selpos"/>
+      <indexitem text="variofit" target="variofit"/>
+      <indexitem text="variogram" target="variogram"/>
+</indexitem>
+</index>

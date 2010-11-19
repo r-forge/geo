@@ -1,0 +1,59 @@
+#~New session: Version: S Wed Dec 17 01:13:27 PST 2003, Time: Tue Oct 17 15:19:15 2006
+#~
+#~
+help(geoplot)
+#~
+find(geoplot)
+#~
+q()
+#~End session: Time: 1161098378; Process: 4384
+#~New session: Version: S Wed Dec 17 01:13:27 PST 2003, Time: Wed Dec 13 16:00:10 2006
+#~
+library(foreign)
+#~error: No section "foreign" in the library directory: /usr/local/splus62/library
+#~
+q()
+#~End session: Time: 1166025905; Process: 19279
+#~New session: Version: S Mon Dec  5 00:15:26 PST 2005, Time: Wed Dec 19 10:00:25 2007
+#~
+help()
+#~
+help.start()
+#~
+#~
+q()
+#~End session: Time: 1198058465; Process: 6078
+#~New session: Version: S Mon Dec  5 00:15:26 PST 2005, Time: Wed Dec 19 10:01:35 2007
+#~
+help.start()
+#~
+#~
+q()
+#~End session: Time: 1198058923; Process: 6143
+#~New session: Version: S Mon Dec  5 00:15:26 PST 2005, Time: Mon Jan 14 08:35:51 2008
+#~
+help(prompt)
+#~
+prompt(colps)
+#~
+q()
+#~End session: Time: 1200299853; Process: 3786
+#~New session: Version: S Mon Dec  5 00:15:26 PST 2005, Time: Mon Jan 14 09:03:23 2008
+#~
+postcol
+#~
+q()
+#~End session: Time: 1200302545; Process: 4263
+#~New session: Version: S Mon Dec  5 00:15:26 PST 2005, Time: Mon Jan 14 09:23:59 2008
+#~
+palette
+#~error: Object "palette" not found
+#~
+q()
+#~End session: Time: 1200302645; Process: 4699
+#~New session: Version: S Mon Dec  5 00:15:26 PST 2005, Time: Wed Feb 13 21:17:37 2008
+#~
+rm(.Last.value, last.warning, .Random.seed)
+#~
+data.dump(ls(), oldStyle = T, file = "tmp.dmp")
+#~End session: Time: 1202937457; Process: 20480

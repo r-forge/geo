@@ -1,0 +1,124 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+<s-topic> geosubplot </s-topic>
+</s-topics>
+<s-title>
+Adds a plot to an existing plot initialized by geoplot.
+</s-title>
+<s-description>
+Adds a plot, of  any  kind,  to  the  current  plot  at  a
+     location specified by the user.
+</s-description>
+<s-usage>
+<s-old-style-usage>
+geosubplot(fun, pos, size=c(2, 2), fill, fillcol, ...)
+</s-old-style-usage>
+</s-usage>
+<s-args-required>
+
+<s-arg name="fun">
+a call to the function to be subplotted.  Be sure to  call
+       geoplot with new = T.
+</s-arg>
+<s-arg name="pos">
+Position of the plot.  Should include $lat  and  $lon,  if
+       length($lat)  =  1 that point will determine the middle of
+       the subplot, if length($lat)=2 the points  will  determine
+       oppesite corners of the subplots position.
+</s-arg>
+</s-args-required>
+<s-args-optional>
+<s-arg name="size">
+ The  width   and   the   height   of   the   plot   if
+       length(pos$lat)=1.  Default is 2,2.
+</s-arg>
+<s-arg name="fill">
+If true the background of  the  subplot  area  will  be
+       filled.  Default is F.
+</s-arg>
+<s-arg name="fillcol">
+fill colour, the colour  of  the  background  of  the
+       subplot area, default is 0 (usually white)
+</s-arg>
+<s-arg name="...">
+The program accepts any parameter that the subplot program
+       will accept.
+</s-arg>
+</s-args-optional>
+<s-value>
+ none
+</s-value>
+<s-side-effects>
+ A plot added to the current plot.
+</s-side-effects>
+<s-details>
+The geo S-plus programs rely on the parameters  in  geopar
+       for  plotting.   Every time geoplot is called a new set of
+       geopar is made and the current  erased.  If  you  want  to
+       change  the  parameters  in  the background plot after you
+       call geosubplot you have to save the current geopar before
+       calling geosubplot. When reassigning geopar, the command assign()
+must be use, it does not suffice to use <- See examples.
+</s-details>
+<s-see>
+<s-function name="subplot.sgm">subplot</s-function>,
+<s-function name="geoplot.sgm">geoplot</s-function>,
+<s-function name="geopar.sgm">geopar</s-function>.
+</s-see>
+<s-examples>
+<s-example>
+      #####################################################
+      # Example 1                                         #
+      #####################################################
+
+      geoplot()
+      pos<- list(lat = 63.5,lon=-11.75)
+      geosubplot(geoplot(faeroes,pch=" ",country =faeroes,new=T)
+                 ,pos,fill=T)
+      # Plots the Faeroes on a plot with Iceland. Be sure to
+      # use new = T if geoplot is called again.
+
+      #####################################################
+      # Example 2                                         #
+      #####################################################
+
+      geoplot()
+      large.geopar <- geopar             # Parameters saved.
+      pos <- list(lat=c(63,64),lon=c(-27,-24))
+      geosubplot(geoplot(island, new=T,grid=F,type="l"),pos)
+  
+      geotext(65,-18,"subplot")           # Text on subplot.
+      small.geopar <- geopar # Parameters for subplot saved.
+      
+      # geopar <- large.geopar       # Make big plot active.
+      # Unless you are working directly with the .Data dir of the 
+      # geolibrary this assignment will not work, must use:
+      assign("geopar",large.geopar,where=0)
+
+      geotext(65,-18,"Big plot")         # Text on big plot.
+
+      # Another subplot.
+
+      pos <- list(lat=c(63,64),lon=c(-17,-14))
+      geosubplot(geoplot(island,new=T,grid=F,type="l"),pos,fill=T)
+      # Another subplot drawn.
+      geotext(65,-18,"subplot # 2")
+       
+      small.geopar.2 <- geopar # parameters for subplot # 2 saved.
+      # geopar <- large.geopar # Big plot made active again
+      # Same as above, instead use:
+      assign("geopar",large.geopar,where=0)
+
+      # See also similar example in geopar.
+
+
+</s-example>
+</s-examples>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

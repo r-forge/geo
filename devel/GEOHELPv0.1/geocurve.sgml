@@ -1,0 +1,107 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+<s-topic> geocurve </s-topic>
+</s-topics>
+<s-title>
+Smooth curves and put arrows in the beginning and end.
+</s-title>
+<s-description>
+Smooth curves and put arrows in  the  beginning  and  end.
+       Useful for plotting closed areas, making smooth lines with
+       arrows etc.  The function needs  dataframe   with  columns
+       lat  and  lon.   No  NA values currently allowed. Uses the
+       functions ns or ps to smooth the curve depending on if the
+       curve is open or closed.  Smooths seperatly lat ~ ns(d,df)
+       , lon ~ ns(d,df).  d is here distance along the curve.  If
+       the same curve is smoothed many times the output is stored
+       the  first  time  and  the  function  called  later   with
+       smooth=F.
+</s-description>
+<s-usage>
+<s-old-style-usage>
+geocurve(data, df=nrow(data)/2, n=10, open=T, arrow="none",
+         col=1, lwd=1, size=0.2, angle=15, smooth=T, plot=T, ...)
+</s-old-style-usage>
+</s-usage>
+<s-args-required>
+<s-arg name="data">
+Dataframe that must have columns lat and lon.
+</s-arg>
+</s-args-required>
+<s-args-optional>
+<s-arg name="df">
+Degrees of Freedom in  smoothing  the  curve.  Default  is
+       number  of  points/2.  Maximum allowed df is nrow(data)-1.
+       df="all" gives this value.
+</s-arg>
+<s-arg name="n">
+How much denser the output data is than  the  input  data.
+       n=10  means  that  the  value  of  the smoothing spline is
+       predicted at 9 evenly spaced points beetween each pair  of
+       data points.  Default is n = 10.
+</s-arg>
+<s-arg name="open">
+ Is the curve open or closed.  Default open.
+</s-arg>
+<s-arg name="arrow">
+If there is an arrow in the beginning, end or  both  of
+       the line segment.  Options are "none","start","end","both".
+</s-arg>
+<s-arg name="col">
+Color of line.
+</s-arg>
+<s-arg name="lwd">
+Width of line segment. Default is 1.  lwd=2 seems  to  fit
+       well with default size of arrows.
+</s-arg>
+<s-arg name="size">
+Size of arrow, default 0.2 inches.
+</s-arg>
+<s-arg name="angle">
+Angle of arrow opening, default 15 degrees.
+</s-arg>
+<s-arg name="smooth">
+Should the data be smoothed, default is T.
+</s-arg>
+<s-arg name="plot">
+Should the curve be plotted, default is T.
+</s-arg>
+<s-arg name="...">
+Other parameters to geolines and geopolygons.
+</s-arg>
+</s-args-optional>
+<s-value>
+ If smooth=F = the input data is  returned,  else  smoothed
+       inputdata.
+</s-value>
+<s-side-effects>
+Plots the line segment on the screen.
+</s-side-effects>
+<s-see>
+<s-function name="geolines.sgm">geolines</s-function>,
+<s-function name="geopolygon.sgm">geopolygon</s-function>,
+<s-function name="ns.sgm">ns</s-function>.
+</s-see>
+<s-examples>
+<s-example>
+       # define curve store the result.
+       curve1 <- geocurve(geolocator(type="p"),arrow="end",lwd=2)
+       # use the result.
+       geocurve(curve1,smooth=F,arrow="start",lwd=2,col=150)
+
+       # define closed area and hatch it.
+       area1 <- geocurve(geodefine(),open=F)
+       geopolygon(area1,density=10,col=1)
+
+       # Make closed curve with big arrow and not store the result.
+       geocurve(geodefine(),open=F,arrow="end",lwd=2,size=0.5)
+</s-example>
+</s-examples>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

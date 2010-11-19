@@ -1,0 +1,54 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+<s-topic> arcdist </s-topic>
+</s-topics>
+<s-title>
+Geographical distance computations
+</s-title>
+<s-description>
+Computes distances between lat/lon data points.
+</s-description>
+<s-usage>
+<s-old-style-usage>
+arcdist(lat, lon, lat1=NULL, lon1=NULL)
+</s-old-style-usage>
+</s-usage>
+<s-args-required>
+<s-arg name="lat">
+Latitude of first coordinate or list with lat, lon of
+       first        coordinate.
+</s-arg>
+<s-arg name="lon">
+  Longitude of first coordinate or list with  lat,  lon
+       of second        coordinate.
+</s-arg>
+</s-args-required>
+<s-args-optional>
+<s-arg name="lat1,lon1">
+If lat and lon are vectors of  lat,lon  positions,
+       then         lat1 and lon1 must be given as the second set
+       of positions.
+</s-arg>
+</s-args-optional>
+<s-value>
+A single vector of distances between pairs of points is returned
+</s-value>
+<s-see>
+<s-function name="geoplot.sgm">geoplot</s-function>,
+<s-function name="geotext.sgm">geotext</s-function>,
+<s-function name="selpos.sgm">selpos</s-function>,
+</s-see>
+<s-examples>
+<s-example>
+    dists<-arcdist(pos1,pos2)         # pos1 and pos2 are lists of coordinates.
+    dists<-arcdist(lat,lon,lat1,lon1) # Input in vector format.
+</s-example>
+</s-examples>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

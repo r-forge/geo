@@ -1,0 +1,80 @@
+<HTML>
+<head> 
+<style type="text/css"> 
+  body { font-size: 14pt ; font-family: SansSerif } 
+  p    { font-size: 14pt ; font-family: SansSerif } 
+  samp { font-size: small; font-family: Monospaced }
+  code { font-family: Monospaced }
+  tt   { font-family: Monospaced }
+  pre  { margin-top: 5; margin-bottom: 5; font-family: Monospaced}
+</style>
+<script language="JavaScript"> 
+<!-- 
+// searching is disabled until the applet is initialized 
+enableSearch = false; 
+function searchInIndex (srch_trm) { 
+theUrl = document.SgmlLink.search(srch_trm); 
+if (theUrl.length() == 0) { 
+alert("DOCUMENT NOT FOUND"); 
+} 
+else{ 
+coWindow =open(theUrl,"srch_trm","width=600,height=500,resizable=1,scrolling=1,statusbar=1,location=1,scrollbars=1");
+coWindow.location=theUrl; 
+coWindow.focus(); 
+} 
+return ; 
+} 
+//--> 
+</script> 
+</head> 
+  <body bgcolor='#FFFFFF'>
+<! geodefine >
+
+<H1>Defines regions.
+</H1>
+<H2> DESCRIPTION: </H2>locates points pointed out by users and defines regions.
+<H2> USAGE: </H2>
+<PRE>geodefine(nholes=0)
+</PRE>
+
+<H2> OPTIONAL ARGUMENTS: </H2>
+<DL>
+<DT><B>nholes</B>
+</DT><DD>
+The number of holes in data, number of regions - 1.
+</DD>
+</DL>
+<H2> VALUE: </H2>
+<DL>A list of the points pointed out by  the  user  with  NA's between regions.
+</DL>
+
+<H2> SIDE EFFECTS: </H2>
+Draws the regions on the plot.
+<H2>DETAILS:</H2>
+ <P>
+Draws the regions on the plot.
+</P>
+
+<H2> SEE ALSO: </H2>
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geolocator">
+<param name="text" value="geolocator">
+<param name="textColor" value="blue">
+</OBJECT>
+.
+<H2> EXAMPLES: </H2>
+ 
+<PRE>    Push left mouse button to mark point, push middle button to 
+    mark the end of a region.
+</PRE>
+
+<!-- s-docclass function -->
+<applet 
+ code=SgmlLink.class 
+  name=SgmlLink 
+width=0 
+ height=0 > 
+ <param name="INDEXFILE" value="index.txt"> 
+ </applet> 
+ </BODY>
+</HTML>

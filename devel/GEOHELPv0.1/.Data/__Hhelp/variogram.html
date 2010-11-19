@@ -1,0 +1,162 @@
+<HTML>
+<head> 
+<style type="text/css"> 
+  body { font-size: 14pt ; font-family: SansSerif } 
+  p    { font-size: 14pt ; font-family: SansSerif } 
+  samp { font-size: small; font-family: Monospaced }
+  code { font-family: Monospaced }
+  tt   { font-family: Monospaced }
+  pre  { margin-top: 5; margin-bottom: 5; font-family: Monospaced}
+</style>
+<script language="JavaScript"> 
+<!-- 
+// searching is disabled until the applet is initialized 
+enableSearch = false; 
+function searchInIndex (srch_trm) { 
+theUrl = document.SgmlLink.search(srch_trm); 
+if (theUrl.length() == 0) { 
+alert("DOCUMENT NOT FOUND"); 
+} 
+else{ 
+coWindow =open(theUrl,"srch_trm","width=600,height=500,resizable=1,scrolling=1,statusbar=1,location=1,scrollbars=1");
+coWindow.location=theUrl; 
+coWindow.focus(); 
+} 
+return ; 
+} 
+//--> 
+</script> 
+</head> 
+  <body bgcolor='#FFFFFF'>
+<! variogram >
+
+<H1>Calculates the distance between each pair of datapoints.
+</H1>
+<H2> DESCRIPTION: </H2>The program calculates the distance between each  pair  of
+       datapoints.  The distances are grouped in groups such that
+       even number of pairs is in each group.  Then the estimated
+       variogram  for  each  group is calculated either by taking
+       the mean or by a method from Cressie and  Hawkins  (1980).
+       The  latter  method  does  in  essence take the sum of the
+       values^0.25. Only pair of points with distance  less  than
+       certain  distance are used. Zero - Zero pairs are not used
+       if zzp is F.
+<H2> USAGE: </H2>
+<PRE>variogram(lat, lon=0, z, nbins=100, maxdist=0, Hawk=T, throwout=F,
+          scale=&quot;km&quot;, evennumber=T, zzp=F, minnumber=0,
+          col.names=c(&quot;lat&quot;,&quot;lon&quot;))
+</PRE>
+
+<H2> REQUIRED ARGUMENTS: </H2>
+<DL>
+<DT><B>lat</B>
+</DT><DD>
+Latitude of datapoints.  If  lon=0  lat  is  a  list  with
+       components $lat and $lon.
+</DD>
+<DT><B>z</B>
+</DT><DD>
+Values at datapoints.
+</DD>
+</DL>
+<H2> OPTIONAL ARGUMENTS: </H2>
+<DL>
+<DT><B>lon</B>
+</DT><DD>
+longitude of datapoints.
+</DD>
+<DT><B>nbins</B>
+</DT><DD>
+Number of distance intervals used.
+</DD>
+<DT><B>maxdist</B>
+</DT><DD>
+maximum distance of interest.  Default value is range
+       of data*0.7.
+</DD>
+<DT><B>Hawk</B>
+</DT><DD>
+If true the method from Cressie and Hawkins  (1980)  is
+       used, else the mean.  Default value is T
+</DD>
+<DT><B>throwout</B>
+</DT><DD>
+If T datapoints with value zero are not used at  all.
+       Default value is F which means that they are used.  In all
+       cases zero-zero pairs are not used when the  variogram  is
+       estimated.
+</DD>
+<DT><B>scale</B>
+</DT><DD>
+"km" or "Miles". Default is "km".
+</DD>
+<DT><B>evennumber</B>
+</DT><DD>
+If T distance classes are chosen so  approximately
+       the same number of points is in each distance class.  Else
+       even distance increments are used.
+</DD>
+<DT><B>zzp</B>
+</DT><DD>
+If true zero-zero pairs are used else not.  Default  value
+       is F.
+</DD>
+<DT><B>minnumber</B>
+</DT><DD>
+Distance intervals with minnumber  or  less  pairs
+       are not included.  Default is zero.
+</DD>
+<DT><B>col.names</B>
+</DT><DD>
+if lat is a dataframe col.names should contain the
+       names  of  the vectors containing the x and y coordinates,
+       default is c("lat","lon")
+</DD>
+</DL>
+<H2> Value: </H2>
+ <P>
+A     list     with     the     following      components:
+<PRE>
+          number:   Number  of  pair  in each distance class.
+          dist:     Mean distance  in  each  distance  class.
+          vario:    variogram  for  each  distance class.
+</PRE>
+
+The list is suitable for the program variofit.  The  variogram
+       can also be plotted by plvar(vagram,fit=F)
+</P>
+
+
+<H2> SIDE EFFECTS: </H2>
+ No side effects.
+<H2> SEE ALSO: </H2>
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="variofit">
+<param name="text" value="variofit">
+<param name="textColor" value="blue">
+</OBJECT>
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="pointkriging">
+<param name="text" value="pointkriging">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="plvar">
+<param name="text" value="plvar">
+<param name="textColor" value="blue">
+</OBJECT>
+
+.
+<!-- s-docclass function -->
+<applet 
+ code=SgmlLink.class 
+  name=SgmlLink 
+width=0 
+ height=0 > 
+ <param name="INDEXFILE" value="index.txt"> 
+ </applet> 
+ </BODY>
+</HTML>

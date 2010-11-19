@@ -1,0 +1,231 @@
+<HTML>
+<head> 
+<style type="text/css"> 
+  body { font-size: 14pt ; font-family: SansSerif } 
+  p    { font-size: 14pt ; font-family: SansSerif } 
+  samp { font-size: small; font-family: Monospaced }
+  code { font-family: Monospaced }
+  tt   { font-family: Monospaced }
+  pre  { margin-top: 5; margin-bottom: 5; font-family: Monospaced}
+</style>
+<script language="JavaScript"> 
+<!-- 
+// searching is disabled until the applet is initialized 
+enableSearch = false; 
+function searchInIndex (srch_trm) { 
+theUrl = document.SgmlLink.search(srch_trm); 
+if (theUrl.length() == 0) { 
+alert("DOCUMENT NOT FOUND"); 
+} 
+else{ 
+coWindow =open(theUrl,"srch_trm","width=600,height=500,resizable=1,scrolling=1,statusbar=1,location=1,scrollbars=1");
+coWindow.location=theUrl; 
+coWindow.focus(); 
+} 
+return ; 
+} 
+//--> 
+</script> 
+</head> 
+  <body bgcolor='#FFFFFF'>
+<! geotext >
+
+<H1>Plots text on a drawing defined by geoplot.
+</H1>
+<H2> DESCRIPTION: </H2>The function plots a text in each of the points defined by
+       lat,lon.   (or  x,y)  The  value  plotted at each point is
+       defined by the numeric vector or text vector z. Simular to
+       text but allows lat and lon and a choice of digits used.
+<H2> USAGE: </H2>
+<PRE>geotext(lat, lon=0, z, csi=0.12, adj=0.5, col=1, digits=0, pretext=&quot;&quot;,
+        lwd=0, aftertext=&quot;&quot;, outside=F, angle=0, jitter=NULL)
+</PRE>
+
+<H2> REQUIRED ARGUMENTS: </H2>
+<DL>
+<DT><B>lat,lon</B>
+</DT><DD>
+Latitude  and  longitude  of  data  (  or  x   and   y
+       coordinates),  negative for southern latitudes and western
+       longitudes.  May be supplied as two vectors or as  a  list
+       lat  (or x) including vectors lat$lat and lat$lon (x$x and
+       x$y if projection = none).
+</DD>
+<DT><B>z</B>
+</DT><DD>
+Vector with values that will be plotted at datapoints. Has
+       to be of the same length as lat. If z is of mode character
+       it is written directly on the screen.
+</DD>
+</DL>
+<H2> OPTIONAL ARGUMENTS: </H2>
+<DL>
+<DT><B>csi</B>
+</DT><DD>
+Size of the text.  Default value is the value given by the
+       graphical  parameter  csi  when  the  function  is called.
+       (often 0.12)
+</DD>
+<DT><B>adj</B>
+</DT><DD>
+Location of the text relative to the point, 0  means  text
+       right of point, 0.5 text centered at point and 1 text left
+       of point.  Default value is 0.5.
+</DD>
+<DT><B>col</B>
+</DT><DD>
+Color number used. Default value is 1.
+</DD>
+<DT><B>digits</B>
+</DT><DD>
+Number of digits used.
+</DD>
+<DT><B>pretext</B>
+</DT><DD>
+ Text put  in front of all the text.  Default value is
+       nothing.
+</DD>
+<DT><B>lwd</B>
+</DT><DD>
+ Linewidth used.
+</DD>
+<DT><B>aftertext</B>
+</DT><DD>
+ Text put after all the  text.   Default  value  is
+       nothing.
+</DD>
+<DT><B>outside</B>
+</DT><DD>
+If outside is F no text is plotted outside the  range
+       defined  by xlim,ylim.  Else it is done.  Default value is
+       F.
+</DD>
+<DT><B>angle</B>
+</DT><DD>
+angle of text in degrees, default is 0.
+</DD>
+<DT><B>jitter</B>
+</DT><DD>
+see jitter in geoplot.
+</DD>
+</DL>
+<H2> VALUE: </H2>
+<DL>No values returned.
+</DL>
+<H2> SEE ALSO: </H2>
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geoplot">
+<param name="text" value="geoplot">
+<param name="textColor" value="blue">
+</OBJECT>
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geopolygon">
+<param name="text" value="geopolygon">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geolines">
+<param name="text" value="geolines">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geosymbols">
+<param name="text" value="geosymbols">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geogrid">
+<param name="text" value="geogrid">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geopar">
+<param name="text" value="geopar">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geocontour.fill">
+<param name="text" value="geocontour.fill">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geolocator">
+<param name="text" value="geolocator">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geocontour">
+<param name="text" value="geocontour">
+<param name="textColor" value="blue">
+</OBJECT>
+
+.
+<H2> EXAMPLES: </H2>
+ 
+<PRE>
+       geotext(deg,z=z)    # plot text at points deg$lat,deg$lon
+       
+       geotext(deg$lat,deg$lon,z,csi=0.06) # Same, size of text 0.06&quot;.
+       
+       geotext(x$x,x$y,x$z,aftertext=&quot;km&quot;,pretext=&quot;distance&quot;)
+       # If geopar$projection=&quot;none&quot;
+       
+       geotext(x,z=x$z,aftertext=&quot; km&quot;,pretext=&quot;distance&quot;,angle =90) 
+       # Same text written vertically.
+
+
+       ###############################################################
+       #  Example                                                    #
+       ###############################################################
+
+       lon &lt;- rnorm(10,-27,1.3)
+       lat &lt;- rnorm(10,65,0.6)
+       # Make a normal dist. random set of 10 points.
+
+       geoplot(lat=lat,lon=lon,grid=F,xlim=c(-22,-30),ylim=c(63,67))
+       # Plot the random data points.
+       
+       geopolygon(island,col=115,exterior=T)
+       geolines(island)
+       # Color Iceland. Use litir(number) to see colour scheme. 
+       # Sharpen lines around Iceland.
+
+       num &lt;- 1:10
+       lab &lt;- paste(&quot;Nr.&quot;,num,sep=&quot;&quot;)
+       # Make string vector with &quot;Nr.1&quot;..&quot;Nr.10&quot; for geotext.
+
+       geopoints(lat,lon,pch=&quot;*&quot;,col=5)
+       # Redraw the data in a new color the * mark at points.
+
+       geotext(lon=lon,lat=lat,z=lab,col=155)
+       # With geotext we put one element from lab at each data point.
+       title(main=&quot;10 Random Data Point&quot;)
+       # Add title
+
+</PRE>
+
+<!-- s-docclass function -->
+<applet 
+ code=SgmlLink.class 
+  name=SgmlLink 
+width=0 
+ height=0 > 
+ <param name="INDEXFILE" value="index.txt"> 
+ </applet> 
+ </BODY>
+</HTML>

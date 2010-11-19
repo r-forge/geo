@@ -1,0 +1,167 @@
+<HTML>
+<head> 
+<style type="text/css"> 
+  body { font-size: 14pt ; font-family: SansSerif } 
+  p    { font-size: 14pt ; font-family: SansSerif } 
+  samp { font-size: small; font-family: Monospaced }
+  code { font-family: Monospaced }
+  tt   { font-family: Monospaced }
+  pre  { margin-top: 5; margin-bottom: 5; font-family: Monospaced}
+</style>
+<script language="JavaScript"> 
+<!-- 
+// searching is disabled until the applet is initialized 
+enableSearch = false; 
+function searchInIndex (srch_trm) { 
+theUrl = document.SgmlLink.search(srch_trm); 
+if (theUrl.length() == 0) { 
+alert("DOCUMENT NOT FOUND"); 
+} 
+else{ 
+coWindow =open(theUrl,"srch_trm","width=600,height=500,resizable=1,scrolling=1,statusbar=1,location=1,scrollbars=1");
+coWindow.location=theUrl; 
+coWindow.focus(); 
+} 
+return ; 
+} 
+//--> 
+</script> 
+</head> 
+  <body bgcolor='#FFFFFF'>
+<! geopoints >
+
+<H1>Adds points on plots initialized by geoplot.
+</H1>
+<H2> DESCRIPTION: </H2>Plot points on a graph initialized by geoplot. Data is stored as lat, lon or x,y depending on the projection. The program plots the transformation of the data. Parameters for the projection are stored in the list geopar. Similar to the Splus function points.
+<H2> USAGE: </H2>
+<PRE>geopoints(lat, lon=0, pch=&quot;*&quot;, csi=0.12, col=1, lwd=0,
+          outside=F, jitter=NULL)
+</PRE>
+
+<H2> REQUIRED ARGUMENTS: </H2>
+<DL>
+<DT><B>lat,lon</B>
+</DT><DD>
+Plot points on a graph initialized by geoplot. Data is stored as lat, lon or x,y depending on the projection. The program plots the transformation of the data. Parameters for the projection are stored in the list geopar. Similar to the Splus function points.
+</DD>
+</DL>
+<H2> OPTIONAL ARGUMENTS: </H2>
+<DL>
+<DT><B>pch</B>
+</DT><DD>
+Type of symbol used options are for example. "  ","*","+","." or anything else, letter, digit, or symbol. Default is "*"
+</DD>
+<DT><B>csi</B>
+</DT><DD>
+Size of symbol. Default value is what the graphical parameter csi is set to when the function is called.(often 0.12)
+</DD>
+<DT><B>col</B>
+</DT><DD>
+Colour number used.  Default value is one.
+</DD>
+<DT><B>lwd</B>
+</DT><DD>
+Linewidth used. Default is the value set when the program was called.
+</DD>
+<DT><B>outside</B>
+</DT><DD>
+If True geopoints will plot points outside the specified limits set by
+geoplot(). If False, which is default, outside points will be skipped.
+</DD>
+<DT><B>jitter</B>
+</DT><DD>
+useful if many datapoints have the same coordinates, points are jittered randomly to make common values look bigger.jitter=0.016 is often about right but you may want to have jitter smaller or bigger varying on plot.
+</DD>
+</DL>
+<H2> SEE ALSO: </H2>
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geoplot">
+<param name="text" value="geoplot">
+<param name="textColor" value="blue">
+</OBJECT>
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geopolygon">
+<param name="text" value="geopolygon">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geolines">
+<param name="text" value="geolines">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="points">
+<param name="text" value="points">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geotext">
+<param name="text" value="geotext">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geosymbols">
+<param name="text" value="geosymbols">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geocontour.fill">
+<param name="text" value="geocontour.fill">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geogrid">
+<param name="text" value="geogrid">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geoimage">
+<param name="text" value="geoimage">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geocontour">
+<param name="text" value="geocontour">
+<param name="textColor" value="blue">
+</OBJECT>
+
+.
+<H2> EXAMPLES: </H2>
+ 
+<PRE>       geopoints(deg)                           # Plots * in the points
+                                                # defined by deg$lat,deg$lon.
+      
+       geopoints(deg$lat,deg$lon,pch=&quot;*&quot;,col=5) # Same but uses color 5.
+
+       geopoints(fd$x,fd$y)                     # Points in x,y when
+                                                # projection in geoplot 
+                                                # was &quot;none&quot;.
+</PRE>
+
+<!-- s-docclass function -->
+<applet 
+ code=SgmlLink.class 
+  name=SgmlLink 
+width=0 
+ height=0 > 
+ <param name="INDEXFILE" value="index.txt"> 
+ </applet> 
+ </BODY>
+</HTML>

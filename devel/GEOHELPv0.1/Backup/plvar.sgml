@@ -1,0 +1,53 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+<s-topic> plvar </s-topic>
+</s-topics>
+<s-description>
+Plot a variogram and a spherical model fit to it.
+</s-description>
+<s-usage>
+<s-old-style-usage>
+plvar(vagram, n=4, fit=T, type="p")
+</s-old-style-usage>
+</s-usage>
+<s-args-required>
+</s-args-required>
+<s-args-optional>
+
+<s-arg name=" vagram ">
+ List from the  program  variogram  with  the  following components.           
+ <s-example>        
+          $range:   range of data.
+          $nugget:  nugget effect.             
+          $sill:    sill.
+          $vario:   z values of the variogram.
+          $xh:      mean distance for each class.
+
+</s-example>
+</s-arg>
+<s-arg name="n">
+The plot covers n times the range.  Default value  is  all
+       the data.
+</s-arg>
+<s-arg name="fit">
+
+</s-arg>
+<s-arg name="type">
+
+</s-arg>
+</s-args-optional>
+<s-value>
+No values returned.
+</s-value>
+<s-see>
+<s-function name="pointkriging.sgm">pointkriging</s-function>,
+<s-function name="grid.sgm">grid</s-function>.
+</s-see>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

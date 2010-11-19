@@ -1,0 +1,163 @@
+<HTML>
+<head> 
+<style type="text/css"> 
+  body { font-size: 14pt ; font-family: SansSerif } 
+  p    { font-size: 14pt ; font-family: SansSerif } 
+  samp { font-size: small; font-family: Monospaced }
+  code { font-family: Monospaced }
+  tt   { font-family: Monospaced }
+  pre  { margin-top: 5; margin-bottom: 5; font-family: Monospaced}
+</style>
+<script language="JavaScript"> 
+<!-- 
+// searching is disabled until the applet is initialized 
+enableSearch = false; 
+function searchInIndex (srch_trm) { 
+theUrl = document.SgmlLink.search(srch_trm); 
+if (theUrl.length() == 0) { 
+alert("DOCUMENT NOT FOUND"); 
+} 
+else{ 
+coWindow =open(theUrl,"srch_trm","width=600,height=500,resizable=1,scrolling=1,statusbar=1,location=1,scrollbars=1");
+coWindow.location=theUrl; 
+coWindow.focus(); 
+} 
+return ; 
+} 
+//--> 
+</script> 
+</head> 
+  <body bgcolor='#FFFFFF'>
+<! geocurve >
+
+<H1>Smooth curves and put arrows in the beginning and end.
+</H1>
+<H2> DESCRIPTION: </H2>Smooth curves and put arrows in  the  beginning  and  end.
+       Useful for plotting closed areas, making smooth lines with
+       arrows etc.  The function needs  dataframe   with  columns
+       lat  and  lon.   No  NA values currently allowed. Uses the
+       functions ns or ps to smooth the curve depending on if the
+       curve is open or closed.  Smooths seperatly lat ~ ns(d,df)
+       , lon ~ ns(d,df).  d is here distance along the curve.  If
+       the same curve is smoothed many times the output is stored
+       the  first  time  and  the  function  called  later   with
+       smooth=F.
+<H2> USAGE: </H2>
+<PRE>geocurve(data, df=nrow(data)/2, n=10, open=T, arrow=&quot;none&quot;,
+         col=1, lwd=1, size=0.2, angle=15, smooth=T, plot=T, ...)
+</PRE>
+
+<H2> REQUIRED ARGUMENTS: </H2>
+<DL>
+<DT><B>data</B>
+</DT><DD>
+Dataframe that must have columns lat and lon.
+</DD>
+</DL>
+<H2> OPTIONAL ARGUMENTS: </H2>
+<DL>
+<DT><B>df</B>
+</DT><DD>
+Degrees of Freedom in  smoothing  the  curve.  Default  is
+       number  of  points/2.  Maximum allowed df is nrow(data)-1.
+       df="all" gives this value.
+</DD>
+<DT><B>n</B>
+</DT><DD>
+How much denser the output data is than  the  input  data.
+       n=10  means  that  the  value  of  the smoothing spline is
+       predicted at 9 evenly spaced points beetween each pair  of
+       data points.  Default is n = 10.
+</DD>
+<DT><B>open</B>
+</DT><DD>
+ Is the curve open or closed.  Default open.
+</DD>
+<DT><B>arrow</B>
+</DT><DD>
+If there is an arrow in the beginning, end or  both  of
+       the line segment.  Options are "none","start","end","both".
+</DD>
+<DT><B>col</B>
+</DT><DD>
+Color of line.
+</DD>
+<DT><B>lwd</B>
+</DT><DD>
+Width of line segment. Default is 1.  lwd=2 seems  to  fit
+       well with default size of arrows.
+</DD>
+<DT><B>size</B>
+</DT><DD>
+Size of arrow, default 0.2 inches.
+</DD>
+<DT><B>angle</B>
+</DT><DD>
+Angle of arrow opening, default 15 degrees.
+</DD>
+<DT><B>smooth</B>
+</DT><DD>
+Should the data be smoothed, default is T.
+</DD>
+<DT><B>plot</B>
+</DT><DD>
+Should the curve be plotted, default is T.
+</DD>
+<DT><B>...</B>
+</DT><DD>
+Other parameters to geolines and geopolygons.
+</DD>
+</DL>
+<H2> VALUE: </H2>
+<DL> If smooth=F = the input data is  returned,  else  smoothed
+       inputdata.
+</DL>
+
+<H2> SIDE EFFECTS: </H2>
+Plots the line segment on the screen.
+<H2> SEE ALSO: </H2>
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geolines">
+<param name="text" value="geolines">
+<param name="textColor" value="blue">
+</OBJECT>
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geopolygon">
+<param name="text" value="geopolygon">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="ns">
+<param name="text" value="ns">
+<param name="textColor" value="blue">
+</OBJECT>
+
+.
+<H2> EXAMPLES: </H2>
+ 
+<PRE>       # define curve store the result.
+       curve1 &lt;- geocurve(geolocator(type=&quot;p&quot;),arrow=&quot;end&quot;,lwd=2)
+       # use the result.
+       geocurve(curve1,smooth=F,arrow=&quot;start&quot;,lwd=2,col=150)
+
+       # define closed area and hatch it.
+       area1 &lt;- geocurve(geodefine(),open=F)
+       geopolygon(area1,density=10,col=1)
+
+       # Make closed curve with big arrow and not store the result.
+       geocurve(geodefine(),open=F,arrow=&quot;end&quot;,lwd=2,size=0.5)
+</PRE>
+
+<!-- s-docclass function -->
+<applet 
+ code=SgmlLink.class 
+  name=SgmlLink 
+width=0 
+ height=0 > 
+ <param name="INDEXFILE" value="index.txt"> 
+ </applet> 
+ </BODY>
+</HTML>

@@ -1,0 +1,205 @@
+<HTML>
+<head> 
+<style type="text/css"> 
+  body { font-size: 14pt ; font-family: SansSerif } 
+  p    { font-size: 14pt ; font-family: SansSerif } 
+  samp { font-size: small; font-family: Monospaced }
+  code { font-family: Monospaced }
+  tt   { font-family: Monospaced }
+  pre  { margin-top: 5; margin-bottom: 5; font-family: Monospaced}
+</style>
+<script language="JavaScript"> 
+<!-- 
+// searching is disabled until the applet is initialized 
+enableSearch = false; 
+function searchInIndex (srch_trm) { 
+theUrl = document.SgmlLink.search(srch_trm); 
+if (theUrl.length() == 0) { 
+alert("DOCUMENT NOT FOUND"); 
+} 
+else{ 
+coWindow =open(theUrl,"srch_trm","width=600,height=500,resizable=1,scrolling=1,statusbar=1,location=1,scrollbars=1");
+coWindow.location=theUrl; 
+coWindow.focus(); 
+} 
+return ; 
+} 
+//--> 
+</script> 
+</head> 
+  <body bgcolor='#FFFFFF'>
+<! combine.rt >
+
+<H2> : </H2>
+ <P>
+Function that smooths data so data.  In each given  square  where
+the  number  of  points exceeds certain minimum the program gives
+the mean, sum, variance  or median   of  the  points  within  the
+square  as  well  as  the  number of points and indication if the
+minimum  number  of  points  was  reached.  For  each   datapoint
+latitude,  longitude  and z has to be given.  The program returns
+the mean and mean longitude for points within a square,  as  well
+as  the  number of points behind that point. The program also has
+the possibility to remove outliers within each square.
+</P>
+
+<H2> DESCRIPTION: </H2>       This program can be used to prepare data for  the  program
+       pointkriging  if  the  data  is so dense in certain places
+       that it disturbs the neighbourhood search or if there  are
+       +10000 datapoints.
+
+       It can also be used to find sums  or  averages  of  points
+       within squares.
+
+       The program works quite fast even for very large datasets.
+<H2> USAGE: </H2>
+<PRE>combine.rt(lat, lon, z, grlat, grlon=0, fun, fill=F, reg=0, minnumber=2, wsp=0, wz=0, wlat=0, xy=F, rat=0.2, type)
+</PRE>
+
+<H2> REQUIRED ARGUMENTS: </H2>
+<DL>
+<DT><B>lat</B>
+</DT><DD>
+Latitude of datapoints. ( or x coordinates)
+</DD>
+<DT><B>lon</B>
+</DT><DD>
+Longitude of datapoints. (or y coordinate)
+</DD>
+<DT><B>z</B>
+</DT><DD>
+Values at datapoints.
+</DD>
+<DT><B>grlat</B>
+</DT><DD>
+Latitude of defined grid.
+</DD>
+</DL>
+<H2> OPTIONAL ARGUMENTS: </H2>
+<DL>
+<DT><B>grlon</B>
+</DT><DD>
+Longitude of defined grid.  If 0 grlat is a  list  with
+       components $lat and $lon.
+</DD>
+<DT><B>fun</B>
+</DT><DD>
+</DD>
+<DT><B>fill</B>
+</DT><DD>
+If fill is T the center points  of  squares  where  the
+       number  of  points  does  not  reach the minimum is set to
+       zero.  Good for data like trawlers report where it can  be
+       assumed that there is little fish where they do not try.
+</DD>
+<DT><B>reg</B>
+</DT><DD>
+List with two components $lat and  $lon.   Points  outside
+       region  are  not  returned.   The list is typically output
+       from the program define.area.
+</DD>
+<DT><B>minnumber</B>
+</DT><DD>
+Minimum number of points needed for the square  to
+       be valid. Default value is 2.
+</DD>
+<DT><B>wsp</B>
+</DT><DD>
+Workspace.  Not of interest.
+</DD>
+<DT><B>wz</B>
+</DT><DD>
+Weighing for the z values.  If one is trying to  find  the
+       mean  tons/hour  in  an  area  is  it  reasonable to weigh
+       tons/hour by the catch.  If the weight is  zero  within  a
+       square unweighed mean is used.
+</DD>
+<DT><B>wlat</B>
+</DT><DD>
+Weighing to find the mean latitude and mean  longitude.
+       It  is  often  reasonable  to  weigh  the latitude and the
+       longitude by the catch.
+</DD>
+<DT><B>xy</B>
+</DT><DD>
+</DD>
+<DT><B>rat</B>
+</DT><DD>
+Ratio for "rm.outliers".  If rat is for example 0.2 20% of
+       the  points  on  each side are moved.  i.e. the middle 60%
+       are kept.  Default value is 0.6.
+</DD>
+<DT><B>type</B>
+</DT><DD>
+</DD>
+</DL>
+<H2> VALUE: </H2>
+ <P>
+<PRE>      List with components $lat,$lon,$z,$n and $fill.
+              $lat   mean latitude  of points within each square.
+              $lon   mean longitude of points within each square
+              $z     sum, mean, variance or median of data
+              $n     Number of points behind point. 
+
+     If type = &quot;rm.outliers&quot; $n this component stores the number of
+     the square corresponding to each point. $fill If 0 there are
+     datapoints behind the points else it is an artificial point. (fill = T)
+</PRE>
+</P>
+
+
+<H2> SIDE EFFECTS: </H2>
+Part of program is written in C so it can crash with style
+       but should not.
+<H2> SEE ALSO: </H2>
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="variogram">
+<param name="text" value="variogram">
+<param name="textColor" value="blue">
+</OBJECT>
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="variofit">
+<param name="text" value="variofit">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="pointkriginh">
+<param name="text" value="pointkriginh">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="grid">
+<param name="text" value="grid">
+<param name="textColor" value="blue">
+</OBJECT>
+
+,
+<OBJECT CLASSID="java:com.insightful.splus.SplusJhHyperlink">
+<param name="id" value="geocontour.fill">
+<param name="text" value="geocontour.fill">
+<param name="textColor" value="blue">
+</OBJECT>
+
+.
+<H2> EXAMPLES: </H2>
+ 
+<PRE>
+</PRE>
+
+<!-- s-keyword  -->
+
+<!-- s-docclass function -->
+<applet 
+ code=SgmlLink.class 
+  name=SgmlLink 
+width=0 
+ height=0 > 
+ <param name="INDEXFILE" value="index.txt"> 
+ </applet> 
+ </BODY>
+</HTML>
