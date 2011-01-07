@@ -1,10 +1,10 @@
 Package: geo
 Type: Package
-Title: What the package does (short line)
+Title: Draw and annotate maps, especially nautical charts of the North Atlantic.
 Version: 1.0
 Date: 2010-01-30
 Author:Höskuldur Björnsson
 Maintainer:Höskuldur Björnsson<hoski@hafro.is>
 LazyData: yes
 Description: More about what it does (maybe more than one line)
-License: What license is it under?
+License: GPL
