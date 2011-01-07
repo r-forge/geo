@@ -737,8 +737,8 @@ function(limx, limy, scale, b0, xyratio, grid, col, reitur, smareitur, axratio,
 		lonmin[ind] <- " "
 	}
 	else loncha[loncha == "0"] <- "00"
-	latchar <- paste(latchar, "°", latcha, latmin, sep = "")
-	lonchar <- paste(lonchar, "°", loncha, lonmin, sep = "")
+	latchar <- paste(latchar, "", latcha, latmin, sep = "")
+	lonchar <- paste(lonchar, "", loncha, lonmin, sep = "")
 	latchar <- c(" ", latchar, " ")
 	lonchar <- c(" ", lonchar, " ")
 	#	vect<-c(1:length(longr2)); vect[1:length(longr2)] <- o$y[1] 
@@ -894,23 +894,23 @@ function(limx, limy, scale, b0, xyratio, grid, col, reitur, smareitur, axratio,
 	latcha <- as.character(latcha - indlat * 60)
 	loncha <- as.character(loncha - indlon * 60)
 	if(length(ind1) == 0)
-		latchar <- paste(latchar, "°", latcha, "'", sep = "")
+		latchar <- paste(latchar, "", latcha, "'", sep = "")
 	else {
 		if(floor(dlat) == dlat)
-			latchar[ind1] <- paste(latchar[ind1], "°")
-		else latchar[ind1] <- paste(latchar[ind1], "°", "00'", sep = ""
+			latchar[ind1] <- paste(latchar[ind1], "")
+		else latchar[ind1] <- paste(latchar[ind1], "", "00'", sep = ""
 				)
-		latchar[ - ind1] <- paste(latchar[ - ind1], "°", latcha[ - ind1
+		latchar[ - ind1] <- paste(latchar[ - ind1], "", latcha[ - ind1
 			], "'", sep = "")
 	}
 	if(length(ind2) == 0)
-		lonchar <- paste(lonchar, "°", loncha, "'", sep = "")
+		lonchar <- paste(lonchar, "", loncha, "'", sep = "")
 	else {
 		if(floor(dlon) == dlon)
-			lonchar[ind2] <- paste(lonchar[ind2], "°")
-		else lonchar[ind2] <- paste(lonchar[ind2], "°", "00'", sep = ""
+			lonchar[ind2] <- paste(lonchar[ind2], "")
+		else lonchar[ind2] <- paste(lonchar[ind2], "", "00'", sep = ""
 				)
-		lonchar[ - ind2] <- paste(lonchar[ - ind2], "°", loncha[ - ind2
+		lonchar[ - ind2] <- paste(lonchar[ - ind2], "", loncha[ - ind2
 			], "'", sep = "")
 	}
 	par(adj = 0.5)
@@ -1570,7 +1570,7 @@ function(side, pos, dist, dlat = 0.5, dlon = 1,csi=0.12, cex = 0.7, inside = T, 
 			lonpos <- geopar$origin$lon[2] + ratio * dist
 		lat1 <- trunc(pos)
 		lat2 <- pos %% 1
-		txt <- paste(lat1, "°", sep = "")
+		txt <- paste(lat1, "", sep = "")
 		lat2 <- round(lat2 * 60, 2)
 		i <- lat2 > 0
 		if(any(i))
@@ -1586,7 +1586,7 @@ function(side, pos, dist, dlat = 0.5, dlon = 1,csi=0.12, cex = 0.7, inside = T, 
 		pos1 <- abs(pos)
 		lon1 <- trunc(pos1)
 		lon2 <- pos1 %% 1
-		txt <- paste(lon1, "°", sep = "")
+		txt <- paste(lon1, "", sep = "")
 		lon2 <- round(lon2 * 60, 2)
 		i <- lon2 > 0
 		if(any(i))
@@ -2031,7 +2031,7 @@ function(depth, col, lty, lwd, depthlab, depthlabcex)
 	for(i in 1:length(depth)) {
 		dypi <- depth[i]
 		if(dypi %% 100 != 0 || dypi == 300 || dypi == 700) {
-			print(paste(dypi, "m lína ekki til í GEBCO gögnum"))
+			print(paste(dypi, "m line does not exist in GEBCO data"))
 			return(invisible())
 		}
 		if(dypi <= 1000 || dypi == 1200 || dypi == 1500 || dypi == 2000
