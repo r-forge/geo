@@ -108,8 +108,8 @@ function(limx, limy, scale, b0, xyratio, grid, col, reitur, smareitur, axratio,
 		lonmin[ind] <- " "
 	}
 	else loncha[loncha == "0"] <- "00"
-	latchar <- paste(latchar, "°", latcha, latmin, sep = "")
-	lonchar <- paste(lonchar, "°", loncha, lonmin, sep = "")
+	latchar <- paste(latchar, "", latcha, latmin, sep = "")
+	lonchar <- paste(lonchar, "", loncha, lonmin, sep = "")
 	latchar <- c(" ", latchar, " ")
 	lonchar <- c(" ", lonchar, " ")
 	#	vect<-c(1:length(longr2)); vect[1:length(longr2)] <- o$y[1] 

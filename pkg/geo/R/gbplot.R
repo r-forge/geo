@@ -18,7 +18,7 @@ function(depth, col, lty, lwd, depthlab, depthlabcex)
 	for(i in 1:length(depth)) {
 		dypi <- depth[i]
 		if(dypi %% 100 != 0 || dypi == 300 || dypi == 700) {
-			print(paste(dypi, "m lína ekki til í GEBCO gögnum"))
+			print(paste(dypi, "m does not exist in GEBCO data"))
 			return(invisible())
 		}
 		if(dypi <= 1000 || dypi == 1200 || dypi == 1500 || dypi == 2000

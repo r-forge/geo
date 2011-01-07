@@ -114,23 +114,23 @@ function(limx, limy, scale, b0, xyratio, grid, col, reitur, smareitur, axratio,
 	latcha <- as.character(latcha - indlat * 60)
 	loncha <- as.character(loncha - indlon * 60)
 	if(length(ind1) == 0)
-		latchar <- paste(latchar, "°", latcha, "'", sep = "")
+		latchar <- paste(latchar, "", latcha, "'", sep = "")
 	else {
 		if(floor(dlat) == dlat)
-			latchar[ind1] <- paste(latchar[ind1], "°")
-		else latchar[ind1] <- paste(latchar[ind1], "°", "00'", sep = ""
+			latchar[ind1] <- paste(latchar[ind1], "")
+		else latchar[ind1] <- paste(latchar[ind1], "", "00'", sep = ""
 				)
-		latchar[ - ind1] <- paste(latchar[ - ind1], "°", latcha[ - ind1
+		latchar[ - ind1] <- paste(latchar[ - ind1], "", latcha[ - ind1
 			], "'", sep = "")
 	}
 	if(length(ind2) == 0)
-		lonchar <- paste(lonchar, "°", loncha, "'", sep = "")
+		lonchar <- paste(lonchar, "", loncha, "'", sep = "")
 	else {
 		if(floor(dlon) == dlon)
-			lonchar[ind2] <- paste(lonchar[ind2], "°")
-		else lonchar[ind2] <- paste(lonchar[ind2], "°", "00'", sep = ""
+			lonchar[ind2] <- paste(lonchar[ind2], "")
+		else lonchar[ind2] <- paste(lonchar[ind2], "", "00'", sep = ""
 				)
-		lonchar[ - ind2] <- paste(lonchar[ - ind2], "°", loncha[ - ind2
+		lonchar[ - ind2] <- paste(lonchar[ - ind2], "", loncha[ - ind2
 			], "'", sep = "")
 	}
 	par(adj = 0.5)
