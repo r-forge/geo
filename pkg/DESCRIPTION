@@ -1,10 +1,11 @@
 Package: geo
-Type: Package
-Title: Draw and annotate maps, especially nautical charts of the North Atlantic.
-Version: 1.0
-Date: 2010-01-30
-Author:Höskuldur Björnsson
-Maintainer:Höskuldur Björnsson<hoski@hafro.is>
+Version: 1.0-01
+Date: 2010-10-19
+Title: Draw and Annotate Maps, Especially Nautical Charts of the North Atlantic
+Author: Hoskuldur Bjornsson
+Maintainer: Hoskuldur Bjornsson <hoski@hafro.is>
 LazyData: yes
-Description: More about what it does (maybe more than one line)
-License: GPL
+Description: Used by Hafro staff to draw maps showing the distribution of
+  fishing intensity and catches of Icelandic fish stocks. Potentially useful for
+  others.
+License: GPL (>= 2)
