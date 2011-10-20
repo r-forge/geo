@@ -50,7 +50,7 @@ function(side, pos, dist, dlat = 0.5, dlon = 1,csi=0.12, cex = 0.7, inside = T, 
 			lonpos <- geopar$origin$lon[2] + ratio * dist
 		lat1 <- trunc(pos)
 		lat2 <- pos %% 1
-		txt <- paste(lat1, "", sep = "")
+		txt <- paste(lat1, "\u00b0", sep = "")
 		lat2 <- round(lat2 * 60, 2)
 		i <- lat2 > 0
 		if(any(i))
@@ -66,7 +66,7 @@ function(side, pos, dist, dlat = 0.5, dlon = 1,csi=0.12, cex = 0.7, inside = T, 
 		pos1 <- abs(pos)
 		lon1 <- trunc(pos1)
 		lon2 <- pos1 %% 1
-		txt <- paste(lon1, "", sep = "")
+		txt <- paste(lon1, "\u00b0", sep = "")
 		lon2 <- round(lon2 * 60, 2)
 		i <- lon2 > 0
 		if(any(i))
