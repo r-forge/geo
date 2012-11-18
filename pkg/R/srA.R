@@ -1,6 +1,12 @@
 srA <-
-function (sr, scale = "Miles") 
+function (sr, scale = "nmi") 
 {
-  sapply(sr, function(x) geoarea(srPeri(x)))
+  A <- sapply(sr, function(x) geoarea(srPeri(x)))
+  if(scale == "nmi") {
+    A/1.852^2
+  }
+  else {
+    A
+  }
 }
 

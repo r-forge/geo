@@ -1,7 +1,7 @@
 \encoding{latin1}
 
-\name{degrees2rectangles}
-\alias{degrees2rectangles}
+\name{deg2rect}
+\alias{deg2rect}
 \alias{d2r}
 \alias{d2sr}
 
@@ -13,7 +13,7 @@
   Functions that convert positions in decimal degrees latitude and
   longitude to rectangle codes for statistical rectangles or
   subrectangles as described below and relating to
-  \link{\code{rectangles2degrees}}.
+  \link{\code{rect2deg}}.
 
 }
 \usage{
@@ -64,13 +64,11 @@ d2sr(lat, lon = NULL)
 
 }
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
 
-  \code{rectangles2degrees}
-%% \link{\code{rectangles2degrees}}
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+  \code{rect2deg}
+
 }
 
 \examples{
@@ -83,8 +81,7 @@ rects <- d2r(island)
 table(rects)
 
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
+
 \keyword{manip}
 \keyword{arith}
 

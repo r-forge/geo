@@ -1,6 +1,6 @@
-\name{rectangles2degrees}
+\name{rect2deg}
 
-\alias{rectangles2degrees}
+\alias{rect2deg}
 \alias{sr2d}
 \alias{r2d}
 
@@ -17,19 +17,19 @@
 }
 
 \usage{
-dr2d(dr, dlat = 1, dlon = 2)
-mr2d(mr, dlat = 5, dlon = 10)
-hr2d(hr)
+
 sr2d(sr)
 r2d(r)
+
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
 
   \item{sr}{rectangle code \code{sr}, e.g. from \link{\code{d2sr}}}
   \item{r}{rectangle code \code{r}, e.g from \link{\code{d2r}}}      
 
 }
+
 \details{
  \itemize{
 
@@ -47,11 +47,7 @@ r2d(r)
 
 \value{dataframe of center positions (latitude \code{lat} and longitude
   \code{lon}) of rectangles in one of the coding systems  
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+
 }
 
 \note{Mostly used for plotting.}
@@ -62,14 +58,14 @@ r2d(r)
 
 }
 
-\seealso{\code{\link{degrees2rectangles}}}
+\seealso{\code{\link{deg2rect}}}
 
 \examples{
   r2d(d2r(lat = 65 + 1/4, lon = -19 - 1/2))
   d2r(r2d(519))
   
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
+
+\keyword{arith}
 \keyword{manip}
 

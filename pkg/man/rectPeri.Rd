@@ -1,5 +1,5 @@
-\name{rectanglePerimeter}
-\alias{rectanglePerimeter}
+\name{rectPeri}
+\alias{rectPeri}
 \alias{rPeri}
 \alias{srPeri}
 
@@ -26,9 +26,10 @@ srPeri(sr)
 \value{rectangle outline as 5 positions}
 
 \note{should perhaps be extended to give a list or dataframe of polygons
-  for more than on \code{r} or \code{sr}.}
+  for more than one \code{r} or \code{sr}.}
 
-\seealso{\code{\link{degrees2rectangles}}}
+\seealso{\link{\code{deg2rect}}, \link{\code{rectArea}},
+  \link{\code{geoarea}}.}
 
 \examples{
 
@@ -39,5 +40,6 @@ srPeri(sr)
 }
 
 
-\keyword{manip}
 \keyword{arith}
+\keyword{manip}
+
