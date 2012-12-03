@@ -10,7 +10,7 @@
 
   Functions that convert statistical rectangle codes under the
   traditional Icelandic coding system ('tilkynningaskyldurreitakerfið')
-  coding systems (results of functions \code{d2r} and \code{d2sr}) to
+  coding systems (results of functions \code{\link{d2r}} and \code{\link{d2sr}}) to
   decimal representation of the rectangles center positions in degreees
   latitude and longitude.
 
@@ -25,8 +25,8 @@ r2d(r)
 
 \arguments{
 
-  \item{sr}{rectangle code \code{sr}, e.g. from \link{\code{d2sr}}}
-  \item{r}{rectangle code \code{r}, e.g from \link{\code{d2r}}}      
+  \item{sr}{rectangle code \code{sr}, e.g. from \code{\link{deg2rect}}}
+  \item{r}{rectangle code \code{r}, e.g from \code{\link{deg2rect}}}      
 
 }
 

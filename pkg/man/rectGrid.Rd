@@ -11,8 +11,8 @@
 \description{
 
   Plots the outline of or fills statistical rectangles or their
-  sub-rectangles with call to \link{\code{geolines}} or
-  \link{\code{geopolygon}}.   
+  sub-rectangles with call to \code{\link{geolines}} or
+  \code{\link{geopolygon}}.   
 
 }
 
@@ -36,7 +36,7 @@ srgrid(r, fill = F, ...)
 
 \item{\dots}{
 
-  other arguments to \link{\code{geopolygon}} or \link{\code{geolines}}
+  other arguments to \code{\link{geopolygon}} or \code{\link{geolines}}
   as appropriate, notably \code{col}. 
 }
 
@@ -45,7 +45,7 @@ srgrid(r, fill = F, ...)
 \details{
   
   The functions simply outline or fill the rectangles they are given.
-  whereas \link{\code{reitaplott}} and \link[geoextras]{\code{geoSR}}
+  whereas \code{\link{reitaplott}} and \code{\link[geoextras]{geoSR}}
   assume levels.
 
 }
@@ -63,7 +63,7 @@ srgrid(r, fill = F, ...)
 
 \note{
 
-  Functions \link{\code{reitaplott}} and \link[geoextras]{\code{geoSR}}
+  Functions \code{\link{reitaplott}} and \code{\link[geoextras]{geoSR}}
   have more in-built functionality to deal with level-plots of
   recatangles.
 
@@ -71,8 +71,8 @@ srgrid(r, fill = F, ...)
 
 \seealso{
 
-  \code{\link{deg2rect}}, \link{\code{geolines}},
-  \link{\code{geopolygon}}, \link{\code{reitaplott}}.
+  \code{\link{deg2rect}}, \code{\link{geolines}},
+  \code{\link{geopolygon}}, \code{\link{reitaplott}}.
 }
 
 \examples{

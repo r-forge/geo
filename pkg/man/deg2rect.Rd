@@ -13,7 +13,7 @@
   Functions that convert positions in decimal degrees latitude and
   longitude to rectangle codes for statistical rectangles or
   subrectangles as described below and relating to
-  \link{\code{rect2deg}}.
+  \code{\link{rect2deg}}.
 
 }
 \usage{
@@ -53,7 +53,7 @@ d2sr(lat, lon = NULL)
 }
 \value{vector of rectangle codes in the chosen coding system.}
 
-\note{\code{d2dr} these functions could be made hemisphere-aware, and no
+\note{These functions could be made hemisphere-aware, and no
   attention has been given to making the functions work in the southern
   hemisphere, possibly with the option of specifying starting
   latitudes.}
@@ -67,14 +67,14 @@ d2sr(lat, lon = NULL)
 
 \seealso{
 
-  \code{rect2deg}
+  \code{\link{rect2deg}}
 
 }
 
 \examples{
 
-## tally positions in rectangles in object \code{island} giving Iceland
-   coastline
+## tally positions in rectangles in object \code{\link{island}} giving
+## Iceland's coastline
 
 data(island)
 rects <- d2r(island)

@@ -28,8 +28,8 @@ srPeri(sr)
 \note{should perhaps be extended to give a list or dataframe of polygons
   for more than one \code{r} or \code{sr}.}
 
-\seealso{\link{\code{deg2rect}}, \link{\code{rectArea}},
-  \link{\code{geoarea}}.}
+\seealso{\code{\link{deg2rect}}, \code{\link{rectArea}},
+  \code{\link{geoarea}}.}
 
 \examples{
 

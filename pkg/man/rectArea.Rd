@@ -9,7 +9,7 @@ Given rectangle code return area in square kilometers or nautical miles
 
 \description{
 Rectangle area is returned through a call to
-\link{\code{rectPeri}}-functions and \link{\code{geoarea}}.
+\code{\link{rectPeri}}-functions and \code{\link{geoarea}}.
 }
 
 \usage{
@@ -18,15 +18,15 @@ srA(sr)
 }
 
 \arguments{
-  \item{r, sr}{rectangle code}, as in \link{\code{rect2deg}} and
-  \link{\code{deg2rect}}.
+  \item{r, sr}{rectangle code}, as in \code{\link{rect2deg}} and
+  \code{\link{deg2rect}}.
   \item{scale}{default \code{nmi}, returns values in square nautical miles, 
   any other value returns area in square kilometers
 }
 
 \value{rectangle area in square nautical miles or kilometers}
 
-\seealso{\link{\code{rectPeri}}, \link{\code{deg2rect}}, \link{\code{geoarea}}.}
+\seealso{\code{\link{rectPeri}}, \code{\link{deg2rect}}, \code{\link{geoarea}}.}
 
 \examples{
 
