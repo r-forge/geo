@@ -1,14 +1,14 @@
 \name{geotows}
 \alias{geotows}
-Plot tows
-\title{
-Plot line segments from lat,lon to lat1,lon1
-}
+
+\title{Plot tows as line segments}
+
 \description{
-the function gets 4 arguments i.e position of begininning and end of
+The function gets 4 arguments i.e position of begininning and end of
 segments.  If the first argument is given col.names gives the column
 names in the data frame describing the position.   
 }
+
 \usage{
 geotows(lat, lon, lat1, lon1, col=1, col.names = c("kastad.n.breidd", "kastad.v.lengd", "hift.n.breidd", "hift.v.lengd"), ...)
 }
@@ -97,4 +97,4 @@ function(lat, lon, lat1, lon1, col=1,col.names = c("kastad.n.breidd",
 
 
 \keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{ ~kwd2 }
