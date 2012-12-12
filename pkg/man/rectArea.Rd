@@ -21,7 +21,7 @@ srA(sr)
   \item{r, sr}{rectangle code}, as in \code{\link{rect2deg}} and
   \code{\link{deg2rect}}.
   \item{scale}{default \code{nmi}, returns values in square nautical miles, 
-  any other value returns area in square kilometers
+  any other value returns area in square kilometers}
 }
 
 \value{rectangle area in square nautical miles or kilometers}

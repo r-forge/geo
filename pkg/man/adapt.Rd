@@ -28,7 +28,7 @@ adapt(reg.lat, reg.lon, projection = "Mercator")
 \author{ ~~who you are~~ }
 \note{ ~~further notes~~ 
 
- ~Make other sections like Warning with \section{Warning }{....} ~
+ ~Make other sections like Warning with section{Warning }{....} ~
 }
 \seealso{ ~~objects to See Also as \code{\link{help}}, ~~~ }
 \examples{

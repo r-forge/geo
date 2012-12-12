@@ -32,7 +32,7 @@ labels.line(cont, digits, colors, lty, xlim = c(0, 1), ylim = c(0, 1), linew = F
 \author{ ~~who you are~~ }
 \note{ ~~further notes~~ 
 
- ~Make other sections like Warning with \section{Warning }{....} ~
+ ~Make other sections like Warning with section{Warning }{....} ~
 }
 \seealso{ ~~objects to See Also as \code{\link{help}}, ~~~ }
 \examples{

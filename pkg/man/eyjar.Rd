@@ -1,10 +1,10 @@
 \name{eyjar}
 \alias{eyjar}
 \docType{data}
-\title{ ~~ data name/kind ... ~~}
-\description{
-  ~~ A concise (1-5 lines) description of the dataset. ~~
-}
+\title{Icelandic islands}
+\description{Islands around Iceland with area greater than 0.25 square
+  km}
+
 \usage{data(eyjar)}
 \format{
   A data frame with 3401 (including NAs) observations on the following 2 variables.

@@ -12,7 +12,7 @@ names in the data frame describing the position.
 \usage{
 geotows(lat, lon, lat1, lon1, col=1, col.names = c("kastad.n.breidd", "kastad.v.lengd", "hift.n.breidd", "hift.v.lengd"), ...)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
   \item{lat}{
 %%     ~~Describe \code{lat} here~~
@@ -56,7 +56,7 @@ geotows(lat, lon, lat1, lon1, col=1, col.names = c("kastad.n.breidd", "kastad.v.
 %%  ~~further notes~~
 }
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
+
 
 \seealso{
 %% ~~objects to See Also as \code{\link{help}}, ~~~
@@ -94,7 +94,7 @@ function(lat, lon, lat1, lon1, col=1,col.names = c("kastad.n.breidd",
 	return(invisible())
   }
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
+
+
 \keyword{ ~kwd1 }
 \keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

@@ -28,7 +28,8 @@ skipta.texta(txt, char = "_", replchar = ".")
 \author{ ~~who you are~~ }
 \note{ ~~further notes~~ 
 
- ~Make other sections like Warning with \section{Warning }{....} ~
+  ~Make other sections like Warning with section{Warning }{....} ~
+  12.12.12 fjarlægði 'backslash-ið' úr línunni að ofan
 }
 \seealso{ ~~objects to See Also as \code{\link{help}}, ~~~ }
 \examples{

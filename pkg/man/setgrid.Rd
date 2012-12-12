@@ -49,7 +49,7 @@ setgrid(lat, lon = 0, type = "p", pch = "*", xlim = c(0, 0), ylim = c(0, 0), b0 
 \author{ ~~who you are~~ }
 \note{ ~~further notes~~ 
 
- ~Make other sections like Warning with \section{Warning }{....} ~
+ ~Make other sections like Warning with section{Warning }{....} ~
 }
 \seealso{ ~~objects to See Also as \code{\link{help}}, ~~~ }
 \examples{

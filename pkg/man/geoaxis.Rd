@@ -35,7 +35,7 @@ geoaxis(side, pos, dist, dlat = 0.5, dlon = 1, csi = 0.12, cex = 0.7, inside = T
 \author{ ~~who you are~~ }
 \note{ ~~further notes~~ 
 
- ~Make other sections like Warning with \section{Warning }{....} ~
+ ~Make other sections like Warning with section{Warning }{....} ~
 }
 \seealso{ ~~objects to See Also as \code{\link{help}}, ~~~ }
 \examples{
