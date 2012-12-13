@@ -35,8 +35,8 @@ Returns  a  dataframe  with  vectors  pardist  (length  of
 }
 \examples{
        
-       geoplot(my.curve)     # Plot curve and initialize plot.
+\dontrun{       geoplot(my.curve)     # Plot curve and initialize plot.
        geocurve(geolocator(),my.curve)         # Mark points.
-}
+}}
 % docclass is function
 % Converted by Sd2Rd version 43268.

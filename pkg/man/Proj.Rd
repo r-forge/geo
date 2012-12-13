@@ -45,8 +45,9 @@ distance in \$scale from point (0,0) in spherical coordinates.
 \examples{
   # For an example of use for this function see i.e. init() where
   # it is called:
-
+\dontrun{
   xgr <- Proj(lat, lon, scale, b0, b1, l1, projection)
+}
 }
 % docclass is function
 % Converted by Sd2Rd version 43268.

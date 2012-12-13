@@ -32,11 +32,12 @@ Fill outside of the border of the current plot.
 \code{\link{geopolygon}}.
 }
 \examples{
-       geoplot(xlim=c(-50,20),ylim=c(50,70))       # Initialize plot.
+       \dontrun{
+	geoplot(xlim=c(-50,20),ylim=c(50,70))       # Initialize plot.
        geoworld(fill=T,color=120)                  # Colour countries.
        fill.outside.border()                       # Clear outside of border.
        geoplot(xlim=c(-50,20),ylim=c(50,70),new=T) # Relabel.
-}
+}}
 \keyword{<!--Put one or more s-keyword tags here-->}
 % docclass is function
 % Converted by Sd2Rd version 43268.

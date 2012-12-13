@@ -36,7 +36,7 @@ No warning is given if the filename "file" already  exists
 \code{\link{write}}.
 }
 \examples{
-Within Splus:
+\dontrun{Within Splus:
        > tmp.test.frame
           tolur1     tolur2 stafir1
         1     11 0.04625551       a
@@ -68,6 +68,6 @@ Within Splus:
        9       19      0.06387665      b
        10      20      0.06607930      b
        hafbitur/home/reikn/gardar/Papers/Methods95 [436]
-}
+}}
 % docclass is function
 % Converted by Sd2Rd version 43268.

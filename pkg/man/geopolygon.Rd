@@ -67,7 +67,7 @@ The points plotted are returned if save=T.
 \code{\link{geocontour}}.
 }
 \examples{
-     geopolygon(island)              # Paint iceland with 
+\dontrun{     geopolygon(island)              # Paint iceland with 
                                      # color #0 (often white).
 
      geopolygon(island,col=0,exterior=T)
@@ -93,6 +93,6 @@ The points plotted are returned if save=T.
      # Draw Iceland over.
      geoplot(grid=F,new=T)
      # Draw lines around Iceland, could also use geolines.
-}
+}}
 % docclass is function
 % Converted by Sd2Rd version 43268.

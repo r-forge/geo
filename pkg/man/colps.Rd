@@ -32,6 +32,7 @@ by dev.off()
 postscript, geoplotpalette,litir
 }
 \examples{
+\dontrun{
 colps(file="map1.ps",height=6,width=5) 
 geoplot(xlim=c(-28,-10),ylim=c(64,69))
 geosymbols(data,z=data$value,circles=0.2,sqrt=T)
@@ -46,7 +47,7 @@ geosymbols(data,z=data$value,circles=0.2,sqrt=T)
 geopolygon(island,col=0)#col 0 is now white
 geolines(island) # was transparent earlier
 dev.off() 
-}
+}}
 \keyword{<!--Put one or more s-keyword tags here-->}
 % docclass is function
 % Converted by Sd2Rd version 43268.

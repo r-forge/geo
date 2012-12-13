@@ -33,8 +33,9 @@ A single vector of distances between pairs of points is returned
 \code{\link{selpos}},
 }
 \examples{
-    dists<-arcdist(pos1,pos2)         # pos1 and pos2 are lists of coordinates.
+\dontrun{    dists<-arcdist(pos1,pos2)         # pos1 and pos2 are lists of coordinates.
     dists<-arcdist(lat,lon,lat1,lon1) # Input in vector format.
+}
 }
 % docclass is function
 % Converted by Sd2Rd version 43268.

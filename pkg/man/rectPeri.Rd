@@ -32,11 +32,11 @@ srPeri(sr)
   \code{\link{geoarea}}.}
 
 \examples{
-
+\dontrun{
   geoplot(island, type = "n", grid = FALSE)
   geolines(rPeri(468))
   geolines(srPeri(4681))
-  
+  }
 }
 
 

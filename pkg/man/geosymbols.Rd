@@ -157,7 +157,7 @@ No values are returned
 \code{\link{geocontour}}.
 }
 \examples{
-      # lodna.2 composes of echo measurements for capelin on the
+ \dontrun{     # lodna.2 composes of echo measurements for capelin on the
       # norther- and easternshores of Iceland. [lat,lon,z]
      
       # Show points.            
@@ -220,6 +220,6 @@ No values are returned
     
       # Circles can be replaced with squares, rectangles, vbars, hbars or 
       # perbars or more than one used simultanuously.
-}
+}}
 % docclass is function
 % Converted by Sd2Rd version 43268.

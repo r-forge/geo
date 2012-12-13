@@ -82,7 +82,7 @@ the outlines of all countries who intersect  current  plot
 \code{\link{par}}.
 }
 \examples{
-     geoplot(xlim=c(0,-53),ylim=c(53,75))
+\dontrun{     geoplot(xlim=c(0,-53),ylim=c(53,75))
      geoworld()
 
      # Should plot in all countries who intersect the plot draw
@@ -106,6 +106,6 @@ geoworld(database="world",fill=T,col=30) #the plot fails.
 # Lambert projection,
 geoplot(xlim=c(-10,70),ylim=c(71,81),dlat=2,dlon=10,projection="Lambert")
 geoworld(database="world",fill=T,col=30) 
-}
+}}
 % docclass is function
 % Converted by Sd2Rd version 43268.

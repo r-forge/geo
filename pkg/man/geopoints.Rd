@@ -59,7 +59,7 @@ value is NULL i.e not used.
 \code{\link{geocontour}}.
 }
 \examples{
-       geopoints(deg)                           # Plots * in the points
+\dontrun{       geopoints(deg)                           # Plots * in the points
                                                 # defined by deg$lat,deg$lon.
       
        geopoints(deg$lat,deg$lon,pch="*",col=5) # Same but uses color 5.
@@ -67,6 +67,6 @@ value is NULL i.e not used.
        geopoints(fd$x,fd$y)                     # Points in x,y when
                                                 # projection in geoplot 
                                                 # was "none".
-}
+}}
 % docclass is function
 % Converted by Sd2Rd version 43268.

@@ -67,7 +67,7 @@ The projection is stored in geopar\$projection and parameters for the transform 
        geolines(eyjar,col=40)
        geolines(faeroes,col=40)
        geolines(greenland,col=3,lwd=3)
-       geolines(janmayen,col=40)
+#       geolines(janmayen,col=40)
        # Plot some more countries using geolines.
 }
 % docclass is function

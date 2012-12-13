@@ -51,11 +51,11 @@ No values returned.
 \code{\link{geocontour}}.
 }
 \examples{
-       geogrid(latgr,longgr)
+\dontrun{       geogrid(latgr,longgr)
 
        codgrd <- list(lat=seq(62,68,by=0.1),lon=seq(-28,-10,0.25))
        geogrid(codgrd)   # a fine grid of Iceland and neighbouring seas
        geoplot(new=T)   
-}
+}}
 % docclass is function
 % Converted by Sd2Rd version 43268.

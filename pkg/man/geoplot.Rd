@@ -233,7 +233,7 @@ There should be no side effects. The program changes a number of graphical param
 \code{\link{Proj}}.
 }
 \examples{
-Examples shown here below also include calls to the other functions
+\dontrun{Examples shown here below also include calls to the other functions
 in the geopackage.  Further explanations of these functions can be
 found in the appropriate help files.  
 
@@ -254,15 +254,15 @@ lev <- c(0.5,1,2,4,6)
 col <- c(0,30,50,70,90,150)
 txt <- c(1993,1995,2000,2002,2005,2006)
 par(mfrow=c(3,2));par(mex=0.01)
-bwps(file="hadcatchutbr.ps",height=6.8,width=6.5,horizontal=F)
+bwps(file="hadcatchutbr.ps",height=6.8,width=6.5,horizontal=FALSE)
 for(i in 1:6) {
- SMB.std.background(grid=F,axlabels=F)
- geocontour.fill(hadcatch[[i]],levels=lev,col=col,white=T,working.space=2e6)
+ SMB.std.background(grid=FALSE,axlabels=FALSE)
+ geocontour.fill(hadcatch[[i]],levels=lev,col=col,white=TRUE,working.space=2e6)
  gbplot(200)
  geotext(67.3,-27.6,txt[i],csi=0.16,adj=0)
  geopolygon(island,col=0);geolines(island)
  tmp <- utbrteg[utbrteg$ar==txt[i],] # select the year
- geosymbols(tmp,z=tmp$ysa.kg,circles=0.2,sqrt=T,lwd=1)# amount of haddock
+ geosymbols(tmp,z=tmp$ysa.kg,circles=0.2,sqrt=TRUE,lwd=1)# amount of haddock
  geopoints(tmp,pch=16,csi=0.05)
 }
 dev.off()
@@ -280,13 +280,13 @@ geoplot(x,projection="none",type="n")
 library(map) # world coastlines and programs 
 library(mapdata) # more detailed coastlines
 geoplot(xlim=c(20,70),ylim=c(15,34))
-geoworld(database="worldHires",fill=T,col=30,allowed.size=30000) #
+geoworld(database="worldHires",fill=TRUE,col=30,allowed.size=30000) #
 
 geoplot(xlim=c(20,70),ylim=c(15,34),dlat=10,dlon=10)
-geoworld(database="world",fill=T,col=30) #
+geoworld(database="world",fill=TRUE,col=30) #
 
 geoplot(xlim=c(-10,70),ylim=c(71,81),b0=80,dlat=2,dlon=10) # 0 must be high here else
-geoworld(database="world",fill=T,col=30) #the plot fails.  
+geoworld(database="world",fill=TRUE,col=30) #the plot fails.  
 
 # Lambert projection,
 geoplot(xlim=c(-10,70),ylim=c(71,81),dlat=2,dlon=10,projection="Lambert")
@@ -379,6 +379,6 @@ for (ar in yy) {
   geotext(63,-10,ar,adj=1,csi=0.18)
   dev.off()
 }
-}
+}}
 % docclass is function
 % Converted by Sd2Rd version 43268.

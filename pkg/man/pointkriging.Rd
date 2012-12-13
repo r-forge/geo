@@ -166,7 +166,7 @@ The program is partly written in C so if it crashes  Splus
 \code{\link{geocontour.fill}}.
 }
 \examples{
-      See geocontour.fill
+##      See geocontour.fill
 }
 % docclass is function
 % Converted by Sd2Rd version 43268.

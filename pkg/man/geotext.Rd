@@ -88,7 +88,7 @@ No values returned.
 \code{\link{geocontour}}.
 }
 \examples{
-       geotext(deg,z=z)    # plot text at points deg$lat,deg$lon
+\dontrun{       geotext(deg,z=z)    # plot text at points deg$lat,deg$lon
        
        geotext(deg$lat,deg$lon,z,csi=0.06) # Same, size of text 0.06".
        
@@ -126,6 +126,6 @@ No values returned.
        # With geotext we put one element from lab at each data point.
        title(main="10 Random Data Point")
        # Add title
-}
+}}
 % docclass is function
 % Converted by Sd2Rd version 43268.

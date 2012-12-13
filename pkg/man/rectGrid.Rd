@@ -78,7 +78,7 @@ srgrid(r, fill = F, ...)
 \examples{
 
 ## some rectangles on Iceland's coastline
-
+\dontrun{
 geoplot(grid = FALSE)
 tmp <- island
 tmp$r <- d2r(island)
@@ -91,7 +91,7 @@ srects$lev <- cut(srects$count, c(0, 1, 5, 10, 20, 50, 100))
 mycol <- heat.colors(length(unique(srects$lev)))
 srgrid(srects$sr, fill = T, col = mycol[srects$lev])
 geolines(island)
-
+}
 }
 
 \keyword{hplot}

@@ -141,7 +141,7 @@ Second latitude in Lambert transform.  Default is the same
 \code{\link{pointkriging}},
 \code{\link{variogram}}.
 }
-\examples{
+\examples{\dontrun{
        grlat <- c(1:20)*0.5+60
        grlon <- -10-c(1:20)
        xgr <- grid(lon=grlon,lat=grlat)
@@ -151,6 +151,6 @@ Second latitude in Lambert transform.  Default is the same
        # input. Done as in geozoom. That is we define the area of our
        # grid by selecting any two points on the plot and the pushing
        # the middle button.
-}
+}}
 % docclass is function
 % Converted by Sd2Rd version 43268.

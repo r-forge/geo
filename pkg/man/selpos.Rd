@@ -37,6 +37,7 @@ The normal way of working with  geographical  data  is  to
 \code{\link{geoplot}},
 }
 \examples{
+\dontrun{
              subs<-selpos(pos,,z>6)# Select positions where z>6
 
        The Function is trivially defined as
@@ -50,6 +51,6 @@ The normal way of working with  geographical  data  is  to
                       lon <- lon[ind]
                       return(lat, lon)
        }
-}
+}}
 % docclass is function
 % Converted by Sd2Rd version 43268.

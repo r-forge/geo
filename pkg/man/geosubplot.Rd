@@ -59,6 +59,7 @@ must be use, it does not suffice to use <- See examples.
 \code{\link{geopar}}.
 }
 \examples{
+\dontrun{
       #####################################################
       # Example 1                                         #
       #####################################################
@@ -102,6 +103,6 @@ must be use, it does not suffice to use <- See examples.
       assign("geopar",large.geopar,where=0)
 
       # See also similar example in geopar.
-}
+}}
 % docclass is function
 % Converted by Sd2Rd version 43268.

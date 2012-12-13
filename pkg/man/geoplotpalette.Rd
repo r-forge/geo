@@ -36,7 +36,7 @@ by dev.off()
 hsv,palette,litir 
 }
 \examples{
-X11(bg="white") # white background default transparent (in R)
+\dontrun{X11(bg="white") # white background default transparent (in R)
 geoplotpalette()
 
 # in windows the graphics device can be opened with the command 
@@ -44,7 +44,7 @@ geoplotpalette()
 # so an equivalent command there would be 
 windows(bg="white") # white background default transparent (in R)
 geoplotpalette()
-}
+}}
 \keyword{<!--Put one or more s-keyword tags here-->}
 % docclass is function
 % Converted by Sd2Rd version 43268.

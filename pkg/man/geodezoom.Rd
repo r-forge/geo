@@ -21,7 +21,7 @@ The limits of the current plot change back to its original
 \code{\link{geozoom}}.
 }
 \examples{
-    See examples in help(geozoom).
+##    See examples in help(geozoom).
    
 }
 % docclass is function

@@ -159,12 +159,12 @@ No values returned.
      ###################################################
      # Example l                                       #
      ###################################################  
-
+\dontrun{
      geoplot(deg, cont=T)                        # Plot initialized.
      geocontour(grd$lat,grd$lon,z,nlevels=10,
                 neg=F,reg=reg,colors=T)          # Contour plot.
      geoplot(deg,pch=" ",cont=T,new=T)           # Plot over contourplot.
-
+}
      ###################################################
      # Example 2 Sea Tempeture.                        #
      ###################################################  
@@ -180,16 +180,16 @@ No values returned.
 
      grd1 <- geoexpand(grd)                       # Make grid.
      grd2 <- geoinside(grd1,gbdypif.500)  
-     grd2 <- geoinside(grd2,island,robust=F,option=2) 
+     grd2 <- geoinside(grd2,island,robust=FALSE,option=2) 
      # Use only the points where depth < 500 and outside Iceland.
-
-     xx <- loess(botnhiti~ lat*lon,degree=2,span=0.25,
-                 data=stodvar, na.action=na.omit)
+\dontrun{
+     #xx <- loess(botnhiti~ lat*lon,degree=2,spaALSEn=0.25,
+     #            data=stodvar, na.action=na.omit)
      # Use loess for interpolating.
 
-     grd2$temp <- predict(xx,grd2)                
-     geocontour(grd2,z=grd2$temp,levels = c(0,1,2,3,4,5,6,7),
-                label.location=labloc)
+     #grd2$temp <- predict(xx,grd2)                
+     #geocontour(grd2,z=grd2$temp,levels = c(0,1,2,3,4,5,6,7),
+     #           label.location=labloc)
 
      ######################################################
      # Example 3 example of gam() and indexes.            #
@@ -232,6 +232,6 @@ No values returned.
      pred.grid$pred.temp <- predict(fit,newdata=pred.grid)
      geocontour(pred.grid,z=pred.grid$pred.temp,levels=0:7,
                 label.location=labloc)
-}
+}}
 % docclass is function
 % Converted by Sd2Rd version 43268.

@@ -92,12 +92,12 @@ Observations that have missing values in either lat  or
 \code{\link{geotext}}.
 }
 \examples{
-       geoidentify(stations,labels=stations$temp)
+\dontrun{       geoidentify(stations,labels=stations$temp)
        # plots the temperature in the closest measuring point.
 
        geoidentify(stations,atpen=F) 
        # plots the indece number of the station closest to
        # where pointed at the stations position.
-}
+}}
 % docclass is function
 % Converted by Sd2Rd version 43268.

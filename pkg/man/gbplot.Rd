@@ -50,7 +50,7 @@ The size of depthlabels.
 \examples{
    geoplot()   # Set up plot.
    
-   gbplot(c(100,500,1000,1500),depthlab=T,depthlabcsi=0.2)
+   gbplot(c(100,500,1000),depthlab=T,depthlabcex=0.2)
    # Plot depthlines for 100,500,1000,1500 m, showing the
    # depth on the line.   
 }

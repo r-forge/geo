@@ -27,8 +27,8 @@ Draws the regions on the plot.
 \code{\link{geolocator}}.
 }
 \examples{
-    Push left mouse button to mark point, push middle button to 
-    mark the end of a region.
+ ##   Push left mouse button to mark point, push middle button to 
+ ##   mark the end of a region.
 }
 % docclass is function
 % Converted by Sd2Rd version 43268.

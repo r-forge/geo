@@ -115,7 +115,7 @@ Geoplot has to be  called  before  to  set  the  parameter
 \code{\link{geoplot}}.
 }
 \examples{
-     
+\dontrun{     
        geoplot(reitur=T)
        reitur <- c(560,560,560,560,561,561,561,561)
        smareitur <-c(1,2,3,4,1,2,3,4)
@@ -124,6 +124,6 @@ Geoplot has to be  called  before  to  set  the  parameter
        geopolygon(island); geolines(island)
        reitaplott(reitur,smareitur,z,rotate=90,label.location=lab.loc)
        # All subsuares in square 560 and 561.
-}
+}}
 % docclass is function
 % Converted by Sd2Rd version 43268.

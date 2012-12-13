@@ -77,7 +77,7 @@ Plots the line segment on the screen.
 \code{\link{ns}}.
 }
 \examples{
-       # define curve store the result.
+\dontrun{       # define curve store the result.
        curve1 <- geocurve(geolocator(type="p"),arrow="end",lwd=2)
        # use the result.
        geocurve(curve1,smooth=F,arrow="start",lwd=2,col=150)
@@ -88,6 +88,6 @@ Plots the line segment on the screen.
 
        # Make closed curve with big arrow and not store the result.
        geocurve(geodefine(),open=F,arrow="end",lwd=2,size=0.5)
-}
+}}
 % docclass is function
 % Converted by Sd2Rd version 43268.

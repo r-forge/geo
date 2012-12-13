@@ -69,7 +69,7 @@ None.
 \code{\link{geolocator}}.
 }
 \examples{
-   seafishing <- geoinside(fishing,island,option=2)  
+\dontrun{   seafishing <- geoinside(fishing,island,option=2)  
    # Removes those datapoints from fishing where fishing took
    # place inside Iceland (misspells).
 
@@ -103,6 +103,6 @@ None.
 
    #######################################################
   
-}
+}}
 % docclass is function
 % Converted by Sd2Rd version 43268.

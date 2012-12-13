@@ -325,7 +325,7 @@ value is NULL i.e not used.
 \code{\link{geodefine}}.
 }
 \examples{
-  ######################################################
+\dontrun{  ######################################################
   # Example 1.                                         #
   ######################################################
 
@@ -366,7 +366,7 @@ value is NULL i.e not used.
   geolines(island)
   # Iceland redrawn with geolines.
 
-  geocontour.fill(codgrd,z,levels=level,white=T
+  geocontour.fill(codgrd,z,levels=level,white=T,
                   label.location=lab.loc,labels.only=T)
   # Call geocontour.fill again only to plot the labels.
 
@@ -420,6 +420,6 @@ value is NULL i.e not used.
   # Call geocontour.fill to plot labels.
   geolines(island)
   # Redraw the lines of Iceland.
-}
+}}
 % docclass is function
 % Converted by Sd2Rd version 43268.

@@ -45,7 +45,7 @@ None
          geoarea(island,10000)   # Calculates the area of Iceland up to 
                                  # an adiquite precision.
 
-         geoarea(geodefine(),10) # Calculates the area of a region specified 
+#         geoarea(geodefine(),10) # Calculates the area of a region specified 
                                  # by the user.
 }
 % docclass is function
