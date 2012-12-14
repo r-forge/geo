@@ -247,7 +247,7 @@ function(grd, z, levels = NULL, nlevels = 0, cex =0.7, digits = 1, col = NULL,
 				"x"), col = boxcol)
 		label.location <- Proj(label.location, scale = geopar$scale,
 			b0 = geopar$b0, b1 = geopar$b1, l1 = geopar$l1, 
-			projection = geopar$projection, col.name = col.names)
+			projection = geopar$projection, col.names = col.names)
 		if(labels == 1) {
 			# labels for each contour line.  
 			labels1(levels.1, digits, colors.1, xlim = 
