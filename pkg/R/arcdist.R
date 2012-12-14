@@ -1,5 +1,5 @@
 arcdist <-
-function(lat, lon, lat1 = NULL, lon1 = NULL, scale = "Miles")
+function(lat, lon, lat1 = NULL, lon1 = NULL, scale = "nmi")
 {
 	if(is.null(lat1)) {
 		lat1 <- lon$lat
@@ -7,7 +7,7 @@ function(lat, lon, lat1 = NULL, lon1 = NULL, scale = "Miles")
 		lon <- lat$lon
 		lat <- lat$lat
 	}
-	if(scale == "Miles")
+	if(scale == "nmi")
 		miles <- 1.852
 	else miles <- 1
 	rad <- 6367

@@ -7,7 +7,7 @@
 Computes distances between lat/lon data points.
 }
 \usage{
-arcdist(lat, lon, lat1=NULL, lon1=NULL)
+arcdist(lat, lon, lat1=NULL, lon1=NULL, scale = "nmi")
 }
 \arguments{
 \item{lat}{

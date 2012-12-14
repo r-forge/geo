@@ -1,11 +1,11 @@
 geocontour.fill <-
 function(grd, z, levels = NULL, nlevels = 0, cex =0.7, digits = 1, col = NULL,
-	working.space = 0, labels = 1, ratio = 1000, only.positive = F, fill = 
-	0, maxcol = 155, white = F, label.location = 0, labels.only = F, 
-	bordercheck = F, maxn = 10000, bcrat = 0.05, limits = NULL, col.names
+	working.space = 0, labels = 1, ratio = 1000, only.positive = FALSE, fill = 
+	0, maxcol = 155, white = FALSE, label.location = 0, labels.only = FALSE, 
+	bordercheck = FALSE, maxn = 10000, bcrat = 0.05, limits = NULL, col.names
 	 = c("lon", "lat"), minsym = "<", label.resolution = 0, labtxt = NULL,
-	boxcol = 0, first.color.trans = T, mai = c(0, 1, 0, 1), leftrat = 0.1,
-	labbox = T,csi=NULL)
+	boxcol = 0, first.color.trans = TRUE, mai = c(0, 1, 0, 1), leftrat = 0.1,
+	labbox = TRUE,csi=NULL)
 {
      if(!is.null(csi)) cex <- cex*csi/0.12 # Compatibility
 	if(!is.null(attributes(grd)$grid)) { 
@@ -23,7 +23,7 @@ function(grd, z, levels = NULL, nlevels = 0, cex =0.7, digits = 1, col = NULL,
 	if(is.null(levels)) {
 		# changed before cont < 2  
 		if(nlevels == 0) nlevels <- 10
-		levels <- pretty(range(z, na.rm = T), nlevels)
+		levels <- pretty(range(z, na.rm = TRUE), nlevels)
 		levels <- levels[2:(length(levels) - 1)]
 	}
 	ncont <- length(levels)
@@ -115,7 +115,7 @@ function(grd, z, levels = NULL, nlevels = 0, cex =0.7, digits = 1, col = NULL,
 		y1 <- lat1
 	}
 	# Check what is inside borders if given.  
-	cutreg <- F
+	cutreg <- FALSE
 	lx <- length(x1)
 	x1 <- x1 + rnorm(lx)/1000000
 	inni <- 0
@@ -232,7 +232,7 @@ function(grd, z, levels = NULL, nlevels = 0, cex =0.7, digits = 1, col = NULL,
 				ncol <- ncol[ - (ind1 + 1)]
 			}
 		}
-		polygon(polyx, polyy, col = ncol, border = F)
+		polygon(polyx, polyy, col = ncol, border = FALSE)
 	}
 	# 	Add  labels around plot
 	if(length(label.location) == 1) if(label.location == "locator") {
@@ -243,7 +243,7 @@ function(grd, z, levels = NULL, nlevels = 0, cex =0.7, digits = 1, col = NULL,
 	if(length(label.location) > 1) {
 		#label located somewhere in drawing
 		if(labbox) paint.window(Proj(label.location, col.names = 
-				col.names), border = T, col.names = c("y",
+				col.names), border = TRUE, col.names = c("y",
 				"x"), col = boxcol)
 		label.location <- Proj(label.location, scale = geopar$scale,
 			b0 = geopar$b0, b1 = geopar$b1, l1 = geopar$l1, 
@@ -266,8 +266,8 @@ function(grd, z, levels = NULL, nlevels = 0, cex =0.7, digits = 1, col = NULL,
 	if(geopar$cont && labels != 0) {
 		# if labels needed.  
 		par(plt = geopar$contlab)
-		par(new = T)
-		plot(c(0, 1, 1, 0, 0), c(0, 0, 1, 1, 0), type = "l", axes = F,
+		par(new = TRUE)
+		plot(c(0, 1, 1, 0, 0), c(0, 0, 1, 1, 0), type = "l", axes = FALSE,
 			xlab = " ", ylab = " ")
 		if(labels == 1) {
 			# labels for each contour line.  

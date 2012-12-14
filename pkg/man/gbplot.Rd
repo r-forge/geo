@@ -7,7 +7,7 @@
 Plots lines of equal depths using a database from GEBCO.
 }
 \usage{
-gbplot(depth, col, lty, lwd, depthlab, depthlabcsi)
+gbplot(depth, col, lty, lwd, depthlab, depthlabcex)
 }
 \arguments{
 \item{depth}{
@@ -33,7 +33,7 @@ Linewidth, if the lwd vector is  shorter  than  the  depth
 A boolean variable determening whether labels  should
        be printed on equidepth lines, default is false.
 }
-\item{depthlabcsi}{
+\item{depthlabcex}{
 The size of depthlabels.
 }
 }

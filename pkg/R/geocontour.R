@@ -1,9 +1,9 @@
 geocontour <-
-function (grd, z, nlevels = 10, levels = NULL, labcex = 1, triangles = T, 
-    reg = 0, fill = 1, colors = T, col = 1, only.positive = F, 
-    maxcol = 155, cex = 0.7, save = F, plotit = T, label.location = 0, 
-    lwd = 1, lty = 1, labels.only = F, digits = 1, paint = F, 
-    set = NA, col.names = c("lon", "lat"), csi = NULL,drawlabels=F)
+function (grd, z, nlevels = 10, levels = NULL, labcex = 1, triangles = TRUE, 
+    reg = 0, fill = 1, colors = TRUE, col = 1, only.positive = FALSE, 
+    maxcol = 155, cex = 0.7, save = FALSE, plotit = TRUE, label.location = 0, 
+    lwd = 1, lty = 1, labels.only = FALSE, digits = 1, paint = FALSE, 
+    set = NA, col.names = c("lon", "lat"), csi = NULL,drawlabels=FALSE)
 {
     if (!is.null(csi)) 
         cex <- cex * csi/0.12
@@ -79,12 +79,12 @@ function (grd, z, nlevels = 10, levels = NULL, labcex = 1, triangles = T,
       nlevels <- length(levels)
       if (length(lty) == length(levels) && length(levels) > 
           1) 
-        linetypes <- T
-      else {linetypes <- F;lty <- rep(lty,length(levels))}
+        linetypes <- TRUE
+      else {linetypes <- FALSE;lty <- rep(lty,length(levels))}
       if (length(lwd) == length(levels) && length(levels) > 
           1) 
-        linew <- T
-      else {linew <- F;lwd <- rep(lwd,length(levels))}
+        linew <- TRUE
+      else {linew <- FALSE;lwd <- rep(lwd,length(levels))}
       if (length(col) == 1) {
         if (length(lty) == length(levels)) 
           color <- rep(1, nlevels)
@@ -114,11 +114,11 @@ function (grd, z, nlevels = 10, levels = NULL, labcex = 1, triangles = T,
         }
         else {
           for (i in 1:nlevels) {
-            lev <- contour(xlon$x, xlat$y, z, axes = F, drawlabels=drawlabels,
-                           levels = c(levels[i], levels[i]), add = T, 
+            lev <- contour(xlon$x, xlat$y, z, axes = FALSE, drawlabels=drawlabels,
+                           levels = c(levels[i], levels[i]), add = TRUE, 
                            triangles = triangles, labcex = labcex, xlim = geopar$limx, 
                            ylim = geopar$limy, col = color[i], xlab = " ", 
-                           ylab = " ", save = F, plotit = T,lwd=lwd[i],lty=lty[i])
+                           ylab = " ", save = FALSE, plotit = TRUE,lwd=lwd[i],lty=lty[i])
           }
         }
       }
@@ -130,7 +130,7 @@ function (grd, z, nlevels = 10, levels = NULL, labcex = 1, triangles = T,
         if (length(levels) == 1) 
           lev <- contourLines(lon + 400, lat, z, nlevels = nlevels)
         else {
-          lev <- contourLines(lon + 400, lat, z, axes = F, levels = levels)
+          lev <- contourLines(lon + 400, lat, z, axes = FALSE, levels = levels)
           for (i in 1:length(lev)) {
             geolines(lev[[i]]$y, lev[[i]]$x - 400, col = col)
           }
@@ -140,12 +140,12 @@ function (grd, z, nlevels = 10, levels = NULL, labcex = 1, triangles = T,
       else {
         if (length(levels) == 1) 
           lev <- contour(xlon$x, xlat$y, z, nlevels = nlevels,
-                         triangles = triangles, labcex = labcex, add = T, 
-                         xlim = geopar$limx, ylim = geopar$limy, axes = F, 
+                         triangles = triangles, labcex = labcex, add = TRUE, 
+                         xlim = geopar$limx, ylim = geopar$limy, axes = FALSE, 
                          col = col, xlab = " ", ylab = " ", save = save, 
                          plotit = plotit ,drawlabels=drawlabels)
-        else lev <- contour(xlon$x, xlat$y, z, axes = F, 
-                            levels = levels, triangles = triangles, add = T, 
+        else lev <- contour(xlon$x, xlat$y, z, axes = FALSE, 
+                            levels = levels, triangles = triangles, add = TRUE, 
                             labcex = labcex, xlim = geopar$limx, ylim = geopar$limy, 
                             col = col, xlab = " ", ylab = " ", save = save, 
                             plotit = plotit, drawlabels=drawlabels)
@@ -190,16 +190,16 @@ function (grd, z, nlevels = 10, levels = NULL, labcex = 1, triangles = T,
       label.location <- Proj(label.location, scale = geopar$scale, 
                              b0 = geopar$b0, b1 = geopar$b1, l1 = geopar$l1, projection = geopar$projection)
       if (geopar$projection == "none") 
-        paint.window.x(label.location, border = T)
-      else paint.window(label.location, border = T)
+        paint.window.x(label.location, border = TRUE)
+      else paint.window(label.location, border = TRUE)
         labels.line(levels, digits, color, lty, xlim = label.location$x, 
                     ylim = label.location$y, linew)
     }
     if (geopar$cont && colors) {
       par(plt = geopar$contlab)
-      par(new = T)
+      par(new = TRUE)
       plot(c(0, 1, 1, 0, 0), c(0, 0, 1, 1, 0), type = "l", 
-           axes = F, xlab = " ", ylab = " ")
+           axes = FALSE, xlab = " ", ylab = " ")
       labels.line(levels, digits, color, lty, linew)
     }
     if (length(reg) > 1 && paint) {

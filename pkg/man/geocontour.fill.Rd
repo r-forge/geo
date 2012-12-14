@@ -23,21 +23,21 @@ graph made by geoplot.
        described here after.
 }
 \usage{
-geocontour.fill(grd, z, levels=NULL, nlevels=0, csi=0.08, digits=1,col=NULL,
-                working.space=0, labels=1, ratio=1000, only.positive=F,
-                fill=0, maxcol=155, white=F, label.location=0, labels.only=F, 
-                bordercheck=F, maxn=10000, bcrat=0.05, limits=NULL,
-                col.names=c("lon", "lat"), minsym="<", label.resolution=0,
-                labtxt=NULL, boxcol=0, first.color.trans=T, mai=c(0,1,0,1),
-                leftrat=0.1, labbox=T,csi=NULL)
+geocontour.fill(grd, z, levels = NULL, nlevels = 0, cex = 0.7, digits = 1, col = NULL,
+                working.space = 0, labels = 1, ratio = 1000, only.positive = FALSE,
+                fill = 0, maxcol = 155, white = FALSE, label.location = 0, labels.only = FALSE, 
+                bordercheck = FALSE, maxn = 10000, bcrat = 0.05, limits = NULL,
+                col.names = c("lon", "lat"), minsym = "<", label.resolution = 0,
+                labtxt = NULL, boxcol = 0, first.color.trans = TRUE, mai = c(0, 1, 0, 1),
+                leftrat = 0.1, labbox = TRUE, csi = NULL)
 }
 \arguments{
 \item{grd}{
-List with components \$lat and \$lon (or \$x,\$y) defining the
+List with components \$lat and \$lon (or \$x, \$y) defining the
        grid   values.   Can  be  made  for  example   by  lat  <-
-       list(lat=seq(60,65,length=100),              lon=seq(-30,-
-       10,length=200)).   Also  lat  can  be  the  outcome of the
-       program  grid  and  then  the   components   lat\$grpt\$lat,
+       list(lat = seq(60, 65, length = 100),              lon = seq(-30, -
+       10, length = 200)).   Also  lat  can  be  the  outcome of the
+       program  grid  and  then  the   components   lat\$grpt\$lat, 
        lat\$grpt\$lon and lat\$reg are used.
 }
 \item{z}{
@@ -51,7 +51,7 @@ Matrix or vector of values.  Length(z) = nlat*nlon  except
 Values at contourlines.  Default  value  is  zero.   If
        levels  is  zero  the  program determines the contourlines
        from the data.  If levels is of length  3  with  levels  =
-       c(0,1,2)  then  there are 4 groups each with special color
+       c(0, 1, 2)  then  there are 4 groups each with special color
        i.e. <0, 0-1, 1-2 and > 2.
 }
 \item{nlevels}{
@@ -94,7 +94,7 @@ Size of working space.  The  program  determines
        
        </s-example>
        Labels can be inserted in two  ways,  by  calling  geoplot
-       with  cont  =  T  or by specifying label.location.  In the
+       with  cont = TRUE  or by specifying label.location.  In the
        first case the left part  of  the  plot  is  reserved  for
        labels  while  in  the  latter  case the label is put in a
        place  specified  by  the  user.   The  latter  method  is
@@ -106,14 +106,14 @@ Factor used to avoid numerical problems.  Default value
        introduce bias.
 }
 \item{only.positive }{
-Logical value.  If T then negative values are not allowed else
-       negative values are set to zero.  Default value is F.
+Logical value.  If TRUE then negative values are not allowed else
+       negative values are set to zero.  Default value is FALSE.
 }
 \item{fill}{
  Determines whether NA's should be replaced  with  zeros
-       (fill=1)  or  mean(z)  (fill=2).  Default value is fill=1.
+       (fill = 1)  or  mean(z)  (fill = 2).  Default value is fill = 1.
        Used   when   lat    is    a    list    with    components
-       lat\$xgr\$lat,lat\$xgr\$lon,  lat\$grpt\$lat  and  lat\$grpt\$lon.
+       lat\$xgr\$lat, lat\$xgr\$lon,  lat\$grpt\$lat  and  lat\$grpt\$lon.
        Only used in special cases.
 }
 \item{maxcol}{
@@ -122,15 +122,15 @@ Number of colors used (excluding  #0).   Default  value
 }
 \item{white}{
 If true the the first class is represented  with  white
-       (color  0). Default value is F but white = T is also often
+       (color  0). Default value is FALSE but white = TRUE is also often
        used.
 }
 \item{label.location }{
 List with  components  \$lat  and  \$lon.   (or
-       \$x,\$y)  Gives the lower left and upper right corner of the
+       \$x, \$y)  Gives the lower left and upper right corner of the
        box where the labels are put.  Default  value  is  0  that
        means  no  labels  are  put  on  the  drawing (except when
-       geopar\$cont = T).  l1  is  best  given  by  geolocator  or
+       geopar\$cont = TRUE).  l1  is  best  given  by  geolocator  or
        directly by specifying label.location = "locator".
 }
 \item{labels.only }{
@@ -138,14 +138,14 @@ List with  components  \$lat  and  \$lon.   (or
        only  labels.   Default  value  is  false.   Order  of the
        commands    could    be:
        <s-example>
-       > geoplot(deg,plot=F)
-       > geocontour.fill(lat,z=z,levels=lev,reg=area) # Draw contours.
-       > geocontour(lat,z=z,levels=lev,colors=F,reg=area)
+       > geoplot(deg, plot = FALSE)
+       > geocontour.fill(lat, z = z, levels = lev, reg = area) # Draw contours.
+       > geocontour(lat, z = z, levels = lev, colors = FALSE, reg = area)
        # Only used with black and white printers to make  distinction
        # between  different  levels  clearer.  (not used with color
        # printers).
-       > geoplot(deg,new=T)  # Refresh  gridlines. 
-       > geocontour.fill(lat,z=z,levels=lev,labels.only=T,label.location=l1)
+       > geoplot(deg, new = TRUE)  # Refresh  gridlines. 
+       > geocontour.fill(lat, z = z, levels = lev, labels.only = TRUE, label.location = l1)
        # Add labels.
        </s-example>
 }
@@ -159,7 +159,7 @@ List with  components  \$lat  and  \$lon.   (or
 }
 \item{bcrat}{
 bordercheck ratio, how much outside the border we  will
-       allow to be plotted, default is bcrat=0.05 meaning that we
+       allow to be plotted, default is bcrat = 0.05 meaning that we
        will allow the plot to go 5\% off the border.
 }
 \item{limits}{
@@ -168,20 +168,20 @@ bordercheck ratio, how much outside the border we  will
 \item{col.names }{
 the names  of  the  columns  in  grid,  the  first
        argument  will  be plotted on the x-axes and the second on
-       the y-axes.  Default is col.names=c("lat","lon").
+       the y-axes.  Default is col.names = c("lat", "lon").
 }
 \item{minsym}{
 minimum symbol, default is "<", meaning that if  levels
-       =  c(1,2),  labels will be presented as < 1, 1-2, 2 <, but
-       if minsym = " " labels will be presented as  1,1-2,2.  See
+       = c(1, 2),  labels will be presented as < 1, 1-2, 2 <, but
+       if minsym = " " labels will be presented as  1, 1-2, 2.  See
        also labels.resolution.
 }
 \item{label.resolution }{
 the  resolution  (precision)  of  the  label
-       numbers,  default  is  0, meaning that if levels = c(1,2),
+       numbers,  default  is  0, meaning that if levels = c(1, 2),
        labels  will  be   presented   <   1,   1-2,   2   <,   if
-       label.resolution=0.1  labels will be presented < 1, 1.1-2,
-       2.1<, see also minsym.   If  label.resolution="none",  the
+       label.resolution = 0.1  labels will be presented < 1, 1.1-2,
+       2.1<, see also minsym.   If  label.resolution = "none",  the
        labels will present the lowest number of the interval with
        each color.
 }
@@ -265,13 +265,13 @@ value is NULL i.e not used.
       
        The program requires that geoplot is called before to  set
        up  the  drawing.   geoplot  is  called  by  the parameter
-       cont=T. This  is  to  reserve  space  for  labels  on  the
+       cont = TRUE. This  is  to  reserve  space  for  labels  on  the
        drawing.
 </s-example>
 <s-example>
       
        If the drawing is written to  a  file  geoplot  should  be
-       called  with  plot  = F.  Then it only sets up the drawing
+       called  with  plot = FALSE.  Then it only sets up the drawing
        but does not plot anything so the size of the file will be
        reduced.
 </s-example>
@@ -280,7 +280,7 @@ value is NULL i.e not used.
        If the labels do not  fit  the  relative  space  taken  by
        labels  and  picture can be changed by the parameter lcont
        in geoplot.  After geocontour.fill is  called  geoplot  is
-       called  again with new=T to get all kind of lines back but
+       called  again with new = TRUE to get all kind of lines back but
        they were painted over by the program.
 </s-example>
 <s-example>
@@ -298,7 +298,7 @@ value is NULL i.e not used.
 <s-example>
       
        If the matrix z is not full the program should  be  called
-       by   a   list   lat\$xgr\$lat,lat\$xgr\$lon,lat\$grpt\$lat   and
+       by   a   list   lat\$xgr\$lat, lat\$xgr\$lon, lat\$grpt\$lat   and
        lat\$grpt\$lon.   Then  the  length  of   the   vectors   z,
        lat\$xgr\$lat  and lat\$xgr\$lon is the same. lat\$grpt\$lat and
        lat\$grpt\$lon is on  the other hand the coordinates of  the
@@ -333,41 +333,41 @@ value is NULL i.e not used.
   # example, if not attached use: 
   # >attach("/usr/local/reikn/Splus5/Aflaskyrslur/Data")
 
-  codgrd <-list(lat=seq(62,68,by=0.1),lon=seq(-30,-9,by=0.25))
+  codgrd <-list(lat = seq(62, 68, by = 0.1), lon = seq(-30, -9, by = 0.25))
   # A grid is made.
-  lab.loc<-list(lat=c(63.9,65.6),lon=c(-20.75,-16.5)) 
+  lab.loc<-list(lat = c(63.9, 65.6), lon = c(-20.75, -16.5)) 
   # Location of the label.
 
-  tmp <- combine.rt(botnv.2004$lat,botnv.2004$lon,
-                    botnv.2004$torskur,codgrd,fun="sum",fill=T)
+  tmp <- combine.rt(botnv.2004$lat, botnv.2004$lon,
+                    botnv.2004$torskur, codgrd, fun = "sum", fill = TRUE)
   # The data is read into the grid with combine.rt.
 
   tmp$z <- tmp$z/(cos(tmp$lat*pi/180)*0.1*60*0.25*60)
   # Data changed.(from being in
   # kilos per box to kilos per square mile).
 
-  vg <- list(nugget=0.1,sill=1,range=50)
+  vg <- list(nugget = 0.1, sill = 1, range = 50)
   # Parameters for the variogram
 
-  z <- pointkriging(tmp$lat,tmp$lon,tmp$z,codgrd,vg, 
-                    maxnumber=80,maxdist=30,set=-1) 
+  z <- pointkriging(tmp$lat, tmp$lon, tmp$z, codgrd, vg,  
+                    maxnumber = 80, maxdist = 30, set = -1) 
   # Dataset smoothened with pointkriging.
 
-  geoplot(lat=c(63,67.5),lon=c(-27,-11),grid=F,axlabels=T,type="n")
+  geoplot(lat = c(63, 67.5), lon = c(-27, -11), grid = FALSE, axlabels = TRUE, type = "n")
   # Plot initialized
-  level=c(160,200,320,500,700,1000,2000,3000,4000,5000,6000)
+  level = c(160, 200, 320, 500, 700, 1000, 2000, 3000, 4000, 5000, 6000)
   # Levels for geocontour.fill
 
-  geocontour.fill(codgrd,z,levels=level,white=T      # Plot the data.
-                ,working.space = 300000)
+  geocontour.fill(codgrd, z, levels = level, white = TRUE      # Plot the data.
+                , working.space = 300000)
 
   geopolygon(island)
   # Contourlines inside Iceland overwritten.
   geolines(island)
   # Iceland redrawn with geolines.
 
-  geocontour.fill(codgrd,z,levels=level,white=T,
-                  label.location=lab.loc,labels.only=T)
+  geocontour.fill(codgrd, z, levels = level, white = TRUE, 
+                  label.location = lab.loc, labels.only = TRUE)
   # Call geocontour.fill again only to plot the labels.
 
   #########################################################
@@ -376,47 +376,47 @@ value is NULL i.e not used.
 
   
   # Preperation for pointkriging    
-  # th4.2002 is the data used here, dataframe [lon,lat,mat].
+  # th4.2002 is the data used here, dataframe [lon, lat, mat].
   # >attach(?????) 
   
 
-  grd.smb <-list(lat=seq(62.8,67.5,length=80),  # Set up the grid.
-                 lon=seq(-28,-10,length=130))
-  m.lev<-c(0,0.1,0.2,0.3,0.5)
+  grd.smb <-list(lat = seq(62.8, 67.5, length = 80),   # Set up the grid.
+                 lon = seq(-28, -10, length = 130))
+  m.lev<-c(0, 0.1, 0.2, 0.3, 0.5)
   # Levels for the geocontour.fill.
-  m.col<-c(0,14,59,104,119,149)
+  m.col<-c(0, 14, 59, 104, 119, 149)
   # Colors for the levels.
-  lab.in.island<-list(lat=c(63.9,65.6),lon=c(-20.75,-16.5)) 
+  lab.in.island<-list(lat = c(63.9, 65.6), lon = c(-20.75, -16.5)) 
   # Location of the Label
 
-  vg <- list(nugget=0.3,sill=1,range=50) 
+  vg <- list(nugget = 0.3, sill = 1, range = 50) 
   # Initialize variogram parameters.
  
-  zfj<-pointkriging(th4.2002$lat,th4.2002$lon,z=th4.2002$mat,
-                  grd.smb,vg,maxnumber=80,maxdist=30,set=-1)
+  zfj<-pointkriging(th4.2002$lat, th4.2002$lon, z = th4.2002$mat, 
+                  grd.smb, vg, maxnumber = 80, maxdist = 30, set = -1)
   # Smooth the data with pointkriging.
 
   #
   # Plotting                       
   #
 
-  par(mfrow=c(1,1), mai=rep(0,4))
+  par(mfrow = c(1, 1),  mai = rep(0, 4))
   # Set up graphic parameters.
-  geoplot(lat=c(63,67.5),lon=c(-27,-11),grid=F,axlabels = F,type="n")
+  geoplot(lat = c(63, 67.5), lon = c(-27, -11), grid = FALSE, axlabels = FALSE, type = "n")
   # Draw a background with Iceland with geoplot.
 
-  geocontour.fill(zfj,levels=m.lev,col=m.col,working.space=300000) 
+  geocontour.fill(zfj, levels = m.lev, col = m.col, working.space = 300000) 
   # Plot the data with geocontour.fill.
 
-  geopolygon(gbdypif.500,col=0,exterior=T,r=0)
+  geopolygon(gbdypif.500, col = 0, exterior = TRUE, r = 0)
   # Remove contours outside gbdypif.500.
-  geoplot(lat=c(63,67.5),lon=c(-27,-11),grid=F,          # Replot.
-          axlabels = F,type="n",new=T)
+  geoplot(lat = c(63, 67.5), lon = c(-27, -11), grid = FALSE,          # Replot.
+          axlabels = FALSE, type = "n", new = TRUE)
 
-  geopolygon(island,col=43)
+  geopolygon(island, col = 43)
   # Remove contours inside Iceland and color Iceland.
-  geocontour.fill(zfj,levels=m.lev,label.location=lab.in.island,
-                  labels.only=T,csi=0.1,col=m.col,working.space=300000)
+  geocontour.fill(zfj, levels = m.lev, label.location = lab.in.island, 
+                  labels.only = TRUE, csi = 0.1, col = m.col, working.space = 300000)
   # Call geocontour.fill to plot labels.
   geolines(island)
   # Redraw the lines of Iceland.
