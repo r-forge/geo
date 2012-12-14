@@ -16,9 +16,8 @@ function(lat, lon = NULL)
   dlon <-  - (lon - deg$lon)
   dl <- sign(dlat + 1e-07) + 2 * sign(dlon + 
     1e-07) + 4
-  srt <- c(2, 0, 4, 0, 1, 0, 3)
-  srt <- srt[dl]
-  r <- floor(r * 10 + srt)
-  return(r)
+  sr <- c(2, 0, 4, 0, 1, 0, 3)
+  sr <- sr[dl]
+  floor(r * 10 + sr)
 }
 
