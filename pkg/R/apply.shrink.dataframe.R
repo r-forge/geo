@@ -1,6 +1,6 @@
 apply.shrink.dataframe <-
-function(data, name.x, name.ind, FUNS = NULL, NA.rm = F, resp.name = NULL,
-	full.data.frame = F, Set = NA, name.res, ...)
+function(data, name.x, name.ind, FUNS = NULL, NA.rm = FALSE, resp.name = NULL,
+	full.data.frame = FALSE, Set = NA, name.res, ...)
 {
 	COUNT <- function(x)
 	return(length(x))

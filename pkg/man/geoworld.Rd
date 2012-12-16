@@ -9,9 +9,9 @@
        geoplot.  The countries can also be filled.  
 }
 \usage{
-geoworld(regions=".", exact=F, boundary=T, fill=F, color=1, lwd=1,
-         lty=1, plot=T, type="l", pch=".", database="world.thin",
-         return.data=F)
+geoworld(regions = ".", exact = FALSE, boundary = TRUE, fill = FALSE, color = 1, lwd = 1,
+         lty = 1, plot = TRUE, type = "l", pch = ".", database = "world",
+         return.data = FALSE, outside = FALSE, allowed.size = 80000)
 }
 \arguments{
 \item{regions}{
@@ -56,11 +56,11 @@ The database the world plot  is  to  be  taken  from.
 }
 \item{return.data}{
  If true those points used to make the in the  plot
-       are return, default is F. Can be used to save the coastlines of
+       are return, default is FALSE. Can be used to save the coastlines of
        specified countries.  
 }
-\item{outside=F}{
-If T data are plotted outside the borders.  Default is F. 
+\item{outside = FALSE}{
+If TRUE data are plotted outside the borders.  Default is FALSE. 
 }
 \item{allowed.size}{
 Maximum size of polygon that can be filled.  Default is 80 000 which
@@ -82,7 +82,7 @@ the outlines of all countries who intersect  current  plot
 \code{\link{par}}.
 }
 \examples{
-\dontrun{     geoplot(xlim=c(0,-53),ylim=c(53,75))
+\dontrun{     geoplot(xlim = c(0, -53), ylim = c(53, 75))
      geoworld()
 
      # Should plot in all countries who intersect the plot draw
@@ -90,22 +90,21 @@ the outlines of all countries who intersect  current  plot
 
 # The packages maps and mapdata need to be installed
 # worldHires is a very detailed database of coastlines from the 
-# package mapdata.  Could be problematic if used with fill=T)
+# package mapdata.  Could be problematic if used with fill = TRUE)
 # Allowed.size is the maximum allowed size of polygons.  
 library(map) # world coastlines and programs 
 library(mapdata) # more detailed coastlines
-geoplot(xlim=c(20,70),ylim=c(15,34))
-geoworld(database="worldHires",fill=T,col=30,allowed.size=100000) #
+geoplot(xlim = c(20, 70), ylim = c(15, 34))
+geoworld(database = "worldHires", fill = TRUE, col = 30, allowed.size = 100000) #
 
-geoplot(xlim=c(20,70),ylim=c(15,34),dlat=10,dlon=10)
-geoworld(database="world",fill=T,col=30) #
+geoplot(xlim = c(20, 70), ylim = c(15, 34), dlat = 10, dlon = 10)
+geoworld(database = "world", fill = TRUE, col = 30) #
 
-geoplot(xlim=c(-10,70),ylim=c(71,81),b0=80,dlat=2,dlon=10) # 0 must be high here else
-geoworld(database="world",fill=T,col=30) #the plot fails.  
+geoplot(xlim = c(-10, 70), ylim = c(71, 81), b0 = 80, dlat = 2, dlon = 10) # 0 must be high here else
+geoworld(database = "world", fill = TRUE, col = 30) #the plot fails.  
 
-# Lambert projection,
-geoplot(xlim=c(-10,70),ylim=c(71,81),dlat=2,dlon=10,projection="Lambert")
-geoworld(database="world",fill=T,col=30) 
+# Lambert projection, 
+geoplot(xlim = c(-10, 70), ylim = c(71, 81), dlat = 2, dlon = 10, projection = "Lambert")
+geoworld(database = "world", fill = TRUE, col = 30) 
 }}
-% docclass is function
-% Converted by Sd2Rd version 43268.
+

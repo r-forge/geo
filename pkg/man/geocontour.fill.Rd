@@ -60,9 +60,9 @@ Number of contourlines.  Used if the program  has  to
        = 10 does not always mean 10 due to characteristic of  the
        pretty command.
 }
-\item{csi}{
-Character  size  inches.   Size  of  letters  in  labels.
-       Default value is 0.08.
+\item{cex}{
+Character size expansion.   Size  of  letters  in  labels.
+       Default value is 0.7.
 }
 \item{digits}{
 Number of digits in the labels.  Default value is 1.

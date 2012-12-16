@@ -5,17 +5,18 @@
 }
 \description{
 Add lines to a plot initialized by geoplot. Data is stored as lat, lon
-or x,y. Lists are assumed to have the components \$x and \$y if projection in geoplot was "none", else \$lat,\$lon. The program transforms the data as specified in geoplot. Similar to the Splus function lies.
+or x,y. Lists are assumed to have the components \code{$x} and \code{$y} if projection in geoplot was "none", else \code{$lat},\code{$lon}. The program transforms the data as specified in geoplot. Similar to the Splus function lies.
 }
 \usage{
-geolines(lat, lon=0, col=1, lwd=0, lty=0, nx=1)
+geolines(lat, lon = 0, col = 1, lwd = 0, lty = 0, nx = 1,
+  outside = FALSE, return.data = FALSE)
 }
 \arguments{
 \item{lat}{
 Latitude of data. ( or x coordinate)
 }
 \item{lon}{
-Longitude of data. ( or y coordinate) Negative values mean western longitudes. Default value is zero. If lon is zero then the data is stored as lat\$lat and lat\$lon. (or lat\$x and lat\$y)
+Longitude of data. ( or y coordinate) Negative values mean western longitudes. Default value is zero. If lon is zero then the data is stored as \code{lat$lat} and \code{lat$lon}. (or \code{lat$x} and \code{lat$y})
 }
 \item{col}{
 Colour number used for plotting the lines, default value is 1.
@@ -28,17 +29,23 @@ Line type. Default is to use the width set when the program was called. See Splu
 }
 \item{nx}{
 Parameter only used with Lambert transform when lines in lat,lon are curves in x,y. If nx > 1, nx-1 points are put between each two datapoints in lat, lon before projection is done. For example :
-<s-example>
-              geolines(c(66,66),c(-30,-10),nx=50)
-</s-example>
+
+              \code{geolines(c(66, 66), c(-30, -10), nx = 50)}
+
 plots a line onto the 66 degree latitude from -30 to -10. The line is curved because it is made of 50 segments.
+}
+\item{outside}{
+Logical, should lines outside the plot region be drawn? Default FALSE.
+}
+\item{return.data}{
+Logical, should the data be returned? Default FALSE.
 }
 }
 \value{
 No values returned.
 }
 \section{Side Effects}{
-The projection is stored in geopar\$projection and parameters for the transform in geopar\$b0, geopar\$b1 and geopar\$l1.
+The projection is stored in geopar\$projection and parameters for the transform in \code{geopar$b0, geopar$b1 and geopar$l1}.
 }
 \seealso{
 \code{\link{geoplot}},
@@ -52,22 +59,22 @@ The projection is stored in geopar\$projection and parameters for the transform 
 }
 \examples{
        geolines(island)                      # plot iceland.
-       geolines(island$lat,island$lon,col=1) # same.
+       geolines(island$lat, island$lon, col = 1) # same.
 
        #######################################################
 
-       geoplot(xlim=c(0,-50),ylim=c(60,75),projection="Lambert")
+       geoplot(xlim = c(0, -50), ylim = c(60, 75), projection = "Lambert")
        # Set up a Lambert plot.       
 
-       geolines(c(66,66),c(-30,-10),nx=50,col=155,lwd=2)
+       geolines(c(66, 66), c(-30, -10), nx = 50, col = 155, lwd = 2)
        # Draw a line with colour 155 and width 2.
 
        geopolygon(island)
-       geolines(island,col=3,lwd=3)
-       geolines(eyjar,col=40)
-       geolines(faeroes,col=40)
-       geolines(greenland,col=3,lwd=3)
-#       geolines(janmayen,col=40)
+       geolines(island, col = 3, lwd = 3)
+       geolines(eyjar, col = 40)
+       geolines(faeroes, col = 40)
+       geolines(greenland, col = 3, lwd = 3)
+#       geolines(janmayen, col = 40)
        # Plot some more countries using geolines.
 }
 % docclass is function

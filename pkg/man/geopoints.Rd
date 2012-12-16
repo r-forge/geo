@@ -7,19 +7,21 @@
 Plot points on a graph initialized by geoplot. Data is stored as lat, lon or x,y depending on the projection. The program plots the transformation of the data. Parameters for the projection are stored in the list geopar. Similar to the Splus function points.
 }
 \usage{
-geopoints(lat, lon=0, pch="*", cex=0.7, col=1, lwd=0,
-          outside=F, jitter=NULL,mkh=NULL,csi=NULL)
+geopoints(lat, lon = 0, pch = "*", cex = 0.7, col = 1, lwd = 0,
+          outside = FALSE, jitter = NULL, mkh = NULL, csi = NULL)
 }
 \arguments{
 \item{lat,lon}{
 Plot points on a graph initialized by geoplot. Data is stored as lat, lon or x,y depending on the projection. The program plots the transformation of the data. Parameters for the projection are stored in the list geopar. Similar to the Splus function points.
 }
 \item{pch}{
-Type of symbol used options are for example. "  ","*","+","." or anything else, letter, digit, or symbol. Default is "*"
-<s-arg name="cex">
+Type of symbol used options are for example. "  ","*","+","." or
+anything else, letter, digit, or symbol. Default is "*"
+}
+\item{cex}{
 Relative size of character and symbols (see the help on the parameter
   cex).  The size of plotted characeters is cex time the parameter csi
-  that can be seen by par()\$csi.  In earlier versions of geoplot the
+  that can be seen by \code{par("csi")}.  In earlier versions of geoplot the
   parameter csi was set but csi is a parameter that can not be set in
   R.  The parameter mkh should probably be used for symbols instead of
   cex, see help on graphical parameters.  
@@ -31,8 +33,8 @@ Colour number used.  Default value is one.
 Linewidth used. Default is the value set when the program was called.
 }
 \item{outside}{
-If True geopoints will plot points outside the specified limits set by
-geoplot(). If False, which is default, outside points will be skipped.
+If TRUE geopoints will plot points outside the specified limits set by
+geoplot(). If FALSE, which is default, outside points will be skipped.
 }
 \item{jitter}{
 useful if many datapoints have the same coordinates, points are jittered randomly to make common values look bigger.jitter=0.016 is often about right but you may want to have jitter smaller or bigger varying on plot.
@@ -43,7 +45,7 @@ Size of symbol in inches.  If not given cex is used instead.
 \item{csi}{
 Size of character.  This parameter can not be set in R but for
 compatibility with old Splus scripts the parameter cex is readjusted by 
-cex = cex*csi/0.12.  Use of this parameter is not recommended.  Default
+\code{cex = cex*csi/0.12}.  Use of this parameter is not recommended.  Default
 value is NULL i.e not used.  
 }
 }

@@ -14,7 +14,7 @@ bwps(...)
 }
 \arguments{
 No arguments are required
-The arguments to postscript are optional. See help postscript.  
+\item{...}{The arguments to postscript are optional. See help postscript.}
 }
 \value{
 No value returned.  

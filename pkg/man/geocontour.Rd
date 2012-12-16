@@ -45,8 +45,8 @@ Matrix or vector of values.  Length nlat*nlon except  when
 Ratio of textsize to current size.  1 means same  size,
        0.5 half size , 0 no text etc.  Default value 1.
 }
-\item{labex}{
-Size of letters indicating the z value on the contour lines. Maybe
+\item{labcex}{
+Character expansion of letters indicating the z value on the contour lines. Maybe
 used instead of a legend.
 }
 \item{triangles}{
@@ -88,8 +88,8 @@ Logical value.  If FALSE then  negative  values  are
 Maximum color number in  the  Splus  graphics,  default
        value 155.
 }
-\item{csi}{
-Size of digits, default value is 0.08".
+\item{cex}{
+Character expansion of digits, default value is 0.7.
 }
 \item{save}{
  If true the contour lines are saved  in a list so  they
@@ -127,6 +127,9 @@ ine type.  If lty is a  vector  of  the  same  length  of
 \item{paint}{
  if true borders of regions will be painted.
 }
+\item{set}{
+ Set something.
+}
 \item{col.names}{
  the names of the vectors containing  the  data  in
        grd.  Default is col.names = c("lon","lat").
@@ -136,6 +139,9 @@ Size of character.  This parameter can not be set in R but for
 compatibility with old Splus scripts the parameter cex is readjusted by
 cex = cex*csi/0.12.  Use of this parameter is not recommended.  Default
 value is NULL i.e not used.
+}
+\item{drawlabels}{
+ Draw labels on the contour lines? Default FALSE.
 }
 }
 \value{

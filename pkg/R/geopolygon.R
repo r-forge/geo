@@ -1,6 +1,6 @@
 geopolygon <-
-function(lat, lon = NULL, col = "white", border = F, exterior = F, nx = 1,
-	outside = F, plot = T, save = F, rat = 0.005, density = -1, Projection
+function(lat, lon = NULL, col = "white", border = FALSE, exterior = FALSE, nx = 1,
+	outside = FALSE, plot = TRUE, save = FALSE, rat = 0.005, density = -1, Projection
 	 = NULL, angle = 45, allowed.size = 80000, option = 1)
 {
 	if(is.null(Projection))
@@ -12,7 +12,7 @@ function(lat, lon = NULL, col = "white", border = F, exterior = F, nx = 1,
 	if(exterior)
 		in.or.out <- 1
 	else in.or.out <- 0
-	err <- F
+	err <- FALSE
 	if(is.null(lon)) {
 		if(Projection == "none") {
 			lon <- lat$y
@@ -25,7 +25,7 @@ function(lat, lon = NULL, col = "white", border = F, exterior = F, nx = 1,
 	}
 	if(Projection != "none") {
 		# degrees and minutes
-		if(mean(lat, na.rm = T) > 1000) {
+		if(mean(lat, na.rm = TRUE) > 1000) {
 			lat <- geoconvert(lat)
 			lon <-  - geoconvert(lon)
 		}
@@ -43,8 +43,8 @@ function(lat, lon = NULL, col = "white", border = F, exterior = F, nx = 1,
 	oldpar <- selectedpar()
 	par(geopar$gpar)
 	if(outside)
-	par(xpd = T)
-	else par(xpd = F)
+	par(xpd = TRUE)
+	else par(xpd = FALSE)
 	on.exit(par(oldpar))
 	gx <- geopar$limx
 	rx <- gx[2] - gx[1]
@@ -80,7 +80,7 @@ function(lat, lon = NULL, col = "white", border = F, exterior = F, nx = 1,
 				return(invisible())
 			else i1 <- i[1]
 			i <- geoinside(data.frame(lat = lat, lon = lon), brd1,
-				na.rm = T, robust = F, option = 0)
+				na.rm = TRUE, robust = FALSE, option = 0)
 			if(length(i) == length(lat) || option != 1) {
 				lat <- lat[!is.na(lat)]
 				lon <- lon[!is.na(lon)]
@@ -104,7 +104,7 @@ function(lat, lon = NULL, col = "white", border = F, exterior = F, nx = 1,
 			}
 		}
 	}
-	err <- F
+	err <- FALSE
 	xx <- Proj(lat, lon, geopar$scale, geopar$b0, geopar$b1, geopar$l1,
 		Projection)
 	if(!outside)
@@ -113,12 +113,12 @@ function(lat, lon = NULL, col = "white", border = F, exterior = F, nx = 1,
 		ind <- seq(along = xx$x)
 		ind <- ind[is.na(xx$x)]
 		if(length(ind) == 0)
-			err <- T
+			err <- TRUE
 		else {
 			ind <- c(1, ind, length(xx$x))
 			if(max(diff(ind)) > allowed.size)
-				err <- T
-			else err <- F
+				err <- TRUE
+			else err <- FALSE
 		}
 	}
 	if(plot) {

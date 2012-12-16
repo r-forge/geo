@@ -4,20 +4,21 @@
   Plots a grid.
 }
 \description{
-Plots a grid defined by the vectors lat,lon. The  grid  is
+Plots a grid defined by the vectors lat, lon. The  grid  is
 plotted  on a graph initialized by geoplot.  lon gives the
-meridians plotted and lat the paralells plotted.
+meridians plotted and lat the parallels plotted.
 }
 \usage{
-geogrid(lat, lon=0, col=1, type="l", lwd=0, lty=0, pch="+")
+geogrid(lat, lon = 0, col = 1, type = "l", lwd = 0, lty = 0, pch = "+",
+nx = 5)
 }
 \arguments{
-\item{lat,lon}{
+\item{lat, lon}{
 Latitude  and  longitude  of  data  (  or  x  and  y
        coordinates),  negative for southern latitudes and western
        longitudes.  May be  supplied  as  two  vectors  or  as  a
-       dataframe lat (or x) including vectors lat\$lat and lat\$lon
-       (x\$x and x\$y if projection = none).
+       dataframe lat (or x) including vectors \code{lat$lat} and \code{lat$lon}
+       (\code{x$x} and \code{x$y} if projection = none).
 }
 \item{col}{
 Color number used, default value is 1 (black).
@@ -36,6 +37,7 @@ Linetype.  Default value is the value set when the program
 \item{pch}{
 Type of symbol at gridpoints default is "+".
 }
+\item{nx}{sets smoothness of curved Lambert parallels}
 }
 \value{
 No values returned.
@@ -51,11 +53,11 @@ No values returned.
 \code{\link{geocontour}}.
 }
 \examples{
-\dontrun{       geogrid(latgr,longgr)
+\dontrun{       geogrid(latgr, longgr)
 
-       codgrd <- list(lat=seq(62,68,by=0.1),lon=seq(-28,-10,0.25))
+       codgrd <- list(lat = seq(62, 68, by = 0.1), lon = seq(-28, -10, 0.25))
        geogrid(codgrd)   # a fine grid of Iceland and neighbouring seas
-       geoplot(new=T)   
+       geoplot(new = T)   
 }}
 % docclass is function
 % Converted by Sd2Rd version 43268.

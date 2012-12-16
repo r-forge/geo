@@ -1,5 +1,5 @@
 rgrid <-
-function(r, fill = F, ...)
+function(r, fill = FALSE, ...)
 {
 	n <- length(r)
 	lat <- r2d(r)$lat

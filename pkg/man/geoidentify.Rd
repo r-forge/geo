@@ -9,14 +9,14 @@
        identified by the user.
 }
 \usage{
-geoidentify(lat, lon=NULL, labels=1, n=0, plot=T, 
-            atpen=T, offset=0.5, col=1, csi=0.12)
+geoidentify(lat, lon = NULL, labels = 1, n = 0, plot = TRUE, 
+            atpen = TRUE, offset = 0.5, col = 1, cex = 1)
 }
 \arguments{
 \item{lat,lon}{
 Coordinates of points.  The coordinates can be  given
-       by  two  vectors  or  a  matrix containin vectors \$lat and
-       \$lon.
+       by  two  vectors  or  a  data.frame containin vectors \code{lat} and
+       \code{lon}.
 }
 \item{labels}{
 Vector giving  labels  for  each  of  the  points.   If
@@ -46,8 +46,8 @@ Identification is  plotted  as  a  text  string,  moved
 \item{col}{
 The color of the labels.
 }
-\item{csi}{
-Character size, the size of the label characters.
+\item{cex}{
+Character size expansion of label characters.
 }
 }
 \value{
@@ -57,47 +57,31 @@ Character size, the size of the label characters.
 \section{Side Effects}{
 Labels are placed on the current plot if plot is true.
 }
-\details{
-Observations that have missing values in either lat  or
-       lon are
-              treated as if they were not given.
 
-              When using the X11  driver  under  the   X   Window
-       System,  a
-              point  is  identified  by  positioning  the  cursor
-       over the
-              point and pressing the  left   button.    To   exit
-       identify
-              press  the  middle  button  (both  buttons on a two
-       button
-              mouse)  while  the  cursor  is  in  the    graphics
-       window.   The
-              same   procedure   is   used  under  the   suntools
-       driver.  This
-              function may also be used with the "tek" drivers.
+\details{Observations that have missing values in either lat or lon are
+treated as if they were not given.  When using the X11 driver under the
+X Window System, a point is identified by positioning the cursor over
+the point and pressing the left button.  To exit identify press the
+middle button (both buttons on a two button mouse) while the cursor is
+in the graphics window.  The same procedure is used under the suntools
+driver.  This function may also be used with the "tek" drivers.
 
-              Some devices that do not allow  interaction  prompt
-       you  for
-              an x,y pair.
+Some devices that do not allow interaction prompt you for an x,y pair.
+The nearest point to the locator position is identified, but must be at
+most 0.5 inches away.  In case of ties, the earliest point is
+identified.  }
 
-              The nearest  point  to  the  locator  position   is
-       identified,
-              but must be at most 0.5 inches away.   In  case  of
-       ties, the
-              earliest point is identified.
-}
 \seealso{
 \code{\link{identify}},
 \code{\link{geolocator}},
 \code{\link{geotext}}.
 }
 \examples{
-\dontrun{       geoidentify(stations,labels=stations$temp)
+\dontrun{       geoidentify(stations, labels = stations$temp)
        # plots the temperature in the closest measuring point.
 
-       geoidentify(stations,atpen=F) 
+       geoidentify(stations, atpen = FALSE) 
        # plots the indece number of the station closest to
        # where pointed at the stations position.
 }}
-% docclass is function
-% Converted by Sd2Rd version 43268.
+

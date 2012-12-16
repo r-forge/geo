@@ -9,7 +9,7 @@
 \description{
 
   Functions that convert statistical rectangle codes under the
-  traditional Icelandic coding system ('tilkynningaskyldurreitakerfið')
+  traditional Icelandic coding system ('tilkynningaskyldurreitakerfid')
   coding systems (results of functions \code{\link{d2r}} and \code{\link{d2sr}}) to
   decimal representation of the rectangles center positions in degreees
   latitude and longitude.

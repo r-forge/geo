@@ -1,6 +1,6 @@
 geolines <-
-function(lat, lon = 0, col = 1, lwd = 0, lty = 0, nx = 1, outside = F, 
-	return.data = F)
+function(lat, lon = 0, col = 1, lwd = 0, lty = 0, nx = 1, outside = FALSE, 
+	return.data = FALSE)
 {
 	if(length(lon) == 1) {
 		# For polygon structures.
@@ -17,14 +17,14 @@ function(lat, lon = 0, col = 1, lwd = 0, lty = 0, nx = 1, outside = F,
 	}
 	if(geopar$projection != "none") {
 		# degrees and minutes
-		if(mean(lat, na.rm = T) > 1000) {
+		if(mean(lat, na.rm = TRUE) > 1000) {
 			lat <- geoconvert(lat)
 			lon <-  - geoconvert(lon)
 		}
 	}
 	if(outside)
-		par(xpd = T)
-	else par(xpd = F)
+		par(xpd = TRUE)
+	else par(xpd = FALSE)
 	if(nx > 1) {
 		# fill in with points for lambert. 
 		x <- fill.points(lat, lon, nx, option = 2)
@@ -47,7 +47,7 @@ function(lat, lon = 0, col = 1, lwd = 0, lty = 0, nx = 1, outside = F,
 			gy[1], gy[1], gy[2], gy[2], gy[1]))
 		xx <- findline(xx, border)
 	}
-	else par(xpd = F)
+	else par(xpd = FALSE)
 	#c program not used
 	lines(xx$x, xx$y, col = col)
 	par(oldpar)

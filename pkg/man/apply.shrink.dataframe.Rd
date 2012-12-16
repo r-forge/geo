@@ -1,14 +1,14 @@
 \name{apply.shrink.dataframe}
 \alias{apply.shrink.dataframe}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{ ~~function to do ... ~~ }
+
+\title{Apply functions to columns in a dataframe}
 \description{
-  ~~ A concise (1-5 lines) description of what the function does. ~~
+Apply.shrink for a dataframe, different functions can be applied to different columns
 }
 \usage{
-apply.shrink.dataframe(data, name.x, name.ind, FUNS = NULL, NA.rm = F, resp.name = NULL, full.data.frame = F, Set = NA, name.res, ...)
+apply.shrink.dataframe(data, name.x, name.ind, FUNS = NULL, NA.rm = FALSE, resp.name = NULL, full.data.frame = FALSE, Set = NA, name.res, ...)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
   \item{data}{ ~~Describe \code{data} here~~ }
   \item{name.x}{ ~~Describe \code{name.x} here~~ }
@@ -39,6 +39,7 @@ apply.shrink.dataframe(data, name.x, name.ind, FUNS = NULL, NA.rm = F, resp.name
 }
 \seealso{ ~~objects to See Also as \code{\link{help}}, ~~~ }
 \examples{
+\dontrun{
 ##---- Should be DIRECTLY executable !! ----
 ##-- ==>  Define data, use random,
 ##--	or do  help(data=index)  for the standard data sets.
@@ -111,8 +112,7 @@ function(data, name.x, name.ind, FUNS = NULL, NA.rm = F, resp.name = NULL,
 	names(result) <- name.res
 	return(result)
   }
-}
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
+}}
+
+
 \keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

@@ -1,16 +1,16 @@
 geoworld <-
-function(regions = ".", exact = F, boundary = T, fill = F, color = 1, lwd = 1, 
-	lty = 1, plot = T, type = "l", pch = ".", database = "world", 
-	return.data = F,outside=F,allowed.size=80000)
+function(regions = ".", exact = FALSE, boundary = TRUE, fill = FALSE, color = 1, lwd = 1, 
+	lty = 1, plot = TRUE, type = "l", pch = ".", database = "world", 
+	return.data = FALSE, outside=FALSE, allowed.size = 80000)
 {
   resolution <- 0 #1
-  interior <- F
+  interior <- FALSE
   r <- 1.2
-  doproj <- F
+  doproj <- FALSE
  if(fill)
-    interior <- T
+    interior <- TRUE
   if(geopar$projection == "Lambert") {
-                                        # complicated borders in lat,lon
+                                        # complicated borders in lat, lon
     p1 <- list(x = c(geopar$limx[1], mean(geopar$limx), geopar$limx[
                  1], geopar$limx[2]), y = c(geopar$limy[1], geopar$limy[
                                         2], geopar$limy[2], geopar$limy[2]))
@@ -47,7 +47,7 @@ function(regions = ".", exact = F, boundary = T, fill = F, color = 1, lwd = 1,
     if(boundary && interior)
       l <- unique(l)
     else if(boundary)
-      l <- l[!match(l, l[duplicated(l)], F)]
+      l <- l[!match(l, l[duplicated(l)], FALSE)]
     else l <- l[duplicated(l)]
     coord <- mapgetl(database, l, xlim, ylim)
     if(length(coord) == 0)
@@ -56,7 +56,7 @@ function(regions = ".", exact = F, boundary = T, fill = F, color = 1, lwd = 1,
   if(doproj) {
     coord <- Proj(coord$y, coord$x, geopar$scale, geopar$b0, geopar$
                   b1, geopar$l1, geopar$projection)
-    coord$error <- F
+    coord$error <- FALSE
   }
                                         # for filled regions, turn NA breaks at polylines into
                                         # NA breaks at polygons, deleting polygons for which
@@ -70,10 +70,10 @@ function(regions = ".", exact = F, boundary = T, fill = F, color = 1, lwd = 1,
   }
   if(return.data) return(data.frame(lat = coord$y, lon = coord$x))	
                                         # do the plotting, if requested
-  data <- data.frame(lat=coord$y, lon = coord$x)
+  data <- data.frame(lat = coord$y, lon = coord$x)
   if(plot){
-    if(fill) geopolygon(data,col=color,allowed.size=allowed.size)
-    if(!fill) geolines(data,col=color,lwd=lwd,lty=lty)
+    if(fill) geopolygon(data, col = color, allowed.size = allowed.size)
+    if(!fill) geolines(data, col = color, lwd = lwd, lty = lty)
   }
   return(invisible())
 }

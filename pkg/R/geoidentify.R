@@ -1,5 +1,5 @@
 geoidentify <-
-function(lat, lon = NULL, labels = 1, n = 0, plot = T, atpen = T, offset = 0.5,
+function(lat, lon = NULL, labels = 1, n = 0, plot = TRUE, atpen = TRUE, offset = 0.5,
 	col = 1, cex = 1)
 {
 	oldpar <- selectedpar()
@@ -19,7 +19,7 @@ function(lat, lon = NULL, labels = 1, n = 0, plot = T, atpen = T, offset = 0.5,
 	}
 	if(geopar$projection != "none") {
 		# degrees and minutes
-		if(mean(lat, na.rm = T) > 1000) {
+		if(mean(lat, na.rm = TRUE) > 1000) {
 			lat <- geoconvert(lat)
 			lon <-  - geoconvert(lon)
 		}

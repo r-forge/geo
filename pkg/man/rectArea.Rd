@@ -13,8 +13,8 @@ Rectangle area is returned through a call to
 }
 
 \usage{
-rA(r)
-srA(sr)
+rA(r, scale = "nmi")
+srA(sr, scale = "nmi")
 }
 
 \arguments{
@@ -29,16 +29,13 @@ srA(sr)
 \seealso{\code{\link{rectPeri}}, \code{\link{deg2rect}}, \code{\link{geoarea}}.}
 
 \examples{
-\dontrun{
   srA(7121)
   srA(7121, "km")
   srA(7121, "km")/1.852^2
   srA(7121, "km2")
   rA(712)
   srA(7121) + srA(7122) + srA(7123) + srA(7124)
-
-# pretty close
-}}
+}
 
 \keyword{arith}
 \keyword{manip}

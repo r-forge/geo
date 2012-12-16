@@ -1,14 +1,14 @@
 \name{geoaxis}
 \alias{geoaxis}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{ ~~function to do ... ~~ }
+
+\title{Setup axes for a geoplot}
 \description{
-  ~~ A concise (1-5 lines) description of what the function does. ~~
+Set up axes for a geplot 
 }
 \usage{
 geoaxis(side, pos, dist, dlat = 0.5, dlon = 1, csi = 0.12, cex = 0.7, inside = T, r = 1, ...)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
   \item{side}{ ~~Describe \code{side} here~~ }
   \item{pos}{ ~~Describe \code{pos} here~~ }
@@ -121,7 +121,6 @@ function(side, pos, dist, dlat = 0.5, dlon = 1,csi=0.12, cex = 0.7, inside = T, 
 	}
   }
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
+
+
 \keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

@@ -1,5 +1,5 @@
 geopoints <-
-function(lat, lon = 0, pch = "*",cex =0.7, col = 1, lwd = 0, outside = F,
+function(lat, lon = 0, pch = "*",cex =0.7, col = 1, lwd = 0, outside = FALSE,
 	jitter = NULL, mkh = NULL,csi=NULL)
 {
    if(!is.null(csi)) cex <- cex*csi/0.12  # Compatibility with old program
@@ -15,7 +15,7 @@ function(lat, lon = 0, pch = "*",cex =0.7, col = 1, lwd = 0, outside = F,
 	}
 	if(geopar$projection != "none") {
 		# degrees and minutes
-		if(mean(lat, na.rm = T) > 1000) {
+		if(mean(lat, na.rm = TRUE) > 1000) {
 			lat <- geoconvert(lat)
 			lon <-  - geoconvert(lon)
 		}
@@ -29,8 +29,8 @@ function(lat, lon = 0, pch = "*",cex =0.7, col = 1, lwd = 0, outside = F,
 	if(lwd != 0)
 		par(lwd = lwd)
 	if(outside)
-		par(xpd = T)
-	else par(xpd = F)
+		par(xpd = TRUE)
+	else par(xpd = FALSE)
 	on.exit(par(oldpar))
 	par(cex = cex)
 	xx <- Proj(lat, lon, geopar$scale, geopar$b0, geopar$b1, geopar$l1,

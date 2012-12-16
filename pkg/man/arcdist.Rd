@@ -23,6 +23,7 @@ If lat and lon are vectors of  lat,lon  positions,
        then         lat1 and lon1 must be given as the second set
        of positions.
 }
+\item{scale}{\code{nmi} returns value in nautical miles, any other value in kilometers
 }
 \value{
 A single vector of distances between pairs of points is returned
@@ -33,9 +34,13 @@ A single vector of distances between pairs of points is returned
 \code{\link{selpos}},
 }
 \examples{
-\dontrun{    dists<-arcdist(pos1,pos2)         # pos1 and pos2 are lists of coordinates.
-    dists<-arcdist(lat,lon,lat1,lon1) # Input in vector format.
+  pos1 <- list(lat = c(65, 66), lon = c(-19, -20))
+  pos2 <- list(lat = c(64, 65), lon = c(-19, -20))
+  dists <- arcdist(pos1, pos2)         # pos1 and pos2 are lists of coordinates.
+  lat <- c(65, 66)
+  lon <- c(-19, -20)
+  lat1 <- c(64, 65)
+  lon1 <- c(-19, -20)
+  dists <- arcdist(lat, lon, lat1, lon1) # Input in vector format.
 }
 }
-% docclass is function
-% Converted by Sd2Rd version 43268.

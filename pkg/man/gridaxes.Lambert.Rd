@@ -1,14 +1,14 @@
 \name{gridaxes.Lambert}
 \alias{gridaxes.Lambert}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{ ~~function to do ... ~~ }
+
+\title{Set up axes for a Lambert projected geoplot }
 \description{
-  ~~ A concise (1-5 lines) description of what the function does. ~~
+Set up axes for a Lambert projected geoplot
 }
 \usage{
 gridaxes.Lambert(limx, limy, scale, b0, xyratio, grid, col, reitur, smareitur, axratio, axlabels, b1, l1, projection, dlat, dlon, col1 = 1)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
   \item{limx}{ ~~Describe \code{limx} here~~ }
   \item{limy}{ ~~Describe \code{limy} here~~ }
@@ -198,7 +198,5 @@ function(limx, limy, scale, b0, xyratio, grid, col, reitur, smareitur, axratio,
 	return(invisible())
   }
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
+
 \keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

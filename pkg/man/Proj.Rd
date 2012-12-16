@@ -20,6 +20,7 @@ The scale used for the projection, (m, km or miles). Default is the scale define
 \item{b0}{
 if projection = mercator b0 is the center of the  mercator projection. If projection = "Lambert" b0 and b1 are lattitudes defining the Lambert projection. Default are the b0 and b1 defined in geopar.
 }
+\item{b1}{Second defining latitute for Lambert projection}
 \item{l1}{
 The longitude defining the Lambert projection, default is the l1 defined in geopar.
 }

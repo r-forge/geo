@@ -3,7 +3,7 @@ function (grd, z, nlevels = 10, levels = NULL, labcex = 1, triangles = TRUE,
     reg = 0, fill = 1, colors = TRUE, col = 1, only.positive = FALSE, 
     maxcol = 155, cex = 0.7, save = FALSE, plotit = TRUE, label.location = 0, 
     lwd = 1, lty = 1, labels.only = FALSE, digits = 1, paint = FALSE, 
-    set = NA, col.names = c("lon", "lat"), csi = NULL,drawlabels=FALSE)
+    set = NA, col.names = c("lon", "lat"), csi = NULL, drawlabels = FALSE)
 {
     if (!is.null(csi)) 
         cex <- cex * csi/0.12

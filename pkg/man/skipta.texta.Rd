@@ -1,14 +1,14 @@
 \name{skipta.texta}
 \alias{skipta.texta}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{ ~~function to do ... ~~ }
+
+\title{Translate characters in column names}
 \description{
-  ~~ A concise (1-5 lines) description of what the function does. ~~
+Translate characters in column names
 }
 \usage{
 skipta.texta(txt, char = "_", replchar = ".")
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
   \item{txt}{ ~~Describe \code{txt} here~~ }
   \item{char}{ ~~Describe \code{char} here~~ }
@@ -58,7 +58,5 @@ function(txt, char = "_", replchar = ".")
         print(skipun)
   }
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
+
 \keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

@@ -18,8 +18,8 @@
 
 \usage{
 
-rgrid(r, fill = F, ...)
-srgrid(r, fill = F, ...)
+rgrid(r, fill = FALSE, ...)
+srgrid(sr, fill = FALSE, ...)
 
 }
 

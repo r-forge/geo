@@ -1,5 +1,5 @@
 srgrid <-
-function(sr, fill = F, ...)
+function(sr, fill = FALSE, ...)
 {
 	n <- length(sr)
 	lat <- sr2d(sr)$lat

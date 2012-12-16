@@ -1,13 +1,13 @@
 geosymbols <-
-function(lat, lon = 0, z, levels = NULL, reflevels = NULL, labels.only = F,
+function(lat, lon = 0, z, levels = NULL, reflevels = NULL, labels.only = FALSE,
 	cex = 0.6, chs = 0.8, z1 = 0, circles = 0, squares = 0, rectangles = c(
-	0, 0), vbars = 0, hbars = 0, perbars = 0, parbars = 0, sqrt = F, col = 
-	1, maxn = 0, colplot = F, nlevels = 10, colors = 0, n = 25, maxcol = 
-	155, only.positive = F, digits = 0, white = F, lwd = 1, label.location
-	 = NULL, labels = 1, fill.circles = F, density = 0, angle = 45, rotate
-	 = 0, outside = F, minsym = "<", boundcheck = 0, na.rm = T, 
-	label.resolution = 0, characters = F, pch, marks, charcol = 0, 
-	open.circles = F, col.names = c("lat", "lon"), border = F, bordercol = 
+	0, 0), vbars = 0, hbars = 0, perbars = 0, parbars = 0, sqrt = FALSE, col = 
+	1, maxn = 0, colplot = FALSE, nlevels = 10, colors = 0, n = 25, maxcol = 
+	155, only.positive = FALSE, digits = 0, white = FALSE, lwd = 1, label.location
+	 = NULL, labels = 1, fill.circles = FALSE, density = 0, angle = 45, rotate
+	 = 0, outside = FALSE, minsym = "<", boundcheck = 0, na.rm = TRUE, 
+	label.resolution = 0, characters = FALSE, pch, marks, charcol = 0, 
+	open.circles = FALSE, col.names = c("lat", "lon"), border = FALSE, bordercol = 
 	0)
 {
 	options(warn = -1)
@@ -36,14 +36,14 @@ function(lat, lon = 0, z, levels = NULL, reflevels = NULL, labels.only = F,
 	if(length(ind) > 0) {
 		data$lat[ind] <- NA
 		data$lon[ind] <- NA
-		z[ind] <- mean(z, na.rm = T)
+		z[ind] <- mean(z, na.rm = TRUE)
 	}
 	if(fill.circles)
-		colplot <- T
+		colplot <- TRUE
 	if(open.circles)
-		colplot <- T
+		colplot <- TRUE
 	if(density > 0)
-		colplot <- T
+		colplot <- TRUE
 	if(maxn == 0)
 		maxn <- max(abs(z))
 	if(only.positive) {
@@ -73,8 +73,8 @@ function(lat, lon = 0, z, levels = NULL, reflevels = NULL, labels.only = F,
 	par(geopar$gpar)
 	on.exit(par(oldpar))
 	if(outside)
-		par(xpd = T)
-	else par(xpd = F)
+		par(xpd = TRUE)
+	else par(xpd = FALSE)
 	if(colplot) {
 		if(labels.only) {
 			if(cex != 0)
@@ -84,7 +84,7 @@ function(lat, lon = 0, z, levels = NULL, reflevels = NULL, labels.only = F,
 				levels, nlevels, colors, white, n, maxcol,
 				digits, label.location, labels, fill.circles,
 				density, angle, rotate, minsym, 
-				label.resolution, col, labels.only = T, 
+				label.resolution, col, labels.only = TRUE, 
 				open.circles = open.circles, lwd = lwd, border
 				 = border, bordercol = bordercol)
 		}
@@ -162,23 +162,23 @@ function(lat, lon = 0, z, levels = NULL, reflevels = NULL, labels.only = F,
 			if(sqrt) {
 				if(!labels.only)
 					symbols(x, y, circles = circles * sqrt(
-						abs(z)/maxn), inches = F, add
-						 = T, fg = col, lwd = lwd)
+						abs(z)/maxn), inches = FALSE, add
+						 = TRUE, fg = col, lwd = lwd)
 				if(!is.null(label.location))
 					symbols(c(xloc), c(yloc), circles = 
 						circles * sqrt(abs(levels)/
-						maxn), add = T, inches = F,
-						lwd = lwd,fg=col)
+						maxn), add = TRUE, inches = FALSE,
+						lwd = lwd, fg = col)
 			}
 			else {
 				if(!labels.only)
 					symbols(x, y, circles = circles * (
-						abs(z)/maxn), add = T, inches
-						 = F, fg = col, lwd = lwd)
+						abs(z)/maxn), add = TRUE, inches
+						 = FALSE, fg = col, lwd = lwd)
 				if(!is.null(label.location))
 					symbols(c(xloc), c(yloc), circles = (
 						circles * abs(levels))/maxn,
-						add = T, inches = F, lwd = lwd,fg=col)
+						add = TRUE, inches = FALSE, lwd = lwd, fg = col)
 			}
 		}
 		if(squares != 0) {
@@ -190,19 +190,19 @@ function(lat, lon = 0, z, levels = NULL, reflevels = NULL, labels.only = F,
 			if(sqrt) {
 				if(!labels.only)
 					symbols(x, y, squares = squares * sqrt(
-						abs(z)/maxn), add = T, inches
-						 = F, fg = col, lwd = lwd)
+						abs(z)/maxn), add = TRUE, inches
+						 = FALSE, fg = col, lwd = lwd)
 				symbols(c(xloc), c(yloc), squares = squares *
-					sqrt(abs(levels)/maxn), add = T, inches
-					 = F, lwd = lwd,fg=col)
+					sqrt(abs(levels)/maxn), add = TRUE, inches
+					 = FALSE, lwd = lwd, fg = col)
 			}
 			else {
 				if(!labels.only)
 					symbols(x, y, squares = squares * (
-						abs(z)/maxn), add = T, inches
-						 = F, fg = col, lwd = lwd)
+						abs(z)/maxn), add = TRUE, inches
+						 = FALSE, fg = col, lwd = lwd)
 				symbols(c(xloc), c(yloc), squares = (squares *
-					abs(levels))/maxn, add = T, inches = F,fg=col,
+					abs(levels))/maxn, add = TRUE, inches = FALSE, fg = col,
 					lwd = lwd)
 			}
 		}
@@ -229,7 +229,7 @@ function(lat, lon = 0, z, levels = NULL, reflevels = NULL, labels.only = F,
 				else m[, 2] <- (rectangles[2] * abs(z1))/max(
 						abs(z1))
 			}
-			symbols(x, y, rectangles = m, add = T, inches = F,
+			symbols(x, y, rectangles = m, add = TRUE, inches = FALSE,
 				fg = col, lwd = lwd)
 		}
 		if(vbars != 0) {
@@ -240,8 +240,8 @@ function(lat, lon = 0, z, levels = NULL, reflevels = NULL, labels.only = F,
 			mx[1,  ] <- x
 			my[1,  ] <- y
 			mx[2,  ] <- x
-			#      mlocx<- matrix(NA,3,length(levels)); mlocy<-mlocx
-			#      mlocx[1,]<-c(xloc) ; mlocy[1,]<-c(yloc); mlocx[2,]<-c(xloc)
+			#      mlocx<- matrix(NA, 3, length(levels)); mlocy<-mlocx
+			#      mlocx[1, ]<-c(xloc) ; mlocy[1, ]<-c(yloc); mlocx[2, ]<-c(xloc)
 			r <- ein.pr.in * vbars
 			# size in units  
 			if(sqrt) {
@@ -261,8 +261,8 @@ function(lat, lon = 0, z, levels = NULL, reflevels = NULL, labels.only = F,
 			mx[1,  ] <- x
 			my[1,  ] <- y
 			my[2,  ] <- y
-			#      mlocx<- matrix(NA,3,length(levels)); mlocy<-mlocx
-			#      mlocx[1,]<-c(xloc) ; mlocy[1,]<-c(yloc); mlocy[2,]<-c(yloc)
+			#      mlocx<- matrix(NA, 3, length(levels)); mlocy<-mlocx
+			#      mlocx[1, ]<-c(xloc) ; mlocy[1, ]<-c(yloc); mlocy[2, ]<-c(yloc)
 			r <- ein.pr.in * hbars
 			# size in units
 			if(sqrt) {
@@ -281,8 +281,8 @@ function(lat, lon = 0, z, levels = NULL, reflevels = NULL, labels.only = F,
 			my <- mx
 			mx[1,  ] <- x
 			my[1,  ] <- y
-			#      mlocx<- matrix(NA,3,length(levels)); mlocy<-mlocx
-			#      mlocx[1,]<-c(xloc) ; mlocy[1,]<-c(yloc); mlocy[2,]<-c(yloc)
+			#      mlocx<- matrix(NA, 3, length(levels)); mlocy<-mlocx
+			#      mlocx[1, ]<-c(xloc) ; mlocy[1, ]<-c(yloc); mlocy[2, ]<-c(yloc)
 			r <- ein.pr.in * perbars
 			# size in units  
 			dx <- c(1:length(x))
@@ -306,8 +306,8 @@ function(lat, lon = 0, z, levels = NULL, reflevels = NULL, labels.only = F,
 				my[2,  ] <- my[1,  ] + dx * r * sqrt(abs(z)/
 					maxn)
 			else my[2,  ] <- my[1,  ] + (dx * r * abs(z))/maxn
-			#      if(sqrt)  mlocx[2,]<-mlocx[1,]+r*sqrt(abs(levels)/maxn)
-			#      else  mlocx[2,]<-mlocx[1,]+r*abs(z)/maxn
+			#      if(sqrt)  mlocx[2, ]<-mlocx[1, ]+r*sqrt(abs(levels)/maxn)
+			#      else  mlocx[2, ]<-mlocx[1, ]+r*abs(z)/maxn
 			if(!labels.only) lines(mx, my, col = col)
 		}
 	}
@@ -334,7 +334,7 @@ function(lat, lon = 0, z, levels = NULL, reflevels = NULL, labels.only = F,
 				col <- charcol
 			n <- length(levels) + 1
 			levels <- c(-1000000., levels, 1000000.)
-			ind <- cut(z, levels,labels=FALSE) # labels=FALSE R ver.
+			ind <- cut(z, levels, labels = FALSE)
 		}
 		if(length(col) == 1)
 			col <- rep(col, n)
