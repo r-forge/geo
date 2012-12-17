@@ -38,7 +38,7 @@ function(lat, lon, lat0, lon0, lat1, scale = "km", old = F)
 			t2 <- tan(pi/4 - 1/2 * atan((1 - e * e) * tan(lat2)))
 		else t2 <- tan(pi/4 - lat2/2)/((1 - e * sin(lat2))/(1 + e *
 				sin(lat2)))^(e/2)
-		n <- (ln(m1) - ln(m2))/(ln(t1) - ln(t2))
+		n <- (log(m1) - log(m2))/(log(t1) - log(t2))
 	}
 	F1 <- m1/(n * t1^n)
 	p0 <- a * F1 * t0^n

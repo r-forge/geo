@@ -1,26 +1,27 @@
 geoplot <-
-function(lat = NULL, lon = 0, type = "p", pch = "*", xlim = c(0, 0), ylim = c(
-	0, 0), b0 = 65, r = 1.05, country = "default", xlab = " ", ylab = " ",
-	option = "cut", grid = T, new = F, cont = F,cex = 0.9,col = 1,
-        lcont= c(0.13, 0.21), plotit = T, reitur = F, smareitur = F, reittext = F,
-	cexrt = 0.7, csirt=NULL,axratio = 1, lwd = 0, lwd1 = 0, locator = F, axlabels = T,
-	projection = "Mercator", b1 = b0, dlat = 0, dlon = 0, jitter = 0, zoom,csi=NULL,xaxdist=0.2,yaxdist=0.3
-	)
+function(lat = NULL, lon = 0, type = "p", pch = "*", xlim = c(0, 0), 
+  ylim = c(0, 0), b0 = 65, r = 1.05, country = "default", xlab = " ", 
+  ylab = " ", option = "cut", grid = TRUE, new = FALSE, cont = FALSE,
+  cex = 0.9,col = 1, lcont= c(0.13, 0.21), plotit = TRUE, 
+  reitur = FALSE, smareitur = FALSE, reittext = FALSE, cexrt = 0.7, 
+  csirt=NULL, axratio = 1, lwd = 0, lwd1 = 0, locator = FALSE, 
+  axlabels = TRUE, projection = "Mercator", b1 = b0, dlat = 0, dlon = 0, 
+  jitter = 0, zoom, csi = NULL, xaxdist = 0.2, yaxdist = 0.3)
 {
   
   if(!is.null(csirt)) cexrt <- cexrt*csirt/0.12
   if(!is.null(csi)) cex <- cex*csi/0.12
-  if(!plotit) axlabels <- F  # not plot axes if ther is no plot.  
+  if(!plotit) axlabels <- FALSE  # not plot axes if ther is no plot.  
   if(!missing(zoom)) {
     xlim <- geolocator(n = 2)
   }
-	oldpar.1 <- par(no.readonly=T)
+	oldpar.1 <- par(no.readonly = TRUE)
  	# first version of old parameters
 	command <- sys.call()
 	if((oldpar.1$fig[2] - oldpar.1$fig[1]) <= 0.6 || (oldpar.1$fig[4] -
 		oldpar.1$fig[3]) <= 0.6)
-		multfig <- T
-	else multfig <- F
+		multfig <- TRUE
+	else multfig <- FALSE
 	if(projection == "none") {
                 if(is.list(xlim) &&  any(!is.na(match(c("x","y"),names(xlim))))){
                   ylim <- xlim$y
@@ -71,7 +72,7 @@ function(lat = NULL, lon = 0, type = "p", pch = "*", xlim = c(0, 0), ylim = c(
 	else {
 		if(length(country) == 1)
                   if(country == "default")
-                    eval(parse(text=paste("country <- ",COUNTRY.DEFAULT)))
+                    eval(parse(text = paste("country <- ",COUNTRY.DEFAULT)))
 	}
 	init(lat, lon = lon, type = type, pch = pch, xlim = xlim, ylim = ylim,
 		b0 = b0, r = r, country = country, xlab = xlab, ylab = ylab,
@@ -80,10 +81,10 @@ function(lat = NULL, lon = 0, type = "p", pch = "*", xlim = c(0, 0), ylim = c(
 		smareitur = smareitur, reittext = reittext, axratio = axratio,
 		lwd = lwd, axlabels = axlabels, oldpar = oldpar, projection = 
 		projection, b1 = b1, dlat = dlat, dlon = dlon, command = 
-		command, jitter = jitter,xaxdist=xaxdist,yaxdist=yaxdist)
+		command, jitter = jitter, xaxdist = xaxdist, yaxdist = yaxdist)
         oldpar.1 <- Elimcomp(oldpar.1)
 	par(oldpar.1)
-#        par(new=T)
+#        par(new = TRUE)
 	if(reittext)
 		plot.reitnr(cexrt, lwd = lwd)
 	# number of squares

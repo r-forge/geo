@@ -26,7 +26,7 @@ function(lat, lon = 0, type = "p", pch = "*", xlim = c(0, 0), ylim = c(0, 0),
 	on.exit(par(oldpar))
 	if(length(reg) == 1) {
 		# use the locator.  
-		reg <- define.area(nholes = nholes)
+		reg <- geodefine(nholes = nholes)
 	}
 	xgr <- gridpoints(reg, dx, grpkt, nx, n)
 	# grid points.  

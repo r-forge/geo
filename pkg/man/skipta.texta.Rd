@@ -29,7 +29,7 @@ skipta.texta(txt, char = "_", replchar = ".")
 \note{ ~~further notes~~ 
 
   ~Make other sections like Warning with section{Warning }{....} ~
-  12.12.12 fjarlægði 'backslash-ið' úr línunni að ofan
+  12.12.12 removed 'backslash' from line above
 }
 \seealso{ ~~objects to See Also as \code{\link{help}}, ~~~ }
 \examples{

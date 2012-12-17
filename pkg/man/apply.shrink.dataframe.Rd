@@ -67,7 +67,7 @@ function(data, name.x, name.ind, FUNS = NULL, NA.rm = F, resp.name = NULL,
 	}
 	data$NR <- rep(1., nrow(data))
 	i <- match("", name.x)
-	# Eyða NA gildum.  
+	# Eyda NA gildum.  
 	if(!is.na(i)) name.x[i] <- "NR"
 	i <- rep(1., nrow(data))
 	if(NA.rm) {

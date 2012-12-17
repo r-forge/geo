@@ -4,6 +4,7 @@ Date: 2012-11-16
 Title: Draw and Annotate Maps, Especially Nautical Charts of the North Atlantic
 Author: Hoskuldur Bjornsson
 Maintainer: Hoskuldur Bjornsson <hoski@hafro.is>
+Depends: maps, mapdata, R (>= 2.10.0)
 LazyData: yes
 Description: Used by Hafro staff to draw maps showing the distribution of
   fishing intensity and catches of Icelandic fish stocks. Potentially useful for
