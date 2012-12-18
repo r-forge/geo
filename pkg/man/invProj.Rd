@@ -19,7 +19,10 @@ or as list attributes (\$x and \$y).
 The scale of the input date (m, km or miles), default is the scale defined in geopar (the scale defined when the plot is initialized).
 }
 \item{b0}{
-if projection = Mercator b0 is the center of the  Mercator projection. If projection = Lambert b0, b1 are the lattitudes defining the Lambert projection. Default are the b0 and b1 defined in geopar.
+if projection = Mercator b0 is the center of the  Mercator projection. If projection = Lambert b0, b1 are the latitudes defining the Lambert projection. Default are the b0 and b1 defined in geopar.
+}
+\item{b1}{
+Second defining latitude for Lambert projection.
 }
 \item{l1}{
 The longitude defining the Lambert projection, default is the l1 defined in geopar.

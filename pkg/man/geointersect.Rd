@@ -1,11 +1,11 @@
 \name{geointersect}
 \alias{geointersect}
-%- Also NEED an '\alias' for EACH other topic documented here.
+
 \title{
 Find intersection of 2 polygons
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+Find intersection of 2 polygons
 }
 \usage{
 geointersect(data, border, in.or.out)
@@ -45,7 +45,7 @@ geointersect(data, border, in.or.out)
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link{findcut}}, \code{\link{invProj}}, \code{\link{Proj}}
 }
 \examples{
 ##---- Should be DIRECTLY executable !! ----

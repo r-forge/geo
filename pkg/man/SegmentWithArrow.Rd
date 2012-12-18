@@ -1,16 +1,16 @@
 \name{SegmentWithArrow}
 \alias{SegmentWithArrow}
-%- Also NEED an '\alias' for EACH other topic documented here.
+
 \title{
 Plot line segment with arrow at the end.  
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+Plot line segment with arrow at the end.  
 }
 \usage{
 SegmentWithArrow(pos, angle = 15, size = 0.2, minrat = 1, col = "blue", lwd = 2)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
   \item{pos}{
 %%     ~~Describe \code{pos} here~~
@@ -83,7 +83,6 @@ function(pos,angle=15,size=0.2,minrat=1,col="blue",lwd=2){
   geopolygon(tmp1,col=col) 
   }
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
+
 \keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+

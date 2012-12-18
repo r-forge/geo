@@ -1,8 +1,14 @@
 \name{reitaplott}
 \alias{reitaplott}
+
 \title{
-  Function that fills squares or subsquares according to the amount
+  Function that fills rectangles or sub-rectangles according to the amount
 of fish calculated in them.
+}
+
+\description{
+ Function that fills rectangles or sub-rectangles according to the amount
+ of fish calculated in them, or some other quantity.
 }
 
 \usage{ reitaplott(reitur,  smareitur = NULL,  z, levels = NULL, colors =
@@ -76,8 +82,8 @@ Rotation of hatcing lines between each level.   Default
 \item{digits}{
 Number of digits in labels.  Default value is zero.
 }
-\item{csi}{
-Size of digits in labels.  Default value  is  the  current
+\item{cex}{
+Charcter expansion of digits in labels.  Default value  is  the  current
        size when the program is called.
 }
 \item{label.location}{

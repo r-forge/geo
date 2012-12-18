@@ -175,6 +175,9 @@ If FALSE no numbers are plotted on the axes. Default value is TRUE.
 \item{projection}{
 Projection used to make the plot. Options are "Mercator", "none" and "Lambert". Default value is "Mercator". If projection = "none" data is assumed to be x, y.
 }
+\item{b1}{
+  Second latitude to define Lambert projection.
+}
 \item{dlat}{
 Defines the grid, to make a grid on the lat axis, 1 is a
 number on axis and a line at every deg. Not usualy set by user.

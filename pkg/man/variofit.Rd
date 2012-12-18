@@ -39,6 +39,10 @@ If T the fitting is done interactively by plotting
        the variogram on the screen and asking the  user to select
        sill, range and nugget by the locator function.
 }
+\item{sill}{
+Sill of the variogram, or: Limit of the variogram tending to infinity
+lag distances (wikipedia).
+}
 }
 \section{Value}{
 <s-example>

@@ -59,7 +59,7 @@ The database the world plot  is  to  be  taken  from.
        are return, default is FALSE. Can be used to save the coastlines of
        specified countries.  
 }
-\item{outside = FALSE}{
+\item{outside}{
 If TRUE data are plotted outside the borders.  Default is FALSE. 
 }
 \item{allowed.size}{

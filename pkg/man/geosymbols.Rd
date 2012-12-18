@@ -18,15 +18,17 @@ circles, squares, rectangles,  vbars (vertical bars), hbars(horisontal bars)
 }
 
 \usage{
-geosymbols(lat, lon = 0, z, levels = NULL, reflevels = NULL, labels.only = FALSE,
-           cex = 0.6, chs = 0.8, z1 = 0, circles = 0, squares = 0, rectangles = c(0, 0), 
-           vbars = 0, hbars = 0, perbars = 0, parbars = 0, sqrt = FALSE, col = 1,
-           maxn = 0, colplot = FALSE, nlevels = 10, colors = 0, n = 25, maxcol = 155,
-           only.positive = FALSE, digits = 0, white = FALSE, lwd = 1, label.location = NULL, 
-           labels = 1, fill.circles = FALSE, density = 0, angle = 45, rotate = 0,
-           outside = FALSE, minsym = "<", boundcheck = 0, na.rm = TRUE, label.resolution = 0,
-           characters = FALSE, pch, marks, charcol = 0, open.circles = FALSE,
-           col.names = c("lat", "lon"), border = FALSE, bordercol = 0)
+geosymbols(lat, lon = 0, z, levels = NULL, reflevels = NULL,
+  labels.only = FALSE, cex = 0.6, chs = 0.8, z1 = 0, circles = 0,
+  squares = 0, rectangles = c(0, 0), vbars = 0, hbars = 0, perbars = 0,
+  parbars = 0, sqrt = FALSE, col = 1, maxn = 0, colplot = FALSE,
+  nlevels = 10, colors = 0, n = 25, maxcol = 155, only.positive = FALSE,
+  digits = 0, white = FALSE, lwd = 1, label.location = NULL, labels = 1,
+  fill.circles = FALSE, density = 0, angle = 45, rotate = 0,
+  outside = FALSE, minsym = "<", boundcheck = 0, na.rm = TRUE,
+  label.resolution = 0, characters = FALSE, pch, marks, charcol = 0,
+  open.circles = FALSE, col.names = c("lat", "lon"), border = FALSE,
+  bordercol = 0)
 }
 
 \arguments{
@@ -137,6 +139,13 @@ Angle of hatching, default is 45 degrees.
 \item{rotate}{
 Rotation of hatching from one level to the next. Default value is 0 but 45 or 90 can be good to better distinquish between different levels.
 }
+
+\item{outside}{
+If TRUE geosymbols will plot outside the specified limits set by
+geoplot(). If FALSE, which is default, outside points will be skipped.
+}
+
+
 \item{minsym}{
 Minimum symbol, default is "<", meaning that if levels = c(1, 2), labels will be presented as < 1, 1-2, 2 <, but if minsym = " " labels will be presented as 1, 1-2, 2. See also labels.resolution.
 }
@@ -146,6 +155,17 @@ If boundcheck != 0 those points which are out of bounds are returned to the user
 \item{na.rm}{
 If true NA's are removed, default is true.
 }
+
+\item{label.resolution }{
+the  resolution  (precision)  of  the  label
+       numbers,  default  is  0, meaning that if levels = c(1, 2),
+       labels  will  be   presented   <   1,   1-2,   2   <,   if
+       label.resolution = 0.1  labels will be presented < 1, 1.1-2,
+       2.1<, see also minsym.   If  label.resolution = "none",  the
+       labels will present the lowest number of the interval with
+       each color.
+}
+
 \item{characters}{
 A boolean variable determing whether characters are to be plotted.
 }
@@ -157,6 +177,18 @@ Type of symbols for each level. The difference between marks and pch is becae wh
 }
 \item{charcol}{
 The color of the charchters, default is the same as col.
+}
+\item{open.circles}{
+Should open.circles be plotted. Default FALSE. NEEDS CHECKING.
+}
+\item{col.names}{
+Column names with positions. Default \code{lat, lon}.
+}
+\item{border}{
+Should border be plotted? Default FALSE. NEEDS CHECKING.
+}
+\item{bordercol}{
+Color of border. Default 0. NEEDS CHECKING.
 }
 }
 \value{
