@@ -1,5 +1,5 @@
 locdist <-
-function(scale = "Miles", type = "p")
+function(scale = "nmi", type = "p")
 {
         lat <- geolocator(n = 2, type = type)
         x <- arcdist(lat$lat[1], lat$lon[1], lat$lat[2], lat$lon[2])

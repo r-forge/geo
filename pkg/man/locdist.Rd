@@ -6,7 +6,7 @@
   ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-locdist(scale = "Miles", type = "p")
+locdist(scale = "nmi", type = "p")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -36,7 +36,7 @@ locdist(scale = "Miles", type = "p")
 ##--	or do  help(data=index)  for the standard data sets.
 
 ## The function is currently defined as
-function(scale = "Miles", type = "p")
+function(scale = "nmi", type = "p")
 {
         lat <- geolocator(n = 2, type = type)
         x <- arcdist(lat$lat[1], lat$lon[1], lat$lat[2], lat$lon[2])

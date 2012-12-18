@@ -17,7 +17,7 @@ function(lat, lon = 0, z, nbins = 100, maxdist = 0, Hawk = T, throwout = F,
 			lat <- lat$lat
 		}
 		#list  
-		if(scale == "Miles") rad <- rad/1.852
+		if(scale == "nmi") rad <- rad/1.852
 		# distances in miles.  
 		lon <- (lon * pi)/180
 		# change from degrees to radians
@@ -42,7 +42,7 @@ function(lat, lon = 0, z, nbins = 100, maxdist = 0, Hawk = T, throwout = F,
 				1]) * 0.7
 		else maxdist <- pdist(rlat[2], rlon[2], rlat[1], rlon[1]) *
 				0.7
-		if(scale == "Miles")
+		if(scale == "nmi")
 			maxdist <- maxdist/1.852
 	}
 	varioa <- dista <- numbera <- rep(0, nbins)

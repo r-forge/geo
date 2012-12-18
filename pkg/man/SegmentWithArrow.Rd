@@ -64,7 +64,7 @@ SegmentWithArrow(pos, angle = 15, size = 0.2, minrat = 1, col = "blue", lwd = 2)
 ## The function is currently defined as
 function(pos,angle=15,size=0.2,minrat=1,col="blue",lwd=2){
   plt.size <- geopar$gpar$pin
-  dist <- arcdist(pos$lat[1],pos$lon[1],pos$lat[2],pos$lon[2],scale="Miles")
+  dist <- arcdist(pos$lat[1],pos$lon[1],pos$lat[2],pos$lon[2],scale="nmi")
   arrowsize <- diff(geopar$origin$lat)*size/geopar$gpar$pin[2]*60
   rat <- min(c(arrowsize/dist,0.5))
   tmp <- pos

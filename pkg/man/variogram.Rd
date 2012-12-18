@@ -48,7 +48,7 @@ If T datapoints with value zero are not used at  all.
        estimated.
 }
 \item{scale}{
-"km" or "Miles". Default is "km".
+"km" or "nmi". Default is "km".
 }
 \item{evennumber}{
 If T distance classes are chosen so  approximately

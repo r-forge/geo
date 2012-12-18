@@ -1,97 +1,91 @@
 \name{rectGrid}
 \alias{rgrid}
 \alias{srgrid}
+\alias{mrgrid}
+\alias{drgrid}
 
 \title{
-
-  Plots grid of statistical rectangles
-
+  Produce a grid of rectangles on a plot, filled with colors if desired.
 }
 
 \description{
 
-  Plots the outline of or fills statistical rectangles or their
-  sub-rectangles with call to \code{\link{geolines}} or
-  \code{\link{geopolygon}}.   
+  Functions that plot a line grid or one filled with colors for 
+  rectangle codes in systems of various resolutions with call 
+  to \code{\link{geolines}} or \code{\link{geopolygon}} 
+  and perimeter utility functions (see \code{\link{rectPeri}}).   
 
 }
 
 \usage{
-
-rgrid(r, fill = FALSE, ...)
-srgrid(sr, fill = FALSE, ...)
-
+  rgrid(r, fill = FALSE, ...)
+  srgrid(sr, fill = FALSE, ...)
+  mrgrid(mr, dlat = 5, dlon = 10, fill = FALSE, ...)
+  drgrid(dr, dlat = 1, dlon = 2, fill = FALSE, ...)
 }
 
 \arguments{
 
-  \item{r, sr}{
-  Rectangle codes to be outlined or filled.
+\item{r, sr, dr, mr}{
+  Codes of rectangle to be outlined or filled. In different
+  resolutions, \code{r, sr} with their own system 
+  (see \code{\link{deg2rect}}), \code{mr} dimensions based
+   on minutes, \code{dr} on degrees.
+}
+
+\item{dlat, dlon}{
+  Dimensions of latitude and longitude given in minutes
+  and degrees for \code{mrgrid} and \code{drgrid}, respectively
 }
 
 \item{fill}{
-
   Logical, whether or not to fill the plotted rectangles.
 }
 
 \item{\dots}{
-
   other arguments to \code{\link{geopolygon}} or \code{\link{geolines}}
   as appropriate, notably \code{col}. 
 }
-
 }
 
 \details{
-  
   The functions simply outline or fill the rectangles they are given.
   whereas \code{\link{reitaplott}} and \code{\link[geoextras]{geoSR}}
-  assume levels.
-
+  assume levels and are more hi-level.
 }
 
 \value{
-
   No values returned, used for side-effects.
-
 }
 
 \author{
-
   STJ
 }
 
 \note{
-
-  Functions \code{\link{reitaplott}} and \code{\link[geoextras]{geoSR}}
+  Functions \code{\link{reitaplott}} and \code{\link{geoSR}}
   have more in-built functionality to deal with level-plots of
-  recatangles.
-
+  rectangles.
 }
 
 \seealso{
-
   \code{\link{deg2rect}}, \code{\link{geolines}},
-  \code{\link{geopolygon}}, \code{\link{reitaplott}}.
+  \code{\link{geopolygon}}, \code{\link{rectPeri}},
+  \code{\link{reitaplott}}, \code{\link{geoSR}}.
 }
 
 \examples{
 
-## some rectangles on Iceland's coastline
-\dontrun{
 geoplot(grid = FALSE)
 tmp <- island
-tmp$r <- d2r(island)
 tmp$sr <- d2sr(island) 
-rects <- aggregate(lat ~ r, tmp, length)
-srects <- aggregate(lon ~ sr, tmp, length)
-names(rects)[2] <- names(srects)[2] <- "count"
-rects$lev <- cut(rects$count, c(0, 1, 10, 20, 50, 100, 1000))
+srects <- aggregate(. ~ sr, tmp, length)
+names(srects)[2] <- "count"
 srects$lev <- cut(srects$count, c(0, 1, 5, 10, 20, 50, 100))
 mycol <- heat.colors(length(unique(srects$lev)))
-srgrid(srects$sr, fill = T, col = mycol[srects$lev])
+srgrid(srects$sr, fill = TRUE, col = mycol[srects$lev])
 geolines(island)
-}
+
 }
 
 \keyword{hplot}
