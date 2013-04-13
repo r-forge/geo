@@ -28,19 +28,18 @@ function(regions = ".", exact = FALSE, boundary = TRUE, fill = FALSE, color = 1,
   xlim <- mean(xlim) + r * (xlim - mean(xlim))	# add
   ylim <- mean(ylim) + r * (ylim - mean(ylim))	# to get everything
                                         # parameter checks
-  coordtype <- maptype(database)	
                                         # turn the region names into a list of polygon numbers
-  gon <- mapname(database, regions, exact)
+  gon <- maps:::mapname(database, regions, exact)
   n <- length(gon)
   if(n == 0) stop("nothing to draw: no recognized region names")	
                                         # turn the polygon numbers into a list of polyline numbers
-  line <- mapgetg(database, gon, fill, c(-1000000, 1000000), c(-1000000, 
+  line <- maps:::mapgetg(database, gon, fill, c(-1000000, 1000000), c(-1000000, 
                                                                1000000))
   if(length(line$number) == 0) stop(
              "nothing to draw: all regions out of bounds")	
                                         # turn the polyline numbers into x and y coordinates
   if(fill)
-    coord <- mapgetl(database, line$number, c(-1000000, 1000000), c(
+    coord <- maps:::mapgetl(database, line$number, c(-1000000, 1000000), c(
                                                                     -1000000, 1000000))
   else {
     l <- abs(line$number)
@@ -49,7 +48,7 @@ function(regions = ".", exact = FALSE, boundary = TRUE, fill = FALSE, color = 1,
     else if(boundary)
       l <- l[!match(l, l[duplicated(l)], FALSE)]
     else l <- l[duplicated(l)]
-    coord <- mapgetl(database, l, xlim, ylim)
+    coord <- maps:::mapgetl(database, l, xlim, ylim)
     if(length(coord) == 0)
       stop("all data out of bounds")
   }
