@@ -59,7 +59,7 @@ int *n,*lx,*nlx,*inni,*tmpinni;
 
 {
   
-  int i,j,k,i1,i2;
+  int i,j,i1,i2;
   
   for(i1 =0; i1 <=*n-1 ;i1 ++) {
     inni[i1]=0;
@@ -195,8 +195,8 @@ double *x,*y,*xb,*yb,*xr,*yr,*rs,*rt,*ab,*ab1;
 int *n,*nxb,*nxr,*mark,*rside,in_or_out;
 
 {
-  int i,k=0,j,i2[2],nsk[1],i1,h11[50],h12[50],first=0,
-  sth12=-1,side[50],order[50];
+  int i,j,i2[2],nsk[1],i1,
+  side[50],order[50];
   double xs[50],ys[50],ts[50],ss[50];
 
   i2[0]=1;i2[1]=0;
@@ -264,8 +264,8 @@ int *s,*up,*mark,*n,*nxb,*buid,*nxr,*side;
 double *xp,*yp,*xb,*yb,*xr,*yr;
  
 {
-  int k,k1,k2,i,bp,ind;
-  k = k1 = k2 = bp  = 0;
+  int k1,k2,bp,ind;
+  k1 = k2 = bp  = 0;
   ind=1;
   while(k2 < *n) {
     if(buid[k1]==0 && (ind==0 || mark[k1]==2)){ 
@@ -298,7 +298,7 @@ double *x,*y,*xb,*yb,*xr,*yr,*ab,*ab1;
 int *n,*nxb,*nxr,*plot;
 
 {
-  int i,k=0,j,i2[2],nsk[1],i1,first=0,side[50],order[50],i3,nxr0;
+  int i,j,i2[2],nsk[1],i1,side[50],order[50],i3,nxr0;
   double xs[50],ys[50],ts[50],ss[50];
 
   i2[0]=1;i2[1]=0;
@@ -347,26 +347,26 @@ int *n,*nxb,*nxr,*li1,*li2,*nlx,*plot;
   }
 }
 
-void define_multipoly(x,y,xb,yb,xr,yr,n,nxb,nxr,li1,li2,nlx,ab,ab1)
+/* void define_multipoly(x,y,xb,yb,xr,yr,n,nxb,nxr,li1,li2,nlx,ab,ab1) */
 
-double *x,*y,*xb,*yb,*xr,*yr,*ab,*ab1;
-int *n,*nxb,*nxr,*li1,*li2,*nlx;
-{
-  int i,i1,i2,n1;
-  int *mark,*rside;
-  double *rs,*rt;
+/* double *x,*y,*xb,*yb,*xr,*yr,*ab,*ab1; */
+/* int *n,*nxb,*nxr,*li1,*li2,*nlx; */
+/* { */
+/*   int i,i1,i2,n1; */
+/*   int *mark,*rside; */
+/*   double *rs,*rt; */
 
 
-  for(i=0;i<*nlx;i++) {
-    i1 = li1[i]-1;
-    i2 = li2[i]-1;
-    n1 = i2-i1+1;
-    if(i2-i1 > 1) 
-      define_poly(x+i1,y+i1,xb,yb,xr,yr,&n1,nxb,nxr,mark,rside,rs,rt,ab,ab1);
-    xr[*nxr]=yr[*nxr]=-9999999;(*nxr)++;
-    }
+/*   for(i=0;i<*nlx;i++) { */
+/*     i1 = li1[i]-1; */
+/*     i2 = li2[i]-1; */
+/*     n1 = i2-i1+1; */
+/*     if(i2-i1 > 1)  */
+/*       define_poly(x+i1,y+i1,xb,yb,xr,yr,&n1,nxb,nxr,mark,rside,rs,rt,ab,ab1); */
+/*     xr[*nxr]=yr[*nxr]=-9999999;(*nxr)++; */
+/*     } */
 
-}
+/* } */
 
 
 double distance_x(x,y,x1,y1)
@@ -412,7 +412,7 @@ int	*finallist,maxnr,*isub,*subareas;
 double  (*dst)();
 {
 	int 	i,j;
-	double	dist,tiny=1e-9;
+	double	dist;
 
 	for (i=0;i<maxnr;i++) {
 		for (j = 0;j<=i;j++){
@@ -464,7 +464,7 @@ void ludcmp(a,n,indx,d,vv)
 int n,*indx;
 double *a,*d,*vv;
 {
-	int i,imax,j,k;
+	int i,imax=0,j,k;
 	double big,dum,sum,temp;
 	*d=1.0;
 	for (i=0;i<=n-1;i++) {
@@ -604,7 +604,7 @@ int	*na,*nr,*nc,*index,*index1,*operation,*number;
 
 {
 
-	int	i,j;
+	int	i;
 
 	if( *operation == 1){ /* sum  */
 	  for(i =0;i<*na;i++ ){
@@ -647,7 +647,7 @@ double *z;
 int *ind;
 
 {
-	int     i1[3],i;
+	int     i1[3]={0,0,0},i;
 
 	if(z[ind[0]]>=z[ind[1]] && z[ind[1]]>=z[ind[2]]) {
 	i1[0]=ind[2];i1[1]=ind[1];i1[2]=ind[0];}
@@ -709,7 +709,7 @@ void triangle(x1,y1,z1,x2,y2,z2,x3,y3,z3,polyx,polyy,npoly,ncont,cont)
 double  x1,y1,z1,x2,y2,z2,x3,y3,z3,*cont,polyy[][6],polyx[][6];
 int     npoly[],ncont;
 {
-	int i,j,ind,indmax,nct12,nct23,nct13,nc12[160],nc13[160],nc23[160];
+	int i,ind,indmax,nct12,nct23,nct13,nc12[160],nc13[160],nc23[160];
 	double xc12[160],yc12[160],xc23[160],yc23[160],xc13[160],yc13[160],rat,rat1;
 
 	for(i =0 ; i<=ncont-1; i++){
@@ -723,7 +723,7 @@ int     npoly[],ncont;
 
 
 	for(i=0; i <= ncont-1 ; i++){
-		if(cont[i] > z3  & indmax == 0)indmax=i;
+		if(cont[i] > z3 && indmax == 0)indmax=i;
 		if(cont[i] > z1 && cont[i] < z2 ) {
 			if(ind == 0) ind = i ; 
 			rat  = (cont[i] - z1 )/(z2-z1) ;
@@ -859,8 +859,8 @@ int *nx,*ny,*ncont,*lx1,*nel,el[][4],*maxsize,*err,
 
 
 
-  int   i,j,j1,j2,ind[3],indx,npoly1[160],index[4],
-  npoly4[160],cind,k,inni1[4],suminni,kb,buid,ns=4;
+  int   i,j,j1,j2,ind[3],npoly1[160],index[4],
+  cind,k,inni1[4],suminni,kb,buid,ns=4;
 
   double  polyx1[160][6],polyy1[160][6],
   x[5],y[5],z[5];
@@ -906,7 +906,6 @@ int *nx,*ny,*ncont,*lx1,*nel,el[][4],*maxsize,*err,
 					if(z[ind[0]] > -99998) {        /* outside borders */
 						triangle(x[ind[0]],y[ind[0]],z[ind[0]],x[ind[1]],y[ind[1]],z[ind[1]],
 						x[ind[2]],y[ind[2]],z[ind[2]],polyx1,polyy1,npoly1,*ncont,cont);
-						indx = 0;
 						if ( *white == 1)kb = 1 ; else kb=0;
 						for( k = kb; k<=*ncont-1 ; k++){
 							if(npoly1[k]!=0){
@@ -975,7 +974,6 @@ int *nx,*ny,*ncont,*lx1,*nel,el[][4],*maxsize,*err,
 
 			/*      Combine polygons   */
 
-					indx = 0;
 					if ( *white == 1)kb = 1 ; else kb=0;
 					for( k = kb; k<=*ncont-1 ; k++){
 						if(npoly1[k]!=0){
@@ -1069,7 +1067,7 @@ void select_pts(latgr,longr,list,ldir,nlist,lat,lon,maxnr,option,finallist,nr,tr
      double  (*dst)();
      
 {       
-  int   i,qua[5],k,qua1[5],tmp[30],j,m,minnumber,k1;
+  int   i,qua[5],k,j,minnumber,k1;
   minnumber = nlist/10; if(minnumber <2 && *maxnr >8 )minnumber=2;
   for(i=1;i<=4;i++)qua[i]=0;
   
@@ -1149,12 +1147,11 @@ void pointkriging(lat,lon,z,nlat,latgr,longr,zgr,nlatgr,reitur,n,m,pts_in_reit,
      
      
 {
-  int   i,j,ldir[500],list[500],nlist,finallist[500],order[500],k,maxnr,
+  int   i,j,ldir[500],list[500],nlist,finallist[500],order[500],maxnr,
   xnewint[500];
-  double        dist[500],xnewdob[500],d,z1;
+  double        dist[500],d,z1;
   double (*dst)(); /* pointer to distance function */
   if(*x_y==1) dst=distance_x;else dst=distance;
-  k=0;
   for ( i=0; i <*nlat;i++){  
     
     npts_in_reit[reitur[i]]++;
@@ -1238,8 +1235,8 @@ void combinert(lat,lon,z,nlat,reitur,pts_in_reit,npts_in_reit,indrt,jrt,maxrt,
        *fill,*fylla,*n,*minnumber,*nr,*order;
      
 {
-  int	i,j,k,m1,rnr,cnr,nr_out,nr1_out,j1,k_old;
-  double 	tmp,tmp1,tmp2;
+  int	i,j,k,m1,rnr,cnr,nr_out,nr1_out,j1;
+  double 	tmp,tmp1,tmp2=0.0;
   
   k=0;
   for ( i=0; i <*nlat;i++){  
@@ -1602,7 +1599,7 @@ void Curvedist(xc,yc,dc,nc,xp,yp,dp,mindist,np)
      int *nc,*np;
 {
   int i,j;
-  double d,perdist,pardist;
+  double d,perdist=0.0,pardist=0.0;
   for( i = 0;i < *np;i++) {
     mindist[i] = 99999; 
     for(j = 0;j < *nc-1;j++){
