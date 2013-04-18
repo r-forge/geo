@@ -50,7 +50,7 @@
 
 \details{
   The functions simply outline or fill the rectangles they are given.
-  whereas \code{\link{reitaplott}} and \code{\link[geoextras]{geoSR}}
+  whereas \code{\link{reitaplott}} and \code{\link{geoSR}}
   assume levels and are more hi-level.
 }
 

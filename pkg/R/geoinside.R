@@ -35,7 +35,7 @@ function(data, reg, option = 1, col.names = c("lat", "lon"), na.rm = T, robust
 	# Robust method using trigonometric functions.  
 	if(robust) {
 		a <- a1 <- rep(0, length(reg$x))
-		inside <- .C("marghc",
+		inside <- .C("marghc", PACKAGE = "geo", 
 			as.double(data$x),
 			as.double(data$y),
 			as.integer(length(data$y)),
@@ -52,7 +52,7 @@ function(data, reg, option = 1, col.names = c("lat", "lon"), na.rm = T, robust
 	else {
 		# Faster method.  
 		tmpinside <- rep(0, length(border$lxv))
-		inside <- .C("geomarghc",
+		inside <- .C("geomarghc", PACKAGE = "geo", 
 			as.double(data$x),
 			as.double(data$y),
 			as.integer(length(data$y)),

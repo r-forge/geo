@@ -8,7 +8,7 @@ function(pts, curve)
         curve$x <- curve1$x/1.852
         curve$y <- curve1$y/1.852
         pardist <- perdist <- rep(0, length(pts$lat))
-        x <- .C("Curvedist",
+        x <- .C("Curvedist", PACKAGE = "geo", 
                 as.double(curve$x),
                 as.double(curve$y),
                 as.double(curve$dist),

@@ -40,7 +40,7 @@ function(lat, lon = 0., reg, option = 1., projection = "Mercator")
 	a <- a1 <- rep(0., length(reg$lat))
 	if(!is.loaded(symbol.C("marghc1")))
 		dyn.load(paste(DYN.HOME, "margh.new.o", sep = ""))
-	inni <- .C("marghc1",
+	inni <- .C("marghc1", PACKAGE = "geo", 
 		as.single(lon),
 		as.single(lat),
 		as.integer(length(lat)),

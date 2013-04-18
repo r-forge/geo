@@ -71,7 +71,7 @@ function(lat, lon, z, grlat, grlon = 0, fun, fill = F, reg = 0, minnumber = 2,
 	if(wsp == 0)
 		wsp <- ndata
 	workspace <- order <- nr <- rep(0, wsp)
-	outcome <- .C("combinert",
+	outcome <- .C("combinert", PACKAGE = "geo", 
 		as.double(lat),
 		as.double(lon),
 		as.double(z),

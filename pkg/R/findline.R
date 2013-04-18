@@ -13,7 +13,7 @@ function(x, xb, plot = T)
 	ind <- ind[is.na(x$x)]
 	if(length(ind) > 0)
 		x$x[ind] <- x$y[ind] <- -999999
-	xr <- .C("define_multiline",
+	xr <- .C("define_multiline", PACKAGE = "geo", 
 		as.double(x$x),
 		as.double(x$y),
 		as.double(xb$x),

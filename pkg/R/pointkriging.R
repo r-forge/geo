@@ -90,7 +90,7 @@ function(lat, lon, z, xgr, vagram, maxnumber = 16, scale = "km", option = 1,
 			border <- adapt(reg$lat, reg$lon)
 			inn <- rep(0, length(lat))
 			inn1 <- rep(0, length(lat1))
-			inn <- .C("marghc",
+			inn <- .C("marghc", PACKAGE = "geo", 
 				as.double(lon),
 				as.double(lat),
 				as.integer(length(lat)),
@@ -101,7 +101,7 @@ function(lat, lon, z, xgr, vagram, maxnumber = 16, scale = "km", option = 1,
 				as.integer(length(border$lxv)),
 				as.integer(inn))
 			isub <- inn[[9]] * i + isub
-			inn1 <- .C("marghc",
+			inn1 <- .C("marghc", PACKAGE = "geo", 
 				as.double(lon1),
 				as.double(lat1),
 				as.integer(length(lat1)),
@@ -147,7 +147,7 @@ function(lat, lon, z, xgr, vagram, maxnumber = 16, scale = "km", option = 1,
 	# calculate variance.  
 	xy <- 0
 	# not xy coordinates
-	z <- .C("pointkriging",
+	z <- .C("pointkriging", PACKAGE = "geo", 
 		as.double(lat),
 		as.double(lon),
 		as.double(z),

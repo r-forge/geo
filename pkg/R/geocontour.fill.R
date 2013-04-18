@@ -153,7 +153,7 @@ function(grd, z, levels = NULL, nlevels = 0, cex = 0.7, digits = 1, col = NULL,
 		polyy <- c(1:working.space)
 		polyy[1:working.space] <- 0
 		print(paste("calculated working space is", working.space))
-		polyy <- .C("elcont",
+		polyy <- .C("elcont", PACKAGE = "geo", 
 			as.double(c(x1)),
 			as.double(c(y1)),
 			as.double(c(z)),

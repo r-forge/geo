@@ -7,7 +7,7 @@ function(x, xb, in.or.out)
 		xb$y)))
 	nxr <- 0
 	ab <- ab1 <- rep(0, length(xb$x))
-	xr <- .C("define_poly",
+	xr <- .C("define_poly", PACKAGE = "geo", 
 		as.double(x$x),
 		as.double(x$y),
 		as.double(xb$x),
@@ -85,7 +85,7 @@ function(x, xb, in.or.out)
 	s1[, 1] <- 1:nrow(s1)
 	nxr <- 0
 	xr1 <- yr1 <- rep(0, (length(x$x) + length(xb$x)))
-	x <- .C("post_filter",
+	x <- .C("post_filter", PACKAGE = "geo", 
 		as.integer(s1[, 2]),
 		as.integer(side),
 		as.integer(up1),
