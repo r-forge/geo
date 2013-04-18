@@ -270,7 +270,7 @@ double *xp,*yp,*xb,*yb,*xr,*yr;
   while(k2 < *n) {
     if(buid[k1]==0 && (ind==0 || mark[k1]==2)){ 
      if(ind== 1) bp = k1;
-      ind=0; /* Vsar ß byrjunarpunkt */
+      ind=0; /* Visar i byrjunarpunkt */
       xr[*nxr]=xp[k1];yr[*nxr]= yp[k1];buid[k1]=1;(*nxr)++;k2++;
       if(mark[k1]==1) {
 	if(side[k1] != side[s[k1]-1]) fill_in(side[k1],side[s[k1]-1],up[k1],xb,yb,nxb,xr,yr,nxr);
@@ -327,7 +327,7 @@ int *n,*nxb,*nxr,*plot;
   }
   i1 = inside(x+*n-1,y+*n-1,xb,yb,nxb,ab,ab1);
   if(i1==1){xr[*nxr]=x[*n-1];yr[*nxr]=y[*n-1];(*nxr)++;}
-  if(i3==0 && !*plot) *nxr=nxr0; /* ef ÷ll lna inni */
+  if(i3==0 && !*plot) *nxr=nxr0; /* ef oll lina inni */
 }
 
 /* Take number of line_segments and define cut points */
