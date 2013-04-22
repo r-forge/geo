@@ -10,49 +10,23 @@ Finds the convex hull of a set of positions in lat and lon.
 \usage{
 geochull(lat, lon = NULL)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
-  \item{lat}{
-%%     ~~Describe \code{lat} here~~
+  \item{lat, lon}{
+Position(s) as decimal degrees latitude and longitude.  If 'lat' is 'list' its components 'lat$lat' and 'lat$lon' are used for 'lat' and 'lon'.
 }
-  \item{lon}{
-%%     ~~Describe \code{lon} here~~
-}
-}
-\details{
-%%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+List with components \code{lat} and \code{lon} of the convex hull of the input.
 }
-\references{
-%% ~put references to the literature/web site here ~
-}
-\author{
-%%  ~~who you are~~
-}
-\note{
-%%  ~~further notes~~
-}
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link{Proj}}, \code{\link{invProj}}, \code{\link[grDevices]{chull}}
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-
-## The function is currently defined as
-"geochull"
+# draws the convex hull of Iceland's coastline.
+geoplot()
+geolines(geochull(island))
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+
+\keyword{manip}

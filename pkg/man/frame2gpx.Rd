@@ -2,60 +2,41 @@
 \alias{frame2gpx}
 
 \title{
-Convert latlon data frame to gpx
+Convert latlon data frame to gpx file.
 }
 \description{
-Writes a gpx file of a dataframe with a call to gpsbabel in the shell
+Writes a gpx file of a dataframe with a call to \code{gpsbabel} in the shell
 }
 \usage{
 frame2gpx(data, filename = "tmp.gpx", type = "rte")
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
   \item{data}{
-%%     ~~Describe \code{data} here~~
+Data frame with positions in columns \code{lat} and \code{lon}.
 }
   \item{filename}{
-%%     ~~Describe \code{filename} here~~
+Name of gpx-file, defaults to 'tmp.gpx'.
 }
   \item{type}{
-%%     ~~Describe \code{type} here~~
+Type of gpx-file, one of \code{wpt} for waypoints, \code{rte}' for route or \code{trk} for track.
 }
-}
-\details{
-%%  ~~ If necessary, more details than the description above ~~
-}
-\value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
-}
-\references{
-%% ~put references to the literature/web site here ~
-}
-\author{
-%%  ~~who you are~~
 }
 \note{
-%%  ~~further notes~~
+Requires \code{gpsbabel} installation working from the command line.
 }
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\url{gpsbabel.org}
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-
-## The function is currently defined as
-"frame2gpx"
+\dontrun{
+# some positions
+pos <- rPeri(323)
+frame2gpx(pos)
+system("more tmp.gpx")
+system("rm tmp.gpx")
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+}
+
+\keyword{manip}

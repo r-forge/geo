@@ -16,16 +16,19 @@
   }
 }
 \details{
-%%  ~~ If necessary, more details than the __description__ above ~~
+
 }
 \source{
-%%  ~~ reference to a publication or URL from which the data were obtained ~~
+Some official source hopefully.
+}
+\note{
+Needs checking, e.g. has recent agreement with Faroes been implemented. Compare with what's on \url{www.marineregions.org}.
 }
 \references{
-%%  ~~ possibly secondary sources and usages ~~
+Needed.
 }
 \examples{
 data(twohmiles)
-## maybe str(twohmiles) ; plot(twohmiles) ...
+
 }
 \keyword{datasets}

@@ -5,10 +5,7 @@
 Lumpfish regions
 }
 \description{
-List of areas demarkated by the lumpfish regulation and the main part of
-500 m
-isobath around Iceland (with a simple transverse line over the
-Iceland-Faroe Ridge). 
+List of areas demarkated by the lumpfish regulation and the main part of 500 m isobath around Iceland (with a simple transverse line over the Iceland-Faroe Ridge). 
 }
 \usage{data(reg.lump)}
 \format{
@@ -39,17 +36,5 @@ List of 8
   ..$ lat: num [1:402] 64.1 64.1 64 64 64 ...
   ..$ lon: num [1:402] -22.7 -22.7 -22.7 -22.7 -22.7 ...
 }
-\details{
-%%  ~~ If necessary, more details than the __description__ above ~~
-}
-\source{
-%%  ~~ reference to a publication or URL from which the data were obtained ~~
-}
-\references{
-%%  ~~ possibly secondary sources and usages ~~
-}
-\examples{
-data(reg.lump)
-## maybe str(reg.lump) ; plot(reg.lump) ...
-}
+
 \keyword{datasets}

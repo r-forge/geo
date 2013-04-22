@@ -64,7 +64,7 @@ function(regions = ".", exact = FALSE, boundary = TRUE, fill = FALSE, color = 1,
     gonsize <- line$size
     color <- rep(color, length = length(gonsize))
     keep <- !is.na(color)
-    coord[c("x", "y")] <- makepoly(coord, gonsize, keep)
+    coord[c("x", "y")] <- maps:::makepoly(coord, gonsize, keep)
     color <- color[keep]
   }
   if(return.data) return(data.frame(lat = coord$y, lon = coord$x))	
