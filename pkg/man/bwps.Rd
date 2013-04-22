@@ -26,9 +26,7 @@ by dev.off()
 \details{
 <!--explain details here-->
 }
-\section{References}{
 
-}
 \seealso{
 postscript, geoplotbwpalette,litir
 }

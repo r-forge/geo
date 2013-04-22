@@ -15,9 +15,7 @@
     \item{\code{lon}}{a numeric vector}
   }
 }
-\details{
 
-}
 \source{
 Some official source hopefully.
 }

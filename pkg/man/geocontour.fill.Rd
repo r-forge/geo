@@ -210,8 +210,7 @@ cex = cex*csi/0.12.  Use of this parameter is not recommended.  Default
 value is NULL i.e not used.
 }
 }
-\value{
-}
+
 \section{Details}{
 <s-example>
       

@@ -111,9 +111,7 @@ Part of program is written in C so it can crash with style
 \code{\link{grid}},
 \code{\link{geocontour.fill}}.
 }
-\examples{
 
-}
 \keyword{<!--Put one or more s-keyword tags here-->}
 % docclass is function
 % Converted by Sd2Rd version 43268.
