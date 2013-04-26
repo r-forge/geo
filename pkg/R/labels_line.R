@@ -1,4 +1,4 @@
-labels.line <-
+labels_line <-
 function(cont, digits, colors, lty, xlim = c(0, 1), ylim = c(0, 1), linew = F)
 {
 	xlim <- sort(xlim)

@@ -308,7 +308,7 @@ function(lat, lon, z, circles, squares, rectangles, hbars, vbars, perbars,
 				open <- F
 			if(open.circles)
 				open <- T
-			labels.size(cont1, digits, colors, xlim = 
+			labels_size(cont1, digits, colors, xlim = 
 				label.location$x, ylim = label.location$y,
 				n = n, rat = ein.pr.in, minsym = minsym, 
 				label.resolution = label.resolution, open = 

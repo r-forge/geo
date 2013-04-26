@@ -1,4 +1,4 @@
-plot.nogrid <-
+plot_nogrid <-
 function(o, xgr, ygr, col)
 {
 	frame <- list(x = c(o$x[1], o$x[2], o$x[2], o$x[1], o$x[1]), y = c(

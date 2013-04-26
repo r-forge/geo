@@ -86,7 +86,7 @@ function(lat = NULL, lon = 0, type = "p", pch = "*", xlim = c(0, 0),
 	par(oldpar.1)
 #        par(new = TRUE)
 	if(reittext)
-		plot.reitnr(cexrt, lwd = lwd)
+		plot_reitnr(cexrt, lwd = lwd)
 	# number of squares
 	if(length(country) > 1 && plotit) geolines(country, col = col, lwd = 
 			lwd1)

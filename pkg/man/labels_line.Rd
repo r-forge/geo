@@ -1,12 +1,12 @@
-\name{labels.line}
-\alias{labels.line}
+\name{labels_line}
+\alias{labels_line}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{ ~~function to do ... ~~ }
 \description{
   ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-labels.line(cont, digits, colors, lty, xlim = c(0, 1), ylim = c(0, 1), linew = F)
+labels_line(cont, digits, colors, lty, xlim = c(0, 1), ylim = c(0, 1), linew = F)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

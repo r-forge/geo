@@ -1,12 +1,12 @@
-\name{plot.nogrid}
-\alias{plot.nogrid}
+\name{plot_nogrid}
+\alias{plot_nogrid}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{ ~~function to do ... ~~ }
 \description{
   ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-plot.nogrid(o, xgr, ygr, col)
+plot_nogrid(o, xgr, ygr, col)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

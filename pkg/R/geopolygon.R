@@ -63,7 +63,7 @@ function(lat, lon = NULL, col = "white", border = FALSE, exterior = FALSE, nx = 
 		for(i in 1:length(index)) {
 			xx <- Proj(lat[index[[i]]], lon[index[[i]]])
 			if(!outside)
-				xx <- cut.multipoly(xx, brd, in.or.out)
+				xx <- cut_multipoly(xx, brd, in.or.out)
 			if(length(xx$x) > 0)
 				polygon(xx$x, xx$y, col = col, border = border,
 					density = density, angle = angle)
@@ -108,7 +108,7 @@ function(lat, lon = NULL, col = "white", border = FALSE, exterior = FALSE, nx = 
 	xx <- Proj(lat, lon, geopar$scale, geopar$b0, geopar$b1, geopar$l1,
 		Projection)
 	if(!outside)
-		xx <- cut.multipoly(xx, brd, in.or.out)
+		xx <- cut_multipoly(xx, brd, in.or.out)
 	if(length(xx$x) > allowed.size && plot) {
 		ind <- seq(along = xx$x)
 		ind <- ind[is.na(xx$x)]

@@ -1,4 +1,52 @@
-labels.size <-
+\name{labels_size}
+\alias{labels_size}
+%- Also NEED an '\alias' for EACH other topic documented here.
+\title{ ~~function to do ... ~~ }
+\description{
+  ~~ A concise (1-5 lines) description of what the function does. ~~
+}
+\usage{
+labels_size(cont, digits, sizes, xlim = c(0, 1), ylim = c(0, 1), fill = F, n, rat, minsym = "<", label.resolution = 0, open = F, lwd = 1, col = 1)
+}
+%- maybe also 'usage' for other objects documented here.
+\arguments{
+  \item{cont}{ ~~Describe \code{cont} here~~ }
+  \item{digits}{ ~~Describe \code{digits} here~~ }
+  \item{sizes}{ ~~Describe \code{sizes} here~~ }
+  \item{xlim}{ ~~Describe \code{xlim} here~~ }
+  \item{ylim}{ ~~Describe \code{ylim} here~~ }
+  \item{fill}{ ~~Describe \code{fill} here~~ }
+  \item{n}{ ~~Describe \code{n} here~~ }
+  \item{rat}{ ~~Describe \code{rat} here~~ }
+  \item{minsym}{ ~~Describe \code{minsym} here~~ }
+  \item{label.resolution}{ ~~Describe \code{label.resolution} here~~ }
+  \item{open}{ ~~Describe \code{open} here~~ }
+  \item{lwd}{ ~~Describe \code{lwd} here~~ }
+  \item{col}{ ~~Describe \code{col} here~~ }
+}
+\details{
+  ~~ If necessary, more details than the description above ~~
+}
+\value{
+  ~Describe the value returned
+  If it is a LIST, use
+  \item{comp1 }{Description of 'comp1'}
+  \item{comp2 }{Description of 'comp2'}
+  ...
+}
+\references{ ~put references to the literature/web site here ~ }
+\author{ ~~who you are~~ }
+\note{ ~~further notes~~ 
+
+ ~Make other sections like Warning with section{Warning }{....} ~
+}
+\seealso{ ~~objects to See Also as \code{\link{help}}, ~~~ }
+\examples{
+##---- Should be DIRECTLY executable !! ----
+##-- ==>  Define data, use random,
+##--	or do  help(data=index)  for the standard data sets.
+
+## The function is currently defined as
 function(cont, digits, sizes, xlim = c(0, 1), ylim = c(0, 1), fill = F, n,
         rat, minsym = "<", label.resolution = 0, open = F, lwd = 1, col = 1)
 {
@@ -53,5 +101,9 @@ function(cont, digits, sizes, xlim = c(0, 1), ylim = c(0, 1), fill = F, n,
         if(!open)
                 polygon(x, y, col = col, border = T)
         else lines(x, y, col = col, lwd = lwd)
+  }
 }
-
+% Add one or more standard keywords, see file 'KEYWORDS' in the
+% R documentation directory.
+\keyword{ ~kwd1 }
+\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

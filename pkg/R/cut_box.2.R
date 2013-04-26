@@ -1,4 +1,4 @@
-cut.box.2 <-
+cut_box.2 <-
 function(x, y, xb, yb)
 {
 	ind <- c(1:length(x))

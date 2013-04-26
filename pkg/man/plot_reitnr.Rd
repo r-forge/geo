@@ -1,18 +1,17 @@
-\name{cut.multipoly}
-\alias{cut.multipoly}
+\name{plot_reitnr}
+\alias{plot_reitnr}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{ ~~function to do ... ~~ }
 \description{
   ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-cut.multipoly(x, xb, in.or.out = 0)
+plot_reitnr(cexrt, lwd = 0)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{ ~~Describe \code{x} here~~ }
-  \item{xb}{ ~~Describe \code{xb} here~~ }
-  \item{in.or.out}{ ~~Describe \code{in.or.out} here~~ }
+  \item{cexrt}{ ~~Describe \code{cexrt} here~~ }
+  \item{lwd}{ ~~Describe \code{lwd} here~~ }
 }
 \details{
   ~~ If necessary, more details than the description above ~~
@@ -37,26 +36,26 @@ cut.multipoly(x, xb, in.or.out = 0)
 ##--	or do  help(data=index)  for the standard data sets.
 
 ## The function is currently defined as
-function(x, xb, in.or.out = 0)
+function(cexrt, lwd = 0)
 {
-	ind <- x$x[is.na(x$x)]
-	if(length(ind) == 0) {
-		x2 <- findcut(x, xb, in.or.out)
-	}
-	else {
-		x2 <- list(x = NA, y = NA)
-		ind <- prepare.line(x$x)
-		for(i in 1:ind$nlx) {
-			x1 <- list(x = x$x[ind$lx1[i]:ind$lx2[i]], y = x$y[
-				ind$lx1[i]:ind$lx2[i]])
-			x1 <- findcut(x1, xb, in.or.out)
-			x2$x <- c(x2$x, NA, x1$x)
-			x2$y <- c(x2$y, NA, x1$y)
-		}
-		x2$x <- x2$x[ - c(1:2)]
-		x2$y <- x2$y[ - c(1:2)]
-	}
-	return(x2)
+	lat <- invProj(geopar$limx, geopar$limy, geopar$scale, geopar$b0, 
+		geopar$b1, geopar$l1, geopar$projection)
+	minlat <- floor(lat$lat[1] * 2)/2 - 0.5
+	minlon <- floor(lat$lon[1]) - 1
+	maxlon <- floor(lat$lon[2]) + 1
+	maxlat <- floor(lat$lat[2] * 2)/2 + 0.5
+	nlat <- (maxlat - minlat) * 2 + 1
+	nlon <- (maxlon - minlon) + 1
+	lon <- minlon + c(0:nlon)
+	lat <- minlat + c(0:nlat) * 0.5
+	lon <- lon + 0.5
+	lat <- lat + 0.25
+	nlat <- length(lat)
+	nlon <- length(lon)
+	lat <- c(matrix(lat, nlat, nlon))
+	lon <- c(t(matrix(lon, nlon, nlat)))
+	z <- d2r(lat, lon)
+	geotext(lat, lon, z, cex = cexrt, lwd = lwd)
   }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

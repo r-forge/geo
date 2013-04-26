@@ -1,4 +1,4 @@
-plot.reitnr <-
+plot_reitnr <-
 function(cexrt, lwd = 0)
 {
 	lat <- invProj(geopar$limx, geopar$limy, geopar$scale, geopar$b0, 

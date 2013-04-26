@@ -133,7 +133,7 @@ function(limx, limy, scale, b0, xyratio, grid, col, reitur, smareitur, axratio,
 			axis(4, plotgrlat$y, F, tick = F, col = col)
 			xgr <- Proj(latgr, longr, scale, b0, b1, l1, projection
 				)
-			plot.nogrid(o, xgr$x, xgr$y, col)
+			plot_nogrid(o, xgr$x, xgr$y, col)
 		}
 	}
 		# no axlabels
@@ -144,7 +144,7 @@ function(limx, limy, scale, b0, xyratio, grid, col, reitur, smareitur, axratio,
 		}
 		else {
 			xgr <- Proj(latgr, longr, scale, b0, b1, l1, projection)
-			plot.nogrid(o, xgr$x, xgr$y, col)
+			plot_nogrid(o, xgr$x, xgr$y, col)
 		}
 
 	return(list(dlon=dlon,dlat=dlat))

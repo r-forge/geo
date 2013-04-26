@@ -1,12 +1,12 @@
-\name{cut.box.2}
-\alias{cut.box.2}
+\name{cut_box.2}
+\alias{cut_box.2}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{ ~~function to do ... ~~ }
 \description{
   ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-cut.box.2(x, y, xb, yb)
+cut_box.2(x, y, xb, yb)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

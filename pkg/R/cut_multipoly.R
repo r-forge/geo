@@ -1,4 +1,4 @@
-cut.multipoly <-
+cut_multipoly <-
 function(x, xb, in.or.out = 0)
 {
 	ind <- x$x[is.na(x$x)]

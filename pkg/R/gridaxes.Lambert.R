@@ -72,7 +72,7 @@ function(limx, limy, scale, b0, xyratio, grid, col, reitur, smareitur, axratio,
 	# add NA for plot
 	plx.lon <- rbind(plotgr2$x, n1)
 	ply.lon <- rbind(plotgr2$y, n1)
-	plx <- cut.box.1(plx.lon, ply.lon, o$x, o$y)
+	plx <- cut_box.1(plx.lon, ply.lon, o$x, o$y)
 	if(!grid)
 		plx1 <- adjust.grd(plx)
 	else plx1 <- plx
@@ -90,7 +90,7 @@ function(limx, limy, scale, b0, xyratio, grid, col, reitur, smareitur, axratio,
 	pl.lon <- rbind(t(longr1), n1)
 	x <- fill.points(pl.lon, pl.lat, nx = 10)
 	x <- Proj(x$y, x$x, scale, b0, b1, l1, projection)
-	ply <- cut.box.2(x$x, x$y, o$x, o$y)
+	ply <- cut_box.2(x$x, x$y, o$x, o$y)
 	if(!grid)
 		ply1 <- adjust.grd(ply)
 	else ply1 <- ply

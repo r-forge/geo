@@ -192,7 +192,7 @@ function (grd, z, nlevels = 10, levels = NULL, labcex = 1, triangles = TRUE,
       if (geopar$projection == "none") 
         paint.window.x(label.location, border = TRUE)
       else paint.window(label.location, border = TRUE)
-        labels.line(levels, digits, color, lty, xlim = label.location$x, 
+        labels_line(levels, digits, color, lty, xlim = label.location$x, 
                     ylim = label.location$y, linew)
     }
     if (geopar$cont && colors) {
@@ -200,7 +200,7 @@ function (grd, z, nlevels = 10, levels = NULL, labcex = 1, triangles = TRUE,
       par(new = TRUE)
       plot(c(0, 1, 1, 0, 0), c(0, 0, 1, 1, 0), type = "l", 
            axes = FALSE, xlab = " ", ylab = " ")
-      labels.line(levels, digits, color, lty, linew)
+      labels_line(levels, digits, color, lty, linew)
     }
     if (length(reg) > 1 && paint) {
       nx <- length(lon)
