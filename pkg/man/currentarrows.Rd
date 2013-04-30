@@ -2,40 +2,39 @@
 \alias{currentarrows}
 
 \title{
-Plot arrows showing the size and direction of currents
+Plot arrows and segments showing the size and direction of currents.
 }
 \description{
-Plot arrows showing the size and direction of currents
+Plot arrows and segments showing the size and direction of currents.
 }
 \usage{
-currentarrows(data, maxsize = 0.5, maxn, col = "blue", lwd = 2, minrat = 0.5, arrowsize = 0.2, center = T)
+currentarrows(data, maxsize = 0.5, maxn, col = "blue", lwd = 2, arrowsize = 0.2, center = T)
 }
 
 \arguments{
   \item{data}{
-%%     ~~Describe \code{data} here~~
+Data in a list with components \code{lat} and \code{lon} with decimal degrees, and \code{current} with the current magnitude.
 }
   \item{maxsize}{
-%%     ~~Describe \code{maxsize} here~~
+Maximum current segment size.
 }
   \item{maxn}{
-%%     ~~Describe \code{maxn} here~~
+Current given with \code{maxsize}, defaults to \code{max(data$current)}.
 }
   \item{col}{
-%%     ~~Describe \code{col} here~~
+Color of current arrows and segments.
 }
   \item{lwd}{
-%%     ~~Describe \code{lwd} here~~
-}
-  \item{minrat}{
-%%     ~~Describe \code{minrat} here~~
+Line width of the segments showing current.
 }
   \item{arrowsize}{
-%%     ~~Describe \code{arrowsize} here~~
+Arrow size.
 }
   \item{center}{
-%%     ~~Describe \code{center} here~~
+Whether or not to center the arrow, defaults to \code{TRUE}.
 }
 }
+\note{
+Needs further checking and elaboration.
 
-\keyword{ ~kwd1 }
+\keyword{aplot}

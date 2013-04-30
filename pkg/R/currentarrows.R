@@ -1,5 +1,5 @@
 currentarrows <-
-function(data,maxsize=0.5,maxn,col="blue",lwd=2,minrat=0.5,arrowsize=0.2,center=T){
+function(data,maxsize=0.5,maxn,col="blue",lwd=2,arrowsize=0.2,center=T){
   res <- list()
   xsizerat <- geopar$gpar$pin[1]/diff(geopar$origin$lon)
   ysizerat <- geopar$gpar$pin[2]/diff(geopar$origin$lat)
@@ -19,7 +19,7 @@ function(data,maxsize=0.5,maxn,col="blue",lwd=2,minrat=0.5,arrowsize=0.2,center=
       tmp$lon <- tmp$lon -dlon/2
     }
     res[[i]] <- tmp
-    SegmentWithArrow(tmp,lwd=lwd,size=arrowsize,col=col,minrat=minrat)
+    SegmentWithArrow(tmp,lwd=lwd,size=arrowsize,col=col)
   }
   return(invisible(res)) 
 }

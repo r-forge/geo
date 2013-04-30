@@ -8,29 +8,29 @@ Plot line segment with arrow at the end.
 Plot line segment with arrow at the end.  
 }
 \usage{
-SegmentWithArrow(pos, angle = 15, size = 0.2, minrat = 1, col = "blue", lwd = 2)
+SegmentWithArrow(pos, angle = 15, size = 0.2, col = "blue", lwd = 2)
 }
 
 \arguments{
   \item{pos}{
-%%     ~~Describe \code{pos} here~~
+Segment positions.
 }
   \item{angle}{
-%%     ~~Describe \code{angle} here~~
+Angle determining the acuity of the arrow.
 }
   \item{size}{
-%%     ~~Describe \code{size} here~~
-}
-  \item{minrat}{
-%%     ~~Describe \code{minrat} here~~
+Size of arrow.
 }
   \item{col}{
-%%     ~~Describe \code{col} here~~
+Color of arrow.
 }
   \item{lwd}{
-%%     ~~Describe \code{lwd} here~~
+Line width of segment.
 }
+}
+\note{
+Needs further checking and elaboration.
 }
 
-\keyword{ ~kwd1 }
+\keyword{aplot}
 
