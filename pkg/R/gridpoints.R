@@ -40,7 +40,7 @@ function(border, dx, grpkt, nx, n)
 		xgr <- (xmin - dx[1]) + c(1:(nx[1] + 2)) * dx[1]
 		ygr <- (ymin - dx[2]) + c(1:(nx[2] + 2)) * dx[2]
 	}
-	else if(projection == "none") {
+	else if(geopar$projection == "none") {
 		xgr <- grpkt$x
 		ygr <- grpkt$y
 	}
