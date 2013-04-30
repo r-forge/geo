@@ -16,7 +16,7 @@ SegmentWithArrow(pos, angle = 15, size = 0.2, col = "blue", lwd = 2)
 Segment positions.
 }
   \item{angle}{
-Angle determining the acuity of the arrow.
+(Half-)Angle (< 90) determining arrow sharpness.
 }
   \item{size}{
 Size of arrow.

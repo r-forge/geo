@@ -1,60 +1,38 @@
 \name{SMB.std.background}
 \alias{SMB.std.background}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{ ~~function to do ... ~~ }
+
+\title{Standard background for the SMB.}
+
 \description{
-  ~~ A concise (1-5 lines) description of what the function does. ~~
+Plots standard background for the SMB survey, aka Icelandic Groundfish Survey.
 }
+
 \usage{
-SMB.std.background(depth, depthcol = 1, depthlty = 1, depthlwd = 1, eyjar, depthlab, depthlabcsi = 0.12, ...)
+SMB.std.background(depth, depthcol = 1, depthlty = 1, depthlwd = 1, 
+  eyjar, depthlab, depthlabcsi = 0.12, ...)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
-  \item{depth}{ ~~Describe \code{depth} here~~ }
-  \item{depthcol}{ ~~Describe \code{depthcol} here~~ }
-  \item{depthlty}{ ~~Describe \code{depthlty} here~~ }
-  \item{depthlwd}{ ~~Describe \code{depthlwd} here~~ }
-  \item{eyjar}{ ~~Describe \code{eyjar} here~~ }
-  \item{depthlab}{ ~~Describe \code{depthlab} here~~ }
-  \item{depthlabcsi}{ ~~Describe \code{depthlabcsi} here~~ }
-  \item{\dots}{ ~~Describe \code{\dots} here~~ }
+  \item{depth}{Vector of isobaths to draw, default none}
+  \item{depthcol}{Colors for isobaths}
+  \item{depthlty}{Line types for isobaths}
+  \item{depthlwd}{Line widths for isobaths}
+  \item{eyjar}{Additional data to plot, e.g. islands}
+  \item{depthlab}{Label depths? Defaults to FALSE}
+  \item{depthlabcsi}{Depthlabel size}
+  \item{\dots}{Additional arguemnts to \code{geoplot} and \code{geolines}}
 }
-\details{
-  ~~ If necessary, more details than the description above ~~
-}
+
 \value{
-  ~Describe the value returned
-  If it is a LIST, use
-  \item{comp1 }{Description of 'comp1'}
-  \item{comp2 }{Description of 'comp2'}
-  ...
+No value returned, plots standard layout SMB/IGFS plot.
 }
-\references{ ~put references to the literature/web site here ~ }
-\author{ ~~who you are~~ }
-\note{ ~~further notes~~ 
 
- ~Make other sections like Warning with section{Warning }{....} ~
+\note{
+Depth labelling etc might be cleaned up, use of \code{eyjar} argument could change, calls data object \code{depthloc} with a few positions for isobath labels.
 }
-\seealso{ ~~objects to See Also as \code{\link{help}}, ~~~ }
-\examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
 
-## The function is currently defined as
-function(depth, depthcol = 1, depthlty = 1, depthlwd = 1, eyjar, depthlab,
-        depthlabcsi = 0.12, ...)
-{
-        SMB.limits <- list(lat = c(62.85, 67.5), lon = c(-27.8, -9.8))
-        geoplot(xlim = SMB.limits, ...)
-        if(!missing(depth))
-                gbplot(depth, depthcol, depthlty, depthlwd, depthlab,
-                        depthlabcsi)
-        if(!missing(eyjar))
-                geolines(eyjar, ...)
-  }
+\seealso{
+\code{\link{geoplot}}, \code{\link{gbplot}}, \code{\link{geolines}}, \code{\link{eyjar}}
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+
+\keyword{hplot}
