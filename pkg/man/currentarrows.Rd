@@ -36,5 +36,6 @@ Whether or not to center the arrow, defaults to \code{TRUE}.
 }
 \note{
 Needs further checking and elaboration.
+}
 
 \keyword{aplot}
