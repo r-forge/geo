@@ -1,65 +1,33 @@
 \name{cut_multipoly}
 \alias{cut_multipoly}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{ ~~function to do ... ~~ }
+
+\title{Intersect or take complement (?) of polygons}
+
 \description{
-  ~~ A concise (1-5 lines) description of what the function does. ~~
+Intersect or take complement (?) of one or many polygons with a single one.
 }
+
 \usage{
 cut_multipoly(x, xb, in.or.out = 0)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
-  \item{x}{ ~~Describe \code{x} here~~ }
-  \item{xb}{ ~~Describe \code{xb} here~~ }
-  \item{in.or.out}{ ~~Describe \code{in.or.out} here~~ }
+  \item{x}{Polygon or polygons, seperated with NAs, hence 'multipoly'}
+  \item{xb}{Polygon to intersect with/complement from}
+  \item{in.or.out}{Whether to take the intersect (0) or complement of x in xb (1). Default 0}
 }
-\details{
-  ~~ If necessary, more details than the description above ~~
-}
+
 \value{
-  ~Describe the value returned
-  If it is a LIST, use
-  \item{comp1 }{Description of 'comp1'}
-  \item{comp2 }{Description of 'comp2'}
-  ...
+List with compents:
+  \item{x, y}{with coordinates of intersection or complement (?)}
 }
-\references{ ~put references to the literature/web site here ~ }
-\author{ ~~who you are~~ }
-\note{ ~~further notes~~ 
 
- ~Make other sections like Warning with section{Warning }{....} ~
+\note{
+Check use of \code{in.or.out=1}, when there are many polygons in \code{x}, how is the complement with \code{xb} taken? Needs elaboration. Possibly drop in.or.out from argument list and fix it at 0 in call to findcut.
 }
-\seealso{ ~~objects to See Also as \code{\link{help}}, ~~~ }
-\examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
 
-## The function is currently defined as
-function(x, xb, in.or.out = 0)
-{
-	ind <- x$x[is.na(x$x)]
-	if(length(ind) == 0) {
-		x2 <- findcut(x, xb, in.or.out)
-	}
-	else {
-		x2 <- list(x = NA, y = NA)
-		ind <- prepare.line(x$x)
-		for(i in 1:ind$nlx) {
-			x1 <- list(x = x$x[ind$lx1[i]:ind$lx2[i]], y = x$y[
-				ind$lx1[i]:ind$lx2[i]])
-			x1 <- findcut(x1, xb, in.or.out)
-			x2$x <- c(x2$x, NA, x1$x)
-			x2$y <- c(x2$y, NA, x1$y)
-		}
-		x2$x <- x2$x[ - c(1:2)]
-		x2$y <- x2$y[ - c(1:2)]
-	}
-	return(x2)
-  }
+\seealso{
+Called by \code{\link{geopolygon}}, calls \code{\link{findcut}} and \code{\link{prepare.line}}
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+
+\keyword{manip}

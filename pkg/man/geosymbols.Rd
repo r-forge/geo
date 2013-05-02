@@ -270,3 +270,4 @@ No values are returned
       # perbars or more than one used simultanuously.
 }}
 
+\keyword{aplot}

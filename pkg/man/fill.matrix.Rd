@@ -1,51 +1,29 @@
 \name{fill.matrix}
 \alias{fill.matrix}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{ ~~function to do ... ~~ }
+
+\title{Relace elements of a matrix}
+
 \description{
-  ~~ A concise (1-5 lines) description of what the function does. ~~
+Replace (fill) elements of a matrix (or data.frame) with a value for given pairs of row and column indices.
 }
+
 \usage{
 fill.matrix(outcome, x, rownr, dalknr)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
-  \item{outcome}{ ~~Describe \code{outcome} here~~ }
-  \item{x}{ ~~Describe \code{x} here~~ }
-  \item{rownr}{ ~~Describe \code{rownr} here~~ }
-  \item{dalknr}{ ~~Describe \code{dalknr} here~~ }
+  \item{outcome}{Input matrix/data.frame}
+  \item{x}{Value or values to replace/fill with}
+  \item{rownr}{Row index/indices}
+  \item{dalknr}{Column index/indices}
 }
-\details{
-  ~~ If necessary, more details than the description above ~~
-}
+
 \value{
-  ~Describe the value returned
-  If it is a LIST, use
-  \item{comp1 }{Description of 'comp1'}
-  \item{comp2 }{Description of 'comp2'}
-  ...
+Matrix or data.frame with given values replaced.
 }
-\references{ ~put references to the literature/web site here ~ }
-\author{ ~~who you are~~ }
-\note{ ~~further notes~~ 
 
- ~Make other sections like Warning with section{Warning }{....} ~
+\note{
+Probably redundant, not called by any geo-function, the same effect could be achieved with an assignment to a matrix with an index-matrix of the values in rownr and dalknr: \code{mat[matrix(c(rownr, dalknr), ncol = 2)] <- x}
 }
-\seealso{ ~~objects to See Also as \code{\link{help}}, ~~~ }
-\examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
 
-## The function is currently defined as
-function(outcome, x, rownr, dalknr)
-{
-        ind <- nrow(outcome) * (dalknr - 1) + rownr
-        outcome[ind] <- x
-        return(outcome)
-  }
-}
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{manip}

@@ -1,56 +1,32 @@
 \name{adjust.grd}
 \alias{adjust.grd}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{ ~~function to do ... ~~ }
+
+\title{Adjusts grid for plot in Lambert projection.}
+
 \description{
-  ~~ A concise (1-5 lines) description of what the function does. ~~
+Adjusts grid for plot in Lambert projection.
 }
+
 \usage{
 adjust.grd(ply, rat = 0.025)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
-  \item{ply}{ ~~Describe \code{ply} here~~ }
-  \item{rat}{ ~~Describe \code{rat} here~~ }
+  \item{ply}{gridline??}
+  \item{rat}{curvature or slant???}
 }
-\details{
-  ~~ If necessary, more details than the description above ~~
-}
+
 \value{
-  ~Describe the value returned
-  If it is a LIST, use
-  \item{comp1 }{Description of 'comp1'}
-  \item{comp2 }{Description of 'comp2'}
-  ...
+Returns diagonal or curved lines for use in grid on Lambert projected plots.
 }
-\references{ ~put references to the literature/web site here ~ }
-\author{ ~~who you are~~ }
-\note{ ~~further notes~~ 
 
- ~Make other sections like Warning with section{Warning }{....} ~
+\note{
+Needs elaboration. Utility, internal, might be hidden?
 }
-\seealso{ ~~objects to See Also as \code{\link{help}}, ~~~ }
-\examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
 
-## The function is currently defined as
-function(ply, rat = 0.025)
-{
-	gx <- geopar$limx
-	gy <- geopar$limy
-	bx1 <- list(x = c(gx[1], gx[2], gx[2], gx[1], gx[1]), y = c(gy[1],
-		gy[1], gy[2], gy[2], gy[1]))
-	gx <- mean(gx) + (1 - rat) * (gx - mean(gx))
-	gy <- mean(gy) + (1 - rat) * (gy - mean(gy))
-	bx1 <- list(x = c(gx[1], gx[2], gx[2], gx[1], gx[1], bx1$x), y = c(
-		gy[1], gy[1], gy[2], gy[2], gy[1], bx1$y))
-	ply <- findline(ply, bx1)
-	return(ply)
-  }
+\seealso{
+\code{\link{findline}}, \code{\link{gridaxes.Lambert}}
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+
+\keyword{manip}
+\keyword{aplot}
