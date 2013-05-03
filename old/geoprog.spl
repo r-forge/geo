@@ -1,0 +1,6425 @@
+geo.obj.files <- c("capply.o", "geomargh.o", "intsect.o", "newcont.o", "orthproj.o", 
+         "slvord.o","ptkrig.o", "sqapply.o", "vargram.o")
+".Last.value"<-
+c(".Last.value", "Arrow", "Closed.curve", "Open.curve", "Proj", 
+	"Reitur2Svaedi1to10", "Set.grd.and.z", "adapt", "adjust.grd", 
+	"arc.dist", "arcdist", "bua", "bw.landscape", "bw.portrait", "capply", 
+	"check.version", "color.all.landscape", "color.landscape", 
+	"color.landscape.X11", "color.landscape.X11.new", "color.landscape.new",
+	"color.portrait", "color.portrait.X11", "color.portrait.X11.new", 
+	"color.portrait.new", "colsymbol", "combine.rt", "convert", "cut.box.1",
+	"cut.box.2", "cut.multipoly", "d2r", "d2sr", "dalk.sum", "geoexpand", 
+	"extract", "fill.matrix", "fill.outside.border", "fill.points", 
+	"find.hnit", "findcut", "findline", "fitspher.aut.1", "gbplot","geoarea","geoarea.old","geo.Split.poly",
+ "geocontour", 
+	"geocontour.fill", "geoconvert", "geoconvert.1", "geoconvert.2", "geocurve",
+	"geodefine", "geogrid", "geoidentify","geoinside", "geolegend", "geolines", 
+	"geolines.with.arrows", "geolocator", "geoplot", "geopoints", 
+	"geopolygon", "geosubplot", "geosymbols", "geotext", "geoworld", 
+	"giveborder", "grid", "gridaxes", "gridaxes.Lambert", "gridpoints", 
+	"init", "inside.reg.bc", "inside.reg.bc1", "invProj", "invlambert", 
+	"invmerc", "invutm", "join", "join.data.frame", "join.old", 
+	"labels.line", "labels.size", "labels1", "labels2", "lambert", 
+	"landm.2.lat.lon", "lat.lon.2.landm", 
+	"litir", "locdist", "make.arrow", "makepoly", "mapgetg", "mapgetl", 
+	"mapname", "mapthin", "maptype", "mercator", "na.mean", "orthproj", "paint.window",
+	"pdist", "plot.nogrid", "plot.reitnr", "plvar", "pointkriging", 
+	"prepare.line", "pscolors", "r2d", "reitaplott", "rm.columns", 
+	"select.columns", "select.rows", "shadeborder", "shading1", "SMB.std.background","sr2d", 
+	 "utm", "variofit", "variogram","spherical")
+"Arrow"<-
+function(pos, angle = 15, col = 2)
+{
+	pos <- Proj(pos)
+	dx <-  - diff(pos$x)
+	dy <-  - diff(pos$y)
+	d <- sqrt(dy * dy + dx * dx)
+	d1 <- d * tan((angle * pi)/180)
+	p1y <- pos$y[1] + d1/d * dx
+	p1x <- pos$x[1] - d1/d * dy
+	p2y <- pos$y[1] - d1/d * dx
+	p2x <- pos$x[1] + d1/d * dy
+	d <- data.frame(y = c(pos$y[2], p1y, p2y, pos$y[2]), x = c(pos$x[2], 
+		p1x, p2x, pos$x[2]))
+	oldpar <- par()
+	on.exit(par(oldpar))
+	par(geopar$gpar)
+	polygon(d, col = col)
+	d <- invProj(d)
+	return(data.frame(lat = d$lat, lon = d$lon))
+}
+"Closed.curve"<-
+function(gogn, df = round(nrow(gogn)/2), n = 10)
+{
+	gogn$index <- c(1:nrow(gogn))
+	tmpper <- c(1, nrow(gogn))
+	assign("tmpper", tmpper, frame = 1)
+	assign("df", df, frame = 1)
+	x <- glm(lat ~ ps(index, df = df, period = tmpper), data = gogn)
+	y <- glm(lon ~ ps(index, df = df, period = tmpper), data = gogn)
+	r <- range(gogn$index)
+	pred.frame <- data.frame(index = seq(r[1], r[2], length = nrow(gogn) * 
+		n))
+	pred.frame$lat <- predict(x, pred.frame)
+	pred.frame$lon <- predict(y, pred.frame)
+	pred.frame <- pred.frame[, c("lat", "lon")]
+	return(pred.frame)
+}
+"Open.curve"<-
+function(gogn, df = nrow(gogn)/2, n = 10)
+{
+	gogn$index <- c(1:nrow(gogn))
+	assign("df", df, frame = 1)
+	x <- glm(lat ~ ns(index, df = df), data = gogn)
+	y <- glm(lon ~ ns(index, df = df), data = gogn)
+	r <- range(gogn$index)
+	pred.frame <- data.frame(index = seq(r[1], r[2], length = nrow(gogn) * 
+		n))
+	pred.frame$lat <- predict(x, pred.frame)
+	pred.frame$lon <- predict(y, pred.frame)
+	pred.frame <- pred.frame[, c("lat", "lon")]
+	return(pred.frame)
+}
+"Proj"<-
+function(a, b = 0, scale = geopar$scale, b0 = geopar$b0, b1 = geopar$b1, l1 = 
+	geopar$l1, projection = geopar$projection, col.names = c("lon", "lat")
+	)
+{
+	if(col.names[1] != "lon" || col.names[2] != "lat")
+		projection <- "none"
+	if(length(a$lon) > 0 || length(a$y) > 0) {
+		if(projection == "none") {
+			b <- a$y
+			a <- a$x
+		}
+		else {
+			b <- a$lon
+			a <- a$lat
+		}
+	}
+	if(projection == "Lambert") {
+		x <- lambert(a, b, b0, l1, b1, scale, old = T)
+	}
+	else if(projection == "Mercator") {
+		x <- mercator(a, b, scale, b0)
+	}
+	else if(projection == "none") {
+		x <- list(x = a, y = b)
+	}
+}
+"Reitur2Svaedi1to10"<-
+function(reitur, smareitur)
+{
+	if(missing(smareitur))
+		smareitur <- rep(0, length(reitur))
+	a <- rep(0, length(reitur))
+	i <- match(reitur, Totalreitir$reitur)	# reitir allir innan sama sv. 
+	i1 <- c(1:length(i))
+	i1 <- i1[!is.na(i)]
+	i <- i[!is.na(i)]
+	a[i1] <- Totalreitir$area[i]
+	i <- match(reitur, Dypisreitir$reitur)	# reitir utan og innan 500m
+	i1 <- c(1:length(i))
+	i1 <- i1[!is.na(i)]
+	i <- i[!is.na(i)]
+	if(length(i1) > 0)
+		a[i1] <- Dypisreitir[i, "<500"]
+	i <- match(reitur, c(373, 324))
+	i1 <- c(1:length(i))
+	i1 <- i1[!is.na(i)]
+	if(length(i1) > 0)
+		a[i1] <- 1
+	i <- match(reitur, c(373, 324))	# reitir bæði á 1 og 10
+	i1 <- c(1:length(i))
+	i1 <- i1[!is.na(i)]
+	if(length(i1) > 0) a[i1] <- 1	# meirihluti í sv. 1.  
+	i <- match(reitur, c(721, 722, 723))	# reitir bæði á 2 og 3.  
+	i1 <- c(1:length(i))
+	i1 <- i1[!is.na(i)]
+	if(length(i1) > 0)
+		a[i1] <- 2
+	i <- match(reitur, c(Dypisreitir$reitur, Totalreitir$reitur, 323, 324, 
+		721, 722, 723))
+	i1 <- c(1:length(i))
+	i1 <- i1[is.na(i)]
+	if(length(i1) > 0)
+		tmp <- inside.reg.bc1(r2d(reitur[i1] * 100 + smareitur[i1]))
+	a[i1] <- tmp$area
+	return(a)
+}
+"Set.grd.and.z"<-
+function(grd, z, mask, set = NA, col.names = c("lon", "lat"))
+{
+# z is a name of a column in the dataframe grd.
+	if(is.data.frame(grd) && is.character(z)) z <- grd[, z]
+	if(is.data.frame(grd) && nrow(grd) == length(z)) {
+		i1 <- match(col.names[1], names(grd))
+		i2 <- match(col.names[2], names(grd))
+		xgr <- sort(unique(grd[, i1]))
+		ygr <- sort(unique(grd[, i2]))
+		xgr.1 <- c(matrix(xgr, length(xgr), length(ygr)))
+		ygr.1 <- c(t(matrix(ygr, length(ygr), length(xgr))))
+		xgr.data <- data.frame(x = xgr.1, y = ygr.1)
+		names(xgr.data) <- col.names
+		xgr.data$z <- rep(set, nrow(xgr.data))
+		index <- paste(xgr.data[, 1], xgr.data[, 2], sep = "-")
+		index1 <- paste(grd[, i1], grd[, i2], sep = "-")
+		j <- match(index1, index)
+		xgr.data$z[j] <- z
+		grd1 <- list(xgr, ygr)
+		names(grd1) <- col.names
+		return(list(grd = grd1, z = xgr.data$z))
+	}
+# grd is a list like returned by pointkriging
+	if(is.list(grd) && !is.data.frame(grd)) {
+		i1 <- match(col.names[1], names(grd))
+		i2 <- match(col.names[2], names(grd))
+		xgr <- grd[[i1]]
+		ygr <- grd[[i2]]
+		if(length(xgr) * length(ygr) != length(z)) {
+			cat("Incorrect length on z")
+			return(invisible())
+		}
+		xgr.1 <- c(matrix(xgr, length(xgr), length(ygr)))
+		ygr.1 <- c(t(matrix(ygr, length(ygr), length(xgr))))
+		xgr.data <- data.frame(x = xgr.1, y = ygr.1)
+		names(xgr.data) <- col.names
+		xgr.data$z <- z
+		grd1 <- list(xgr, ygr)
+		names(grd1) <- col.names
+		return(list(grd = grd1, z = xgr.data$z))
+	}
+}
+"adapt"<-
+function(reg.lat, reg.lon, projection = "Mercator")
+{
+	ind <- c(1:length(reg.lat))
+	nholes <- length(reg.lat[reg.lat == "NA"])
+	lxv <- c(0:(nholes + 1))
+	if(nholes != 0) {
+#               remove NA,s and points given twice
+		ind1 <- ind[reg.lat == "NA"]
+		ind2 <- c(ind1 - 1, ind1, length(reg.lat))
+		lon <- reg.lon[ - ind2]
+		lat <- reg.lat[ - ind2]
+		for(i in 2:(nholes + 1)) {
+			lxv[i] <- ind1[i - 1] - 2 * (i - 1)
+		}
+	}
+	else {
+		ind <- (1:length(reg.lon) - 1)
+		lon <- reg.lon[ind]
+		lat <- reg.lat[ind]
+	}
+	lxv[nholes + 2] <- length(lon)
+	if(projection == "none")
+		return(list(x = lon, y = lat, lxv=lxv))	#x,y coordinates.   
+	else return(list(lat=lat, lon=lon, lxv=lxv))
+}
+"adjust.grd"<-
+function(ply, rat = 0.025000000000000001)
+{
+	gx <- geopar$limx
+	gy <- geopar$limy
+	bx1 <- list(x = c(gx[1], gx[2], gx[2], gx[1], gx[1]), y = c(gy[1], gy[1
+		], gy[2], gy[2], gy[1]))
+	gx <- mean(gx) + (1 - rat) * (gx - mean(gx))
+	gy <- mean(gy) + (1 - rat) * (gy - mean(gy))
+	bx1 <- list(x = c(gx[1], gx[2], gx[2], gx[1], gx[1], bx1$x), y = c(gy[1
+		], gy[1], gy[2], gy[2], gy[1], bx1$y))
+	ply <- findline(ply, bx1)
+	return(ply)
+}
+
+# same lat and lon can give NA instead of zero distance.  Therefore all this mesh.  
+"arc.dist"<-
+function(lat, lon, lat1, lon1, scale = "Miles")
+{
+	if(scale == "Miles")
+		rad <- 6367/1.8520000000000001
+	else rad <- 6367
+	lat <- (lat * pi)/180
+	lon <- (lon * pi)/180
+	lat1 <- (lat1 * pi)/180
+	lon1 <- (lon1 * pi)/180
+	if(length(lat) != length(lat1)) {
+	  if(length(lat) == 1) {
+	    lat <- rep(lat,length(lat1)) 
+	    lon <- rep(lon,length(lat1)) 
+	  }
+	  if(length(lat1) == 1) {
+	    lat1 <- rep(lat1,length(lat)) 
+	    lon1 <- rep(lon1,length(lat)) 
+	  }
+	}
+	dist <- rep(0,length(lat)) 
+	i <- (lat != lat1) | (lon != lon1)
+	dist[i] <- rad * acos(sin(lat[i]) * sin(lat1[i]) 
+		+ cos(lat[i]) * cos(lat1[i]) 
+		     * cos(lon[i] - lon1[i]))
+	return(dist)
+}
+"arcdist"<-
+function(lat, lon, lat1 = NULL, lon1 = NULL, scale = "Miles")
+{
+	if(is.null(lat1)) {
+		lat1 <- lon$lat
+		lon1 <- lon$lon
+		lon <- lat$lon
+		lat <- lat$lat
+	}
+	if(scale == "Miles")
+		miles <- 1.8520000000000001
+	else miles <- 1
+	rad <- 6367	#radius of earth in km
+	mult1 <- (rad/miles)
+	mult2 <- pi/180
+	return(mult1 * acos(sin(mult2 * lat) * sin(mult2 * lat1) + cos(mult2 * 
+		lat) * cos(mult2 * lat1) * cos(mult2 * lon - mult2 * lon1)))
+}
+"bua"<-
+function(nm = 10)
+{
+	rrt <- c(0, 0, 1, 1)
+	crt <- c(0, 1, 1, 0)
+	for(i in 2:nm) {
+		stdrrt <- c(matrix(0, 8 * i - 4, 1))
+		stdcrt <- stdrrt
+		n <- i * 8 - 4
+		stdrrt[1:(2 * i)] <- 1 - i
+		stdrrt[(2 * i + 1):(4 * i - 1)] <- c((2 - i):i)
+		stdrrt[(4 * i - 1):(6 * i - 2)] <- i
+		stdrrt[(6 * i - 2):(8 * i - 4)] <- c(i:(2 - i))
+		stdcrt[1:(2 * i)] <- (c(1 - i):i)
+		stdcrt[(2 * i + 1):(4 * i - 1)] <- i
+		stdcrt[(4 * i - 1):(6 * i - 2)] <- c(i:(1 - i))
+		stdcrt[(6 * i - 2):(8 * i - 4)] <- 1 - i
+		crt <- c(crt, stdcrt)
+		rrt <- c(rrt, stdrrt)
+	}
+	i1 <- 4
+	for(i in 2:nm) {
+		i1[i] <- i1[i - 1] + 8 * i - 4
+	}
+	i1 <- c(0, i1)	# 	Part that comes instead of the loop that
+#	is too slow.  
+	ind <- c(3, 0, 2, 0, 4, 0, 1)
+	r1 <- rrt - 0.10000000000000001
+	c1 <- crt - 0.10000000000000001
+	rr <- sign(r1) + sign(c1) * 2 + 4
+	dir <- ind[rr]	#	dir<- c(1:length(rrt))
+#	for(i in 1:length(rrt)){
+#		if(rrt[i]>0 && crt[i]>0)dir[i]<-1
+#		if(rrt[i]<= 0 && crt[i]>0)dir[i]<-4
+#		if(rrt[i]<= 0 && crt[i]<=0 )dir[i]<-3
+#		if(rrt[i]>0 && crt[i]<=0)dir[i]<-2
+#	}
+	return(list(rrt=rrt, crt=crt, dir=dir, i1=i1))
+}
+"bw.landscape"<-
+function(width = -1, height = -1)
+{
+	sc <- check.version()
+	if(sc)
+		ps.options.send(width = width, height = height, paper = "A4", 
+			horizontal = T, pointsize = 10, colors = 
+			black.and.white, setcolor = ps.setcolor.hsb)
+	ps.options(width = width, height = height, paper = "A4", horizontal = T,
+		pointsize = 10, colors = black.and.white, setcolor = 
+		ps.setcolor.hsb)
+	return(invisible())
+}
+"bw.portrait"<-
+function(width = -1, height = -1)
+{
+	sc <- check.version()
+	if(sc)
+		ps.options.send(width = width, height = height, paper = "A4", 
+			horizontal = F, pointsize = 10, colors = 
+			black.and.white)
+	ps.options(width = width, height = height, paper = "A4", horizontal = F,
+		pointsize = 10, colors = black.and.white)
+	return(invisible())
+}
+"capply"<-
+function(a, ind, ind1, operation)
+{
+	inda <- sort(unique(ind))
+	ind1a <- sort(unique(ind1))
+	ind <- cut(ind, inda) + 1
+	ind[is.na(ind)] <- 1
+	ind1 <- cut(ind1, ind1a) + 1
+	ind1[is.na(ind1)] <- 1
+	nr <- length(inda)
+	index <- c(1:nr)
+	nc <- length(ind1a)
+	index1 <- c(1:nc)
+	outcome <- number <- matrix(0, nr, nc)
+	outcome <- .C("capply",
+		as.double(a),
+		as.integer(length(a)),
+		as.integer(ind),
+		as.integer(ind1),
+		as.integer(nr),
+		as.integer(nc),
+		as.integer(operation),
+		as.double(outcome),
+		as.integer(number))
+	number <- outcome[[9]]
+	outcome <- matrix(outcome[[8]], nr, nc, dimnames = list(inda, ind1a))
+	ind <- c(1:length(number))
+	ind <- ind[number == 0]
+	outcome[ind] <- NA
+	return(outcome)
+}
+"check.version"<-
+function()
+{
+	if(any(!is.na(match(as.character(names(dev.list())), "motif"))))
+		screen.window <- T
+	else screen.window <- F
+	if(!is.na(match("black.and.white", names(ps.options())))) {
+		ps.options(black.and.white = F)
+		if(screen.window)
+			ps.options.send(black.and.white = "false")
+	}
+	return(screen.window)
+}
+"color.all.landscape"<-
+function()
+{
+	sc <- check.version()
+	m <- matrix(c(1, 1, 1, 1, 2/3, 0), 2, 3, byrow = T)
+	col <- ps.colors.rgb
+	if(sc)
+		ps.options.send(paper = "A4", horizontal = T, pointsize = 10, 
+			width = -1, height = -1, colors = col)
+	ps.options(paper = "A4", horizontal = T, pointsize = 10, width = -1, 
+		height = -1, colors = col)
+	return(invisible())
+}
+"color.landscape"<-
+function(width = -1, height = -1)
+{
+	sc <- check.version()
+	if(!sc)
+		return(invisible())
+	col <- xgetrgb()
+	ind <- c(1:nrow(col))
+	ind1 <- ind[(col[, 1] + col[, 2] + col[, 3]) == 0]	# black
+	ind2 <- ind[(col[, 1] + col[, 2] + col[, 3]) == 3]	# white
+	col <- ps.rgb2hsb(col)
+	if(length(ind1) > 0)
+		col[ind1,  ] <- c(1, 2/3, 0)
+	if(length(ind2) > 0)
+		col[ind2,  ] <- c(1, 1, 1)
+	if(sc)
+		ps.options.send(paper = "A4", horizontal = T, pointsize = 10, 
+			width = width, height = height, colors = col, setcolor
+			 = ps.setcolor.hsb)
+	ps.options(paper = "A4", horizontal = T, pointsize = 10, width = width, 
+		height = height, colors = col, setcolor = ps.setcolor.hsb)
+	return(invisible())
+}
+"color.landscape.X11"<-
+function(width = -1, height = -1, colors = postcol[, 2:4])
+{
+	sc <- check.version()
+	if(sc)
+		ps.options.send(paper = "A4", width = width, height = height, 
+			horizontal = T, pointsize = 10, colors = colors, 
+			setcolor = ps.setcolor.hsb)
+	ps.options(paper = "A4", width = width, height = height, horizontal = T,
+		pointsize = 10, colors = colors, setcolor = ps.setcolor.hsb)
+	return(invisible())
+}
+"color.landscape.X11.new"<-
+function(width = -1, height = -1, colors = postcol[, 2:4])
+{
+	sc <- check.version()
+	colors <- ps.hsb2rgb(colors)
+	if(sc)
+		ps.options.send(paper = "A4", width = width, height = height, 
+			horizontal = T, pointsize = 10, colors = colors)
+	ps.options(paper = "A4", width = width, height = height, horizontal = T,
+		pointsize = 10, colors = colors)
+	return(invisible())
+}
+"color.landscape.new"<-
+function(width = -1, height = -1)
+{
+	sc <- check.version()
+	if(!sc)
+		return(invisible())
+	col <- xgetrgb()
+	if(sc)
+		ps.options.send(paper = "A4", horizontal = T, pointsize = 10, 
+			width = width, height = height, colors = col)
+	ps.options(paper = "A4", horizontal = T, pointsize = 10, width = width, 
+		height = height, colors = col)
+	return(invisible())
+}
+"color.portrait"<-
+function(width = -1, height = -1)
+{
+	sc <- check.version()
+	if(!sc)
+		return(invisible())
+	col <- xgetrgb()
+	ind <- c(1:nrow(col))
+	ind1 <- ind[(col[, 1] + col[, 2] + col[, 3]) == 0]	# black
+	ind2 <- ind[(col[, 1] + col[, 2] + col[, 3]) == 3]	# white
+	col <- ps.rgb2hsb(col)
+	if(length(ind1) > 0)
+		col[ind1,  ] <- c(1, 2/3, 0)
+	if(length(ind2) > 0)
+		col[ind2,  ] <- c(1, 1, 1)
+	if(sc)
+		ps.options.send(paper = "A4", horizontal = F, pointsize = 10, 
+			width = width, height = height, colors = col, setcolor
+			 = ps.setcolor.hsb)
+	ps.options(paper = "A4", horizontal = F, pointsize = 10, width = width, 
+		height = height, colors = col, setcolor = ps.setcolor.hsb)
+	return(invisible())
+}
+"color.portrait.X11"<-
+function(width = -1, height = -1, colors = postcol[, 2:4])
+{
+	sc <- check.version()
+	if(sc)
+		ps.options.send(paper = "A4", width = width, height = height, 
+			horizontal = F, pointsize = 10, colors = colors, 
+			setcolor = ps.setcolor.hsb)
+	ps.options(paper = "A4", width = width, height = height, horizontal = F,
+		pointsize = 10, colors = colors, setcolor = ps.setcolor.hsb)
+	return(invisible())
+}
+"color.portrait.X11.new"<-
+function(width = -1, height = -1, colors = postcol[, 2:4])
+{
+	sc <- check.version()
+	colors <- ps.hsb2rgb(colors)
+	if(sc)
+		ps.options.send(paper = "A4", width = width, height = height, 
+			horizontal = F, pointsize = 10, colors = colors)
+	ps.options(paper = "A4", width = width, height = height, horizontal = F,
+		pointsize = 10, colors = colors)
+	return(invisible())
+}
+"color.portrait.new"<-
+function(width = -1, height = -1)
+{
+	sc <- check.version()
+	if(!sc)
+		return(invisible())
+	col <- xgetrgb()
+	ind <- c(1:nrow(col))
+	ind1 <- ind[(col[, 1] + col[, 2] + col[, 3]) == 0]	# black
+	ind2 <- ind[(col[, 1] + col[, 2] + col[, 3]) == 3]	# white
+	if(sc)
+		ps.options.send(paper = "A4", horizontal = F, pointsize = 10, 
+			width = width, height = height, colors = col)
+	ps.options(paper = "A4", horizontal = F, pointsize = 10, width = width, 
+		height = height, colors = col)
+	return(invisible())
+}
+"colsymbol"<-
+function(lat, lon, z, circles, squares, rectangles, hbars, vbars, perbars, 
+	parbars, levels, nlevels, colors, white, n, maxcol, digits, 
+	label.location, labels, fill.circles, density, angle, rotate, minsym = 
+	"<", label.resolution = 0, col = 1, labels.only = F,open.circles,lwd,border=F,bordercol=0)
+{
+	cont <- levels
+	ncont <- nlevels
+	z <- z + 9.9999999999999995e-08	# because of zeros.
+	if(length(cont) == 1 && cont[1] == -99999) {
+		if(ncont == 0)
+			ncont <- 10
+		cont <- pretty(c(min(z), max(z)), ncont)
+		cont <- cont[2:(length(cont) - 1)]
+	}
+	ncont <- length(cont)
+	mcont <- mean( - cont[1:(ncont - 1)] + cont[2:(ncont)])
+	cont1 <- cont
+	cont <- c(cont, max(z) + mcont * 5)
+	cont <- c(min(z) - mcont * 5, cont)
+	if(cont[1] >= cont[2])
+		cont[1] <- cont[2] - 1
+	if(cont[ncont + 2] <= cont[ncont + 1])
+		cont[ncont + 2] <- cont[ncont + 1] + 1
+	ncont <- ncont + 2	#	Set colors if needed
+	if(length(colors) < 2) {
+		if(fill.circles || open.circles) {
+# different size of circles filled 
+			colors <- c(1:(ncont - 1))
+			if(maxcol > 3)
+				maxcol <- 0.10000000000000001
+			colors <- (colors * maxcol)/(ncont - 1)
+		}
+		else {
+			if(density > 0 && maxcol > 70)
+				maxcol <- 70
+			if(density > 0)
+				mincol <- 8
+			else mincol <- 2
+			if(white) {
+# lowest values white.  
+				colors <- c(1:(ncont - 2))
+				colors <- floor(mincol + ((colors - 1) * (
+				  maxcol - mincol))/(length(colors) - 1))
+				colors <- c(0, colors)
+			}
+			else {
+				colors <- c(1:(ncont - 1))
+				colors <- floor(mincol + ((colors - 1) * (
+				  maxcol - mincol))/(length(colors) - 1))
+			}
+		}
+	}
+#	Define color for each point.  
+	ind <- cut(z, cont)
+	ind <- colors[ind]	# number of color.  
+	ein.pr.in <- (geopar$limy[2] - geopar$limy[1])/geopar$gpar$pin[2]
+	if(fill.circles || open.circles) {
+# different sizes of circles 
+		theta <- (c(0:n) * 2 * pi)/n
+		theta <- c(theta, NA)
+		x <- Proj(lat, lon, geopar$scale, geopar$b0, geopar$b1, geopar$
+			l1, geopar$projection)
+		theta <- c(matrix(theta, n + 2, length(z)))
+		y <- c(t(matrix(x$y, length(lat), n + 2)))
+		x <- c(t(matrix(x$x, length(lon), n + 2)))
+		ind1 <- c(t(matrix(ind, length(lon), n + 2)))
+		y <- y + ein.pr.in * ind1 * sin(theta)
+		x <- x + ein.pr.in * ind1 * cos(theta)
+		if(!labels.only){
+			if(fill.circles) {
+			  polygon(x, y, col = col, border = F)
+			  if(border) lines(x,y,col=bordercol)
+			}
+			if(open.circles) lines(x,y,lwd=lwd,col=col)
+		      }
+	      }
+	if(circles != 0 && !fill.circles) {
+		if((circles > 100) | (circles < 0)) circles <- 
+				0.050000000000000003	#default value.  
+		circles <- ein.pr.in * circles
+		theta <- (c(0:n) * 2 * pi)/n
+		theta <- c(theta, NA)
+		theta <- c(matrix(theta, n + 2, length(z)))
+		x <- Proj(lat, lon, geopar$scale, geopar$b0, geopar$b1, geopar$
+			l1, geopar$projection)
+		if(density > 0) {
+			angle1 <- angle
+			theta <- (c(0:n) * 2 * pi)/n
+			for(i in 1:length(ind)) {
+				angle1 <- angle1 + rotate
+				y1 <- c(matrix(x$y[i], 1, n + 1))
+				x1 <- c(matrix(x$x[i], 1, n + 1))
+				x1 <- x1 + circles * cos(theta)
+				y1 <- y1 + circles * sin(theta)
+				if(!labels.only) {
+				  polygon(x1, y1, density = ind[i], border = F, 
+				    angle = angle1, col = col)
+				  if(border && ind[i] == 0) lines(x1,y1,col=1)
+				}
+			}
+		}
+		else {
+			y <- c(t(matrix(x$y, length(lat), n + 2)))
+			x <- c(t(matrix(x$x, length(lon), n + 2)))
+			y <- y + circles * sin(theta)
+			x <- x + circles * cos(theta)
+			if(!labels.only){
+				polygon(x, y, col = ind, border = F)
+				if(border) lines(x,y,col=1)
+				    
+			      }
+	  }
+	}
+	if(squares != 0 && !fill.circles) {
+		if((squares > 100) | (squares < 0)) squares <- 
+				0.050000000000000003	#default value.  
+		squares <- ein.pr.in * squares
+		theta <- (c(-45, 45, 135, 225) * pi)/180
+		theta <- c(theta, NA)
+		theta <- c(matrix(theta, 5, length(z)))
+		x <- Proj(lat, lon, geopar$scale, geopar$b0, geopar$b1, geopar$
+			l1, geopar$projection)
+		y <- c(t(matrix(x$y, length(lat), 5)))
+		x <- c(t(matrix(x$x, length(lon), 5)))
+		y <- y + squares * sqrt(2) * sin(theta)
+		x <- x + squares * sqrt(2) * cos(theta)
+		if(!labels.only){
+			polygon(x, y, col = ind, border = F)
+			if(border) lines(x,y,col=1)
+		 }
+	}
+	if((rectangles[1] != 0 && !fill.circles) | (rectangles[2] != 0)) {
+# plot rectangles
+		th <- atan(rectangles[2], rectangles[1])
+		th <- c(th, 2 * (pi/2 - th) + th)
+		theta <- c(th,  - th)
+		theta <- c(theta, NA)
+		theta <- c(matrix(theta, 5, length(z)))
+		x <- Proj(lat, lon, geopar$scale, geopar$b0, geopar$b1, geopar$
+			l1, geopar$projection)
+		y <- c(t(matrix(x$y, length(lat), 5)))
+		x <- c(t(matrix(x$x, length(lon), 5)))
+		y <- y + squares * sqrt(2) * sin(theta)
+		x <- x + squares * sqrt(2) * cos(theta)
+		polygon(x, y, col = ind, border = F)
+		if(border) lines(x,y,col=1)
+	}
+	if(vbars != 0 && !fill.circles) {
+# plot vertical bars
+		x <- Proj(lat, lon, geopar$scale, geopar$b0, geopar$b1, geopar$
+			l1, geopar$projection)
+		y <- x$y
+		x <- x$x
+		if(vbars > 100)
+			vbars <- 0.20000000000000001
+		mx <- matrix(0, 2, length(x))
+		my <- mx
+		mx[1,  ] <- x
+		my[1,  ] <- y
+		mx[2,  ] <- x
+		my[2,  ] <- my[1,  ] + r
+		for(i in 1:ncol(mx))
+			lines(mx[, i], my[, i], col = ind[i])
+	}
+	if(hbars != 0 && !fill.circles) {
+# plot horizontal bars
+		x <- Proj(lat, lon, geopar$scale, geopar$b0, geopar$b1, geopar$
+			l1, geopar$projection)
+		y <- x$y
+		x <- x$x
+		if(hbars > 100)
+			hbars <- 0.20000000000000001
+		mx <- matrix(0, 2, length(x))
+		my <- mx
+		mx[1,  ] <- x
+		my[1,  ] <- y
+		my[2,  ] <- y
+		r <- ein.pr.in * hbars	# size in units  
+		mx[2,  ] <- mx[1,  ] + r
+		for(i in 1:ncol(mx))
+			lines(mx[, i], my[, i], col = ind[i])
+	}
+	if(perbars != 0 && !fill.circles) {
+# plot bars perpendicular to cruiselines
+		x <- Proj(lat, lon, geopar$scale, geopar$b0, geopar$b1, geopar$
+			l1, geopar$projection)
+		y <- x$y
+		x <- x$x
+		if(perbars > 100)
+			perbars <- 0.20000000000000001
+		mx <- matrix(0, 2, length(x))
+		my <- mx
+		mx[1,  ] <- x
+		my[1,  ] <- y
+		r <- ein.pr.in * perbars	# size in units  
+		dx <- c(1:length(x))
+		dx[1] <- x[2] - x[1]
+		dx[2:(length(x) - 1)] <- x[3:(length(x))] - x[1:(length(x) - 2)
+			]
+		dx[length(x)] <- x[length(x)] - x[length(x) - 1]
+		dy <- c(1:length(y))
+		dy[1] <- y[2] - y[1]
+		dy[2:(length(y) - 1)] <- y[3:length(y)] - y[1:(length(y) - 2)]
+		dy[length(y)] <- y[length(x)] - y[length(y) - 1]
+		dxy <- sqrt(dx * dx + dy * dy)
+		dx <- dx/dxy
+		dy <- dy/dxy
+		mx[2,  ] <- mx[1,  ] - dy * r
+		my[2,  ] <- my[1,  ] + dx * r
+		if(!labels.only)
+			for(i in 1:ncol(mx))
+				lines(mx[, i], my[, i], col = ind[i])
+	}
+	if(parbars != 0 && !fill.circles) {
+# colors along transsect lines.  
+		x <- Proj(lat, lon, geopar$scale, geopar$b0, geopar$b1, geopar$
+			l1, geopar$projection)
+		y <- x$y
+		x <- x$x
+		nx <- length(x)
+		x1 <- x[1:(nx - 1)]
+		x2 <- x[2:nx]
+		y1 <- y[1:(nx - 1)]
+		y2 <- y[2:nx]
+		dy1 <- (y2 - y1)
+		dx1 <- (x2 - x1)
+		x11 <- x1
+		y11 <- y1
+		r <- ein.pr.in * parbars	# size in units  
+		if(parbars > 100)
+			parbars <- 0.10000000000000001
+		mx <- matrix(NA, 5, length(x1))
+		my <- mx
+		p1x <- x11 + dx1/2
+		p1y <- y11 + dy1/2
+		p2x <- x11 - (0 * dx1)/2
+		p2y <- y11 - (0 * dy1)/2
+		dxy <- sqrt(dx1 * dx1 + dy1 * dy1)
+		dx <- dx1/dxy
+		dy <- dy1/dxy
+		mx[1,  ] <- p1x - (dy * r)/2
+		mx[2,  ] <- p1x + (dy * r)/2
+		mx[3,  ] <- p2x + (dy * r)/2
+		mx[4,  ] <- p2x - (dy * r)/2
+		my[1,  ] <- p1y + (dx * r)/2
+		my[2,  ] <- p1y - (dx * r)/2
+		my[3,  ] <- p2y - (dx * r)/2
+		my[4,  ] <- p2y + (dx * r)/2
+		if(!labels.only){
+			polygon(mx, my, border = F, col = ind)
+			if(border) lines(mx,my,col=1)
+		}
+		x11 <- x2
+		y11 <- y2
+		r <- ein.pr.in * parbars	# size in units  
+		if(parbars > 100)
+			parbars <- 0.10000000000000001
+		mx <- matrix(NA, 5, length(x1))
+		my <- mx
+		p1x <- x11 + (0 * dx1)/2
+		p1y <- y11 + (0 * dy1)/2
+		p2x <- x11 - dx1/2
+		p2y <- y11 - dy1/2
+		dxy <- sqrt(dx1 * dx1 + dy1 * dy1)
+		dx <- dx1/dxy
+		dy <- dy1/dxy
+		mx[1,  ] <- p1x - (dy * r)/2
+		mx[2,  ] <- p1x + (dy * r)/2
+		mx[3,  ] <- p2x + (dy * r)/2
+		mx[4,  ] <- p2x - (dy * r)/2
+		my[1,  ] <- p1y + (dx * r)/2
+		my[2,  ] <- p1y - (dx * r)/2
+		my[3,  ] <- p2y - (dx * r)/2
+		my[4,  ] <- p2y + (dx * r)/2
+		if(!labels.only)
+			polygon(mx, my, border = F, col = ind[2:length(ind)])
+	}
+# 	Add  labels around plot 
+	if(length(label.location) == 1)
+		if(label.location == "locator") label.location <- geolocator(n
+				 = 2)	# use the locator.  
+	if(length(label.location) > 1) {
+#label located somewhere in drawing
+		paint.window(label.location)
+		label.location <- Proj(label.location$lat, label.location$lon, 
+			geopar$scale, geopar$b0, geopar$b1, geopar$l1, geopar$
+			projection)
+		if(fill.circles || open.circles){
+		  if(fill.circles) open <- F
+		  if(open.circles) open <- T
+		  labels.size(cont1, digits, colors, xlim = 
+			      label.location$x, ylim = label.location$y, n = 
+			      n, rat = ein.pr.in, minsym = minsym, 
+			      label.resolution = label.resolution,open=open,lwd=lwd,col=col)
+		}
+		else if(density > 0)
+			shading1(cont1, digits, colors, angle = angle, rotate
+				 = rotate, csi = par()$csi, xlim = 
+				label.location$x, ylim = label.location$y)
+		else {
+			if(labels == 1) {
+# labels for each contour line.  
+				labels1(cont1, digits, colors, xlim = 
+				  label.location$x, ylim = label.location$y)
+			}
+			else {
+#more of a constant label. 
+				labels2(cont1, digits, colors, xlim = 
+				  label.location$x, ylim = label.location$y)
+			}
+		}
+	}
+	if(geopar$cont && labels != 0) {
+# if labels needed.  
+		par(plt = geopar$contlab)
+		par(new = T)
+		plot(c(0, 1, 1, 0, 0), c(0, 0, 1, 1, 0), type = "l", axes = F, 
+			xlab = " ", ylab = " ")
+		if(density > 0)
+			shading1(cont1, digits, colors, angle = angle, rotate
+				 = rotate, csi = par()$csi, fill = geopar$cont)
+		else {
+			if(labels == 1) {
+# labels for each contour line.  
+				labels1(cont1, digits, colors, fill = geopar$
+				  cont)
+			}
+			else {
+#more of a constant label. 
+				labels2(cont1, digits, colors, fill = geopar$
+				  cont)
+			}
+		}
+	}
+	return(invisible())
+}
+"combine.rt"<-
+function(lat, lon, z, grlat, grlon = 0, fun, fill = F, reg = 0, minnumber = 2, 
+	wsp = 0, wz = 0, wlat = 0, xy = F, rat = 0.20000000000000001, type)
+{
+	if(missing(fun) && !missing(type)) fun <- type	# for compatibility
+	if(!missing(fun) && fun == "summa") fun <- "sum"	
+	# also for compatibility
+	if(xy) {
+		if(length(grlon) < 2) {
+			grlon <- grlat$y
+			grlat <- grlat$x
+		}
+	}
+	else {
+		if(length(grlon) < 2) {
+			grlon <- grlat$lon
+			grlat <- grlat$lat
+		}
+	}
+	ndata <- length(lat)
+	if(length(wz) != ndata)
+		wz <- rep(1, ndata)
+	if(length(wlat) != ndata)
+		wlat <- rep(1, ndata)
+	n <- length(grlon)
+	m <- length(grlat)
+	row <- cut(lat, grlat)
+	col <- cut(lon, grlon)
+	reitur <- (n - 1) * (row - 1) + col
+	ind <- c(1:length(reitur))
+	ind <- ind[!is.na(reitur)]
+	lat <- lat[ind]
+	lon <- lon[ind]
+	z <- z[ind]
+	wlat <- wlat[ind]
+	wz <- wz[ind]
+	reitur <- reitur[ind]
+	maxrt <- (n - 1) * (m - 1)
+	grdlat <- (grlat[1:(m - 1)] + grlat[2:m])/2
+	grdlon <- (grlon[1:(n - 1)] + grlon[2:n])/2	#	what to do 
+	if(fun == "mean")
+		option <- 1
+	if(fun == "sum")
+		option <- 2
+	if(fun == "median")
+		option <- 3
+	if(fun == "variance")
+		option <- 4
+	if(fun == "rm.outliers")
+		option <- 5
+	if(fun == "keep.all") option <- 6	#	Fill up matrix of data.  
+	pts.in.reit <- c(matrix(0, round(ndata * 1.2), 1))
+	npts.in.reit <- jrt <- indrt <- rep(0, maxrt + 1)
+	nnewlat <- 0
+	if(option == 5) {
+		newlat <- newlon <- newz <- newn <- fylla <- rep(0, length(lat)
+			)
+	}
+	else if(option == 6) {
+		newlat <- newlon <- newz <- newn <- fylla <- rep(0, (length(lat
+			) + length(grlat) * length(grlon)) * 1.1000000000000001
+			)
+	}
+	else {
+		newlat <- newlon <- newz <- newn <- fylla <- rep(0, maxrt + 1)
+	}
+	if(wsp == 0)
+		wsp <- ndata
+	workspace <- order <- nr <- rep(0, wsp)
+	outcome <- .C("combinert",
+		as.double(lat),
+		as.double(lon),
+		as.double(z),
+		as.integer(length(z)),
+		as.integer(reitur),
+		as.integer(pts.in.reit),
+		as.integer(npts.in.reit),
+		as.integer(indrt),
+		as.integer(jrt),
+		as.integer(maxrt),
+		as.double(newlat),
+		as.double(newlon),
+		as.double(newz),
+		as.integer(newn),
+		as.integer(nnewlat),
+		as.integer(option),
+		as.integer(fill),
+		as.integer(fylla),
+		as.double(grdlat),
+		as.double(grdlon),
+		as.integer(n),
+		as.integer(minnumber),
+		as.double(workspace),
+		as.integer(nr),
+		as.integer(order),
+		as.double(wlat),
+		as.double(rat),
+		as.double(wz))
+	nnewlat <- outcome[[15]]
+	newn <- outcome[[14]][1:nnewlat]
+	newlat <- outcome[[11]][1:nnewlat]
+	newlon <- outcome[[12]][1:nnewlat]
+	newz <- outcome[[13]][1:nnewlat]
+	fylla <- outcome[[18]][1:nnewlat]
+	if(xy)
+		projection <- "none"
+	else projection <- "Mercator"
+	if(length(reg) > 1) {
+		inni <- inside(newlat, newlon, reg, option = 0, projection = 
+			projection)
+		ind <- c(1:length(inni))
+		ind <- ind[inni == 1]
+		newlat <- newlat[ind]
+		newlon <- newlon[ind]
+		newz <- newz[ind]
+		newn <- newn[ind]
+	}
+	if(option == 5) fylla <- 0	# not used
+	if(xy)
+		z <- list(x = newlat, y = newlon, z = newz, n = newn, fill = 
+			fylla)
+	else z <- list(lat = newlat, lon = newlon, z = newz, n = newn, fill = 
+			fylla)
+	z <- data.frame(z)
+	attributes(z)$fun <- fun
+	return(invisible(z))
+}
+"convert"<-
+function(data, inverse = F, col.names = c("lat", "lon"))
+{
+	if(!inverse) {
+		if(is.data.frame(data)) {
+			if(any(is.na(match(col.names, names(data))))) {
+				cat(paste("Columns", colnames, "do not exist"))
+				return(invisible())
+			}
+			data[, col.names[1]] <- geoconvert.1(data[, col.names[1
+				]])
+			data[, col.names[2]] <- geoconvert.1(data[, col.names[2
+				]])
+		}
+		else data <- geoconvert.1(data)
+	}
+	else {
+# Convert to write out. 
+		if(is.data.frame(data)) {
+			if(any(is.na(match(col.names, names(data))))) {
+				cat(paste("Columns", colnames, "do not exist"))
+				return(invisible())
+			}
+			data[, col.names[1]] <- geoconvert.2(data[, col.names[1
+				]])
+			data[, col.names[2]] <- geoconvert.2(data[, col.names[2
+				]])
+		}
+		else data <- geoconvert.2(data)
+	}
+	return(data)
+}
+"cut.box.1"<-
+function(x, y, xb, yb)
+{
+	ind <- c(1:length(x))
+	ind <- ind[is.na(x)]
+	x <- matrix(x,  , ind[1], byrow = T)
+	y <- matrix(y,  , ind[1], byrow = T)
+	n <- ind[1] - 1
+	t1 <- (yb[1] - y[, 1])/(y[, n] - y[, 1])
+	t2 <- (yb[2] - y[, 1])/(y[, n] - y[, 1])
+	x1 <- y1 <- matrix(NA, nrow(x), 3)
+	x1[, 1] <- x[, 1] + t1 * (x[, n] - x[, 1])
+	x1[, 2] <- x[, 1] + t2 * (x[, n] - x[, 1])
+	y1[, 1] <- y[, 1] + t1 * (y[, n] - y[, 1])
+	y1[, 2] <- y[, 1] + t2 * (y[, n] - y[, 1])
+	ind2 <- cut(x1[, 1], xb)
+	ind <- c(1:length(ind2))
+	ind2 <- ind[!is.na(ind2)]
+	ind <- cut(x1[, 1], c(-9999999, xb))
+	ind1 <- c(1:length(ind))
+	ind1 <- ind1[!is.na(ind) & ind == 1]
+	t1 <- (xb[1] - x[ind1, 1])/(x[ind1, n] - x[ind1, 1])
+	x1[ind1, 1] <- x[ind1, 1] + t1 * (x[ind1, n] - x[ind1, 1])
+	y1[ind1, 1] <- y[ind1, 1] + t1 * (y[ind1, n] - y[ind1, 1])
+	ind1 <- c(1:length(ind))
+	ind1 <- ind1[is.na(ind)]
+	t1 <- (xb[2] - x[ind1, 1])/(x[ind1, n] - x[ind1, 1])
+	x1[ind1, 1] <- x[ind1, 1] + t1 * (x[ind1, n] - x[ind1, 1])
+	y1[ind1, 1] <- y[ind1, 1] + t1 * (y[ind1, n] - y[ind1, 1])
+	ind <- cut(x1[, 2], c(-9999999, xb))
+	ind1 <- c(1:length(ind))
+	ind1 <- ind1[ind == 1 | is.na(ind)]
+	x1[ind1,  ] <- NA
+	y1[ind1,  ] <- NA
+	return(list(x = t(x1), y = t(y1), ind = ind2))
+}
+"cut.box.2"<-
+function(x, y, xb, yb)
+{
+	ind <- c(1:length(x))
+	inds <- ind[is.na(x)]
+	ind <- inds
+	xx <- matrix(x,  , ind[1], byrow = T)
+	yy <- matrix(y,  , ind[1], byrow = T)
+	ind <- cut(x, xb)
+	ind1 <- ind[2:length(ind)]
+	ind <- ind[1:(length(ind) - 1)]
+	ii <- c(1:length(ind))
+	i <- ifelse(is.na(ind) & !is.na(ind1), ii, NA)
+	i <- i[!is.na(i)]
+	i1 <- ifelse(!is.na(ind) & is.na(ind1), ii, NA)
+	i1 <- i1[!is.na(i1)]
+	i2 <- c(1:length(ind))
+	i2 <- i2[is.na(ind)]
+	x2 <- y2 <- x3 <- y3 <- matrix(NA, nrow(xx), 3)
+	x2[, 1] <- x[i]
+	x2[, 2] <- x[i + 1]
+	y2[, 1] <- y[i]
+	y2[, 2] <- y[i + 1]
+	x3[, 1] <- x[i1]
+	x3[, 2] <- x[i1 + 1]
+	y3[, 1] <- y[i1]
+	y3[, 2] <- y[i1 + 1]
+	t1 <- (xb[1] - x2[, 1])/(x2[, 2] - x2[, 1])
+	t2 <- (xb[2] - x3[, 1])/(x3[, 2] - x3[, 1])
+	x1 <- y1 <- matrix(NA, nrow(xx), 3)
+	x1[, 1] <- x2[, 1] + t1 * (x2[, 2] - x2[, 1])
+	x1[, 2] <- x3[, 1] + t2 * (x3[, 2] - x3[, 1])
+	y1[, 1] <- y2[, 1] + t1 * (y2[, 2] - y2[, 1])
+	y1[, 2] <- y3[, 1] + t2 * (y3[, 2] - y3[, 1])
+	y[i2] <- NA
+	x[i2] <- NA
+	x[i] <- x1[, 1]
+	y[i] <- y1[, 1]
+	x[i1 + 1] <- x1[, 2]
+	y[i1 + 1] <- y1[, 2]
+	ind <- cut(y, c(-999999, yb, 999999))
+	ind1 <- c(1:length(ind))
+	ind1 <- ind1[ind != 2]
+	x[ind1] <- NA
+	y[ind1] <- NA
+	return(list(x = x, y = y, x1 = c(x1[, 1]), y1 = c(y1[, 1])))
+}
+"cut.multipoly"<- function(x, xb,in.or.out=0)
+{
+  ind <- x$x[is.na(x$x)]
+  if(length(ind) == 0) {
+    x2 <- findcut(x, xb,in.or.out)
+  }
+  else {
+    x2 <- list(x = NA, y = NA)
+    ind <- prepare.line(x$x)
+    for(i in 1:ind$nlx) {
+      x1 <- list(x = x$x[ind$lx1[i]:ind$lx2[i]], y = x$y[ind$
+                                                   lx1[i]:ind$lx2[i]])
+      x1 <- findcut(x1, xb,in.or.out)
+      x2$x <- c(x2$x, NA, x1$x)
+      x2$y <- c(x2$y, NA, x1$y)
+    }
+    x2$x <- x2$x[ - c(1:2)]
+    x2$y <- x2$y[ - c(1:2)]
+  }
+  return(x2)
+}
+"d2r"<-
+function(lat, lon = NULL)
+{
+	if(is.null(lon)) {
+		lon <- lat$lon
+		lat <- lat$lat
+	}
+	lat <- lat + 9.9999999999999995e-07
+	lon <- lon - 9.9999999999999995e-07
+	lon <-  - lon
+	reit <- (floor(lat) - 60) * 100 + floor(lon)
+	reit <- ifelse(lat - floor(lat) > 0.5, reit + 50, reit)
+	return(reit)
+}
+"d2sr"<-
+function(lat, lon = NULL)
+{
+	if(is.null(lon)) {
+		lon <- lat$lon
+		lat <- lat$lat
+	}
+	lat <- lat + 9.9999999999999995e-07
+	lon <- lon - 9.9999999999999995e-07
+	lon <-  - lon
+	reit <- (floor(lat) - 60) * 100 + floor(lon)
+	reit <- ifelse(lat - floor(lat) > 0.5, reit + 50, reit)
+	deg <- r2d(reit)
+	lon <-  - lon
+	dlat <-  - (lat - deg$lat)
+	dlon <-  - (lon - deg$lon)
+	dl <- sign(dlat + 9.9999999999999995e-08) + 2 * sign(dlon + 
+		9.9999999999999995e-08) + 4
+	srt <- c(2, 0, 4, 0, 1, 0, 3)
+	srt <- srt[dl]
+	reit <- floor(reit * 10 + srt)
+	return(reit)
+}
+"dalk.sum"<-
+function(x, rc, ic)
+{
+	ind <- c(1:nrow(x))
+	ind <- ind[x[, rc] == 0]
+	if(length(ind) > 0)
+		x[ind, rc] <- x[ind, ic[1]] + x[ind, ic[2]] + x[ind, ic[3]]
+	return(x)
+}
+"geoexpand"<-
+function(grid)
+{
+	if(is.null(grid$lat)) {
+		ny <- length(grid$y)
+		nx <- length(grid$x)
+		y <- t(matrix(grid$y, ny, nx))
+		x <- matrix(grid$x, nx, ny)
+		return(data.frame(y = c(y), x = c(x)))
+	}
+	else {
+		nlat <- length(grid$lat)
+		nlon <- length(grid$lon)
+		lat <- t(matrix(grid$lat, nlat, nlon))
+		lon <- matrix(grid$lon, nlon, nlat)
+		return(data.frame(lat = c(lat), lon = c(lon)))
+	}
+}
+"extract"<-
+function(grd, z, maxn = 10000, limits = NULL, col.names = c("lon", "lat"))
+{
+	if(is.null(limits)) {
+		if(col.names[1] == "lon" && col.names[2] == "lat") {
+			if(geopar$projection == "Lambert") {
+# complicated borders in lat,lon
+				p1 <- list(x = c(geopar$limx[1], mean(geopar$
+				  limx), geopar$limx[1], geopar$limx[2]), y = c(
+				  geopar$limy[1], geopar$limy[2], geopar$limy[2
+				  ], geopar$limy[2]))
+				limits <- invProj(p1$x, p1$y, geopar$scale, 
+				  geopar$b0, geopar$b1, geopar$l1, geopar$
+				  projection)
+				xlim <- c(limits$lon[3], limits$lon[4])
+				ylim <- c(limits$lat[1], limits$lat[2])
+				limits <- list(lon = xlim, lat = ylim)
+			}
+			else {
+				limits <- invProj(geopar$limx, geopar$limy, 
+				  geopar$scale, geopar$b0, geopar$b1, geopar$l1,
+				  geopar$projection)
+				xlim <- c(limits$lon[1], limits$lon[2])
+				ylim <- c(limits$lat[1], limits$lat[2])
+				limits <- list(lon = xlim, lat = ylim)
+			}
+		}
+		else {
+			limits <- list(x = par()$usr[1:2], y = par()$usr[3:4])
+			names(limits) <- col.names
+		}
+	}
+	ind10 <- c(1:length(grd[[col.names[1]]]))
+	ind1 <- ind10[grd[[col.names[1]]] >= limits[[col.names[1]]][1] & grd[[
+		col.names[1]]] <= limits[[col.names[1]]][2]]
+	ind20 <- c(1:length(grd[[col.names[2]]]))
+	ind2 <- ind20[grd[[col.names[2]]] >= limits[[col.names[2]]][1] & grd[[
+		col.names[2]]] <= limits[[col.names[2]]][2]]
+	ind10 <- matrix(ind10, length(ind10), length(ind20))
+	ind20 <- t(matrix(ind20, length(ind20), nrow(ind10)))
+	ind <- c(1:length(ind10))
+	if(length(ind1) * length(ind2) > maxn) {
+		if(col.names[1] == "lon" && col.names[2] == "lat") {
+			rat <- cos((mean(limits[[col.names[2]]]) * pi)/180)
+			nlat <- (limits[[col.names[2]]][2] - limits[[col.names[
+				2]]][1])
+			nlon <- (limits[[col.names[1]]][2] - limits[[col.names[
+				1]]][1]) * rat
+			rat <- nlat/nlon
+			nlat <- sqrt(maxn * rat)
+			nlon <- sqrt(maxn/rat)
+			ind1 <- seq(min(ind1), max(ind1), by = round(length(
+				ind1)/nlon))
+			ind2 <- seq(min(ind2), max(ind2), by = round(length(
+				ind2)/nlat))
+		}
+		else {
+			rat <- maxn/(length(ind1) * length(ind2))
+			nlat <- length(ind2) * sqrt(rat)
+			nlon <- length(ind1) * sqrt(rat)
+			ind1 <- seq(min(ind1), max(ind1), by = round(length(
+				ind1)/nlon))
+			ind2 <- seq(min(ind2), max(ind2), by = round(length(
+				ind2)/nlat))
+		}
+	}
+	grd1 <- list(grd[[col.names[1]]][ind1], grd[[col.names[2]]][ind2])
+	names(grd1) <- col.names
+	ind <- ind[!is.na(match(ind10, ind1)) & !is.na(match(ind20, ind2))]
+	z <- z[ind]
+	return(list(grd1=grd1, z=z))
+}
+"fill.matrix"<-
+function(outcome, x, rownr, dalknr)
+{
+	ind <- nrow(outcome) * (dalknr - 1) + rownr
+	outcome[ind] <- x
+	return(outcome)
+}
+"fill.outside.border"<-
+function(col = 0, rat = 1)
+{
+	gx <- geopar$limx
+	gy <- geopar$limy
+	gx <- mean(gx) + rat * (gx - mean(gx))
+	gy <- mean(gy) + rat * (gy - mean(gy))
+	dx <- gx[2] - gx[1]
+	dy <- gy[2] - gy[1]
+	x1 <- gx[1] - dx
+	x2 <- gx[2] + dx
+	y1 <- gy[1] - dy
+	y2 <- gy[2] + dy
+	b1 <- list(x = c(x1, x2, x2, x1, x1), y = c(gy[2], gy[2], y2, y2, gy[2]
+		))
+	b2 <- list(x = c(x1, x2, x2, x1, x1), y = c(gy[1], gy[1], y1, y1, gy[1]
+		))
+	b3 <- list(x = c(gx[2], x2, x2, gx[2], gx[2]), y = c(gy[1], gy[1], gy[2
+		], gy[2], gy[1]))
+	b4 <- list(x = c(gx[1], x1, x1, gx[1], gx[1]), y = c(gy[1], gy[1], gy[2
+		], gy[2], gy[1]))
+	oldpar <- par()
+	par(geopar$gpar)
+	polygon(b1, col = 0)
+	polygon(b2, col = 0)
+	polygon(b3, col = 0)
+	polygon(b4, col = 0)
+	par(oldpar)
+	return(invisible())
+}
+"fill.points"<-
+function(x, y, nx, option = 1)
+{
+	n <- length(x)
+	ny <- nx
+	if(option != 1) {
+		naind <- c(1:length(x))
+		naind <- naind[is.na(x)]
+	}
+	dx <- (x[2:n] - x[1:(n - 1)])/(ny)
+	dy <- (y[2:n] - y[1:(n - 1)])/(ny)
+	x1 <- matrix(x[1:(n - 1)], n - 1, nx)
+	y1 <- matrix(y[1:(n - 1)], n - 1, nx)
+	ind <- c(0:(nx - 1))
+	ind <- matrix(ind, n - 1, nx, byrow = T)
+	dx <- matrix(dx, n - 1, nx)
+	dy <- matrix(dy, n - 1, nx)
+	x1 <- t(x1 + ind * dx)
+	y1 <- t(y1 + ind * dy)
+	ind <- c(1:length(y1))
+	ind <- ind[is.na(y1) & row(y1) != 1]
+	if(length(ind) != 0) {
+		x1 <- x1[ - ind]
+		y1 <- y1[ - ind]
+	}
+	if(is.na(x1[length(x1)])) {
+		x1 <- c(x1, NA)
+		y1 <- c(y1, NA)
+	}
+	ind <- c(1:length(x1))
+	ind <- ind[is.na(x1)]
+	if(length(ind) > 0) {
+		ind <- matrix(ind,  , 2, byrow = T)
+		if(option == 1) {
+			ind <- ind[, 1]
+			x1 <- x1[ - ind]
+			y1 <- y1[ - ind]
+		}
+		else {
+			ind <- ind[, 1]
+			x1[ind] <- x[naind - 1]
+			y1[ind] <- y[naind - 1]
+		}
+	}
+	if(option != 1) {
+		x1 <- c(x1, x[n])
+		y1 <- c(y1, y[n])
+	}
+	return(list(x = x1, y = y1))
+}
+"find.hnit"<-
+function(pt, poly)
+{
+	pt1 <- floor(pt)
+	pt2 <- pt - pt1
+	y <- poly$y[pt1] + pt2 * (poly$y[pt1 + 1] - poly$y[pt1])
+	x <- poly$x[pt1] + pt2 * (poly$x[pt1 + 1] - poly$x[pt1])
+	return(data.frame(x=x, y=y))
+}
+
+"findcut"<- 
+function(x, xb,in.or.out)
+{
+  if(!is.data.frame(x))
+    x <- data.frame(x = x$x, y = x$y)
+  xr <- yr <- mark <- side <- s <- t <- rep(0, (length(x$y) + length(xb$y
+								     )))
+  nxr <- 0
+  ab <- ab1 <- rep(0, length(xb$x))
+  xr <- .C("define_poly",
+	   as.double(x$x),
+	   as.double(x$y),
+	   as.double(xb$x),
+	   as.double(xb$y),
+	   as.double(xr),
+	   as.double(yr),
+	   as.integer(length(x$y)),
+	   as.integer(length(xb$y)),
+	   as.integer(nxr),
+	   as.integer(mark),
+	   as.integer(side),
+	   as.double(s),
+	   as.double(t),
+	   as.double(ab),
+	   as.double(ab1),
+	   as.integer(in.or.out))
+  nxr <- xr[[9]]
+  yr <- xr[[6]][1:nxr]
+  mark <- xr[[10]][1:nxr]
+  side <- xr[[11]][1:nxr]
+  s <- xr[[12]][1:nxr]
+  t <- xr[[12]][1:nxr]
+  xr <- xr[[5]][1:nxr]
+  ind <- c(1:nxr)
+  ind2 <- ind[mark == 2]
+  i <- geoinside(x[1,  ], reg = xb, option = 3, col.names = c("x", "y"))
+  if(in.or.out==1) i <- !i
+  if(i == 1 && length(ind2) == 0)
+    return(list(x = x$x, y = x$y))
+  if(i == 0 && length(ind2) == 0)
+    return(invisible())
+  if(ind2[1] == 1)
+    ind1 <- c(1:nxr)
+  else ind1 <- c(ind2[1]:nxr, 1:(ind2[1] - 1))
+  xr <- xr[ind1]
+  yr <- yr[ind1]
+  mark <- mark[ind1]
+  side <- side[ind1]
+  s <- s[ind1]
+  t <- t[ind1]
+  h1 <- side + s + 1
+  inn <- ifelse(mark == 2, 1, 0)
+  ind1 <- ind[mark == 1 | mark == 2]
+  nr <- ind[mark == 1 | mark == 2]
+  h <- h1[ind1]
+  n <- length(h)
+  if(n < 2)
+    return(invisible())	# vidbot i profun
+  s <- matrix(0, n, 3)
+  s[, 2] <- match(sort(h), h)
+  s[, 1] <- c(s[n, 2], s[1:(n - 1), 2])
+  s[, 3] <- c(s[2:n, 2], s[1, 2])
+  o <- match(h, sort(h))
+  s <- s[o,  ]
+  up <- rep(0, nrow(s))
+  pt <- h[s[, 2]] - 0.0001
+  i <- geoinside(find.hnit(pt, xb), reg = x, option = 0, col.names = c(
+							   "x", "y"))
+  if(in.or.out == 1) {
+    i1 <- c(1:nrow(find.hnit(pt,xb)))
+    i <- i1[is.na(match(i1,i))]
+  }
+  if(length(i) > 0) {
+    s[ - i, 1] <- s[ - i, 3]
+    up[ - i] <- 1
+  }
+  s <- matrix(c(s[, 2], s[, 1]),  , 2)
+  s1 <- matrix(0, length(h1), 2)
+  s1[ind1,  ] <- s
+  up1 <- buid <- rep(0, length(h1))
+  up1[ind1] <- up
+  s1[, 2] <- match(s1[, 2], s1[, 1])
+  s1[, 1] <- 1:nrow(s1)
+  nxr <- 0
+  xr1 <- yr1 <- rep(0, (length(x$x) + length(xb$x)))
+  x <- .C("post_filter",
+	  as.integer(s1[, 2]),
+	  as.integer(side),
+	  as.integer(up1),
+	  as.integer(mark),
+	  as.double(xr),
+	  as.double(yr),
+	  as.integer(buid),
+	  as.integer(nrow(s1)),
+	  as.double(xb$x),
+	  as.double(xb$y),
+	  as.integer(length(xb$y)),
+	  as.double(xr1),
+	  as.double(yr1),
+	  as.integer(nxr))
+  nxr <- x[[14]]
+  xr <- x[[12]][1:nxr]
+  yr <- x[[13]][1:nxr]
+  ind <- c(1:nxr)
+  ind <- ind[xr < -999998]
+  if(length(ind) > 0)
+    xr[ind] <- yr[ind] <- NA
+  return(list(x = xr, y = yr,nxr=nxr))
+}
+
+"findline"<-
+function(x, xb, plot = T)
+{
+	if(!plot) {
+		x <- Proj(x)
+		xb <- Proj(xb)
+	}
+	xr <- yr <- rep(0, 3 * (length(x$y) + length(xb$y)))
+	nxr <- 0
+	ab <- ab1 <- rep(0, length(xb$x))
+	li <- prepare.line(x$x)
+	ind <- c(1:length(x$x))
+	ind <- ind[is.na(x$x)]
+	if(length(ind) > 0)
+		x$x[ind] <- x$y[ind] <- -999999
+	xr <- .C("define_multiline",
+		as.double(x$x),
+		as.double(x$y),
+		as.double(xb$x),
+		as.double(xb$y),
+		as.double(xr),
+		as.double(yr),
+		as.integer(length(x$y)),
+		as.integer(length(xb$y)),
+		as.integer(nxr),
+		as.integer(li$lx1),
+		as.integer(li$lx2),
+		as.integer(li$nlx),
+		as.integer(plot),
+		as.double(ab),
+		as.double(ab1))
+	nxr <- xr[[9]]
+	yr <- xr[[6]]
+	yr <- yr[1:nxr]
+	xr <- xr[[5]]
+	xr <- xr[1:nxr]
+	ind <- c(1:nxr)
+	ind <- ind[xr < -999998]
+	xr[ind] <- NA
+	yr[ind] <- NA
+	if(!plot) {
+		xr <- invProj(xr, yr)
+		xr <- data.frame(list(lat = xr$lat, lon = xr$lon))
+		return(invisible(xr))
+	}
+	else return(list(y = yr, x = xr, nxr=nxr))
+}
+"fitspher.aut.1"<-
+function(vagram, option, sill)
+{
+	i1 <- c(2:(length(vagram$vario) - 1))	# index vector
+	zvar1 <- supsmu(vagram$dist, vagram$vario)	
+	# Do the fitting, find range, sill and nugget effect.
+# Max value of supersmoother.  		
+	if(option == 1) ind <- i1[zvar1$y[i1] == max(zvar1$y[i1])]	
+	# First maximum of supersmoother
+	if(option == 2) ind <- i1[(zvar1$y[i1] > zvar1$y[i1 + 1]) & (zvar1$y[i1
+			] > zvar1$y[i1 - 1])][1]	
+	# Second maximum of supersmoother.   
+	if(option == 3) ind <- i1[(zvar1$y[i1] > zvar1$y[i1 + 1]) & (zvar1$y[i1
+			] > zvar1$y[i1 - 1])][2]	# Sill given find range
+	if(option == 4) {
+		if(sill == 0)
+			sill <- vagram$variance
+		ind <- i1[zvar1$y[i1] > sill][1]
+	}
+	if(is.na(ind) && (option != 1)) {
+		print(" condition not satisfied.  Max value of")
+		print(" supersmoother used ")
+		ind <- i1[zvar1$y[i1] == max(zvar1$y[i1])]
+		option == 1
+	}
+	if(length(ind) == 0 && (option == 1)) {
+		print(" cannot fit variogram")
+		error <- 1
+		return(error)
+	}
+	rang1 <- zvar1$x[ind]	# range
+	if(option != 4) sill <- zvar1$y[ind]	# sill
+	xvar2 <- (1.5 * vagram$dist[1:ind])/rang1 - (0.5 * vagram$dist[1:ind]^3
+		)/rang1^3
+	zvar2 <- vagram$vario[1:ind] - sill * xvar2[1:ind]
+	xvar2 <- 1 - xvar2
+	nugget <- lsfit(xvar2, zvar2,  , F)$coef	
+	# 	if the nugget effect is estimated less than 0 it set to 0.05  
+	if(nugget < 0) {
+		nugget <- 0.050000000000000003
+	}
+	error <- 0
+	return(list(nugget=nugget, dist=dist,range= rang1, sill= sill,error= error))
+}
+"gbplot"<-
+function(depth,col,lty,lwd,depthlab,depthlabcsi) {
+  if(missing(depthlabcsi)) depthlabcsi<- 0.12
+  if(missing(lwd)) lwd <- rep(1,length(depth))
+  if(missing(lty)) lty <- rep(1,length(depth))
+  if(missing(col)) col <- rep(1,length(depth))
+  if(length(col) < length(depth)) col[(length(col)+1):length(depth)] <- col[length(col)]
+  if(length(lwd) < length(depth)) lwd[(length(lwd)+1):length(depth)] <- lwd[length(lwd)]
+  if(length(lty) < length(depth)) lty[(length(lty)+1):length(depth)] <- lty[length(lty)]
+  for( i  in 1:length(depth))  {
+    dypi <- depth[i]
+    if(dypi%%100 != 0 || dypi == 300 || dypi == 700) {
+      print(paste(dypi,"m lína ekki til í GEBCO gögnum"))
+      return(invisible())
+    }
+    if(dypi <= 1000 || dypi == 1200 || dypi ==1500 || dypi == 2000) 
+      txt <- paste("geolines(gbdypi.",dypi,",col=col[i],lwd=lwd[i],lty=lty[i])",sep="")
+    else {
+      j <- match(dypi,names(gbdypi))
+      txt <- paste("geolines(gbdypi[[",j,"]],col=col[i],lwd=lwd[i],lty=lty[i])",sep="")
+    }
+    eval(parse(text=txt))
+    if(!missing(depthlab)) {
+      k <- !is.na(match(DEPTHLOC$z,dypi)) 
+      if(any(k)) geotext(DEPTHLOC[k,],z=DEPTHLOC[k,"z"],csi=depthlabcsi)
+    }
+    
+  }
+  return(invisible()) 
+}
+
+
+# Reikna svæði innan marghyrnings.  
+
+geoarea <- function(data,Projection="Lambert",old.method=F,ngrdpts=2000,robust=T) {
+  area <- 0
+  data <- geo.Split.poly(data) 
+  if(old.method) {
+    for(i in 1:length(data)) 
+      area <- area + geoarea.old(data[[i]],ngrdpts,robust) 
+  }
+  else {
+    area <- 0
+    for(i in 1:length(data)) {
+      if(Projection=="Lambert")
+	data[[i]] <- lambert(data[[i]]$lat,data[[i]]$lon,
+			   mean(data[[i]]$lat),
+			   mean(data[[i]]$lon),
+			   mean(data[[i]]$lat))
+      else
+	data[[i]] <- mercator(data[[i]]$lat,data[[i]]$lon,
+			      B0=mean(data[[i]]$lat))
+      data[[i]] <- data.frame(x=data[[i]]$x,y=data[[i]]$y) 
+      n <- nrow(data[[i]]) 
+      area <- area + abs(sum(data[[i]]$x[1:(n-1)]*data[[i]]$y[2:n]-
+		data[[i]]$x[2:n]*data[[i]]$y[1:(n-1)],na.rm=T)/2)
+    }
+  }
+  return(area)
+}
+
+geo.Split.poly <- function(data) {
+  while(is.na(data[nrow(data),"lat"])) 
+    data <- data[-nrow(data),]
+  while(is.na(data[1,"lat"])) 
+    data <- data[-1,]
+  n <- nrow(data) 
+  if(any(is.na(data$lat))) {
+    tmp <- list()
+    i <- 1:nrow(data)
+    i <- i[is.na(data$lat)]
+    i1 <- c(1,i+1) 
+    i2 <- c(i-1,nrow(data)) 
+    for(i in 1:length(i1)) {
+      tmp[[i]] <- data[i1[i]:i2[i],]
+      n <- nrow(tmp[[i]])
+      if(tmp[[i]]$lat[1] != tmp[[i]]$lat[n] ||
+	 tmp[[i]]$lon[1] != tmp[[i]]$lon[n])
+	tmp[[i]] <- rbind(tmp[[i]],tmp[[i]][1,])
+      if(nrow(tmp[[i]]) < 4) {
+	cat("minimum of 3 points needed to define area")
+	print(tmp[[i]][1:(nrow(tmp[[i]])-1)])
+      }
+    }
+  }
+  else {
+    if(data$lat[1] != data$lat[n] || data$lon[1] != data$lon[n])
+      data <- rbind(data,data[1,])
+    tmp <- list("c1" = data) 
+  }
+  return(tmp) 
+}
+
+
+
+"geoarea.old"<-
+function(reg, n,robust=T) {
+  reg$lat <- (reg$lat * pi)/180
+  reg$lon <- (reg$lon * pi)/180
+  rlat <- range(reg$lat[!is.na(reg$lat)])
+  dlat <- (rlat[2] - rlat[1])
+  rlon <- range(reg$lon[!is.na(reg$lon)])
+  dlon <- (rlon[2] - rlon[1]) * cos((rlat[2] + rlat[1])/2)
+  ratio <- (dlat/dlon)
+  nlat <- floor(sqrt(n) * sqrt(ratio))
+  nlon <- round(sqrt(n)/sqrt(ratio))
+  dlon <- dlon/cos((rlat[2] + rlat[1])/2)
+  lat <- rlat[1] + (c(0:(nlat - 1)) * dlat)/nlat + dlat/(2 * nlat)
+  lon <- rlon[1] + (c(0:(nlon - 1)) * dlon)/nlon + dlon/(2 * nlon)
+  darea <- (lon[2] - lon[1]) * (lat[2] - lat[1]) * 40528473
+  latgr <- c(matrix(lat, nlat, nlon))
+  longr <- c(t(matrix(lon, nlon, nlat)))
+  area <- dlon * dlat * 40528473 * cos((rlat[2] + rlat[1])/2)
+  border <- adapt(reg$lat, reg$lon)
+  inside<- rep(0, length(latgr))
+  if(robust) {
+    a <- a1 <- rep(0, length(reg$lat))
+    
+    inside<- .C("marghc",
+	       as.double(longr),
+	       as.double(latgr),
+	       as.integer(length(latgr)),
+	       as.double(border$lon),
+	       as.double(border$lat),
+	       as.integer(length(border$lat)),
+	       as.integer(border$lxv),
+	       as.integer(length(border$lxv)),
+	       as.integer(inside),
+	       as.double(a),
+	       as.double(a1))
+    inside<- inside[[9]]
+  }
+  else {
+    tmpinni <- rep(0,length(border$lxv))
+    inside<- .C("geomarghc",
+	       as.double(longr),
+	       as.double(latgr),
+	       as.integer(length(latgr)),
+	       as.double(border$lon),
+	       as.double(border$lat),
+	       as.integer(border$lxv),
+	       as.integer(length(border$lxv)),
+	       as.integer(inside),
+	       as.integer(tmpinni))
+    inside<- inside[[8]]
+  }
+  ind <- c(1:length(inside))
+  ind <- ind[inside!= 0]
+  mlat <- mean(latgr[ind])
+  mlon <- mean(longr[ind])
+  cmlat <- mean(cos(latgr[ind]))
+  cl <- mean(cos(latgr))
+  rat <- length(ind)/length(inside)	# fraction outside
+  inside.area <- (rat * area * cmlat)/cl
+  return(inside.area)
+}
+"geocontour"<-
+function(grd, z, nlevels = 10, levels = NULL, labex = 1, triangles = T, reg = 0,
+	fill = 1, colors = T, col = 1, only.positive = F, maxcol = 155, csi = 
+	0.080000000000000002, save = F, plotit = T, label.location = 0, lwd = 0,
+	lty = 0, labels.only = F, digits = 1, paint = F, set = NA, col.names = 
+	c("lon", "lat"))
+{
+  if(!is.null(attributes(grd)$grid)){
+    z <- grd
+    grd <- attributes(grd)$grid
+  }
+	limits <- NULL
+	maxn <- 10000
+	grd <- Set.grd.and.z(grd, z, NULL, set, col.names)	
+	# Set data on correct form.
+	z <- grd$z	# Perturb z a little
+	z <- z + rnorm(length(z)) * 1.0000000000000001e-09
+	grd <- grd$grd
+	grd <- extract(grd, z, maxn, limits, col.names = col.names)	
+	# extract.   
+	z <- grd$z
+	grd <- grd$grd1	# 	change NA to 0 or mean
+	ind <- c(1:length(z))
+	ind <- ind[is.na(z)]
+	if(length(ind) > 0) {
+		if(fill == 0)
+			z[ind] <- -99999
+		if(fill == 1)
+			z[ind] <- 0
+		if(fill == 2)
+			z[ind] <- mean(z)
+	}
+	lon <- grd[[col.names[1]]]
+	lat <- grd[[col.names[2]]]
+	if(only.positive) {
+# put z<0 to 0
+		ind <- c(1:length(z))
+		ind <- ind[z < mean(z[z > 0])/1000 & z != -99999]
+		z[ind] <- mean(z[z > 0])/1000
+	}
+# Check if a setup from geoplot is to be used.  
+	cond1 <- col.names[1] == "lon" && col.names[2] == "lat"
+	cond2 <- col.names[1] == "x" && col.names[2] == "y" && geopar$
+		projection == "none"
+	if(cond1 || cond2) {
+		oldpar <- par()
+		on.exit(par(oldpar))
+		par(geopar$gpar)
+		if(geopar$cont)
+			par(plt = geopar$contlines)	# label beside the plot.  
+	}
+	if(csi != 0)
+		par(csi = csi)
+	nx <- length(lon)
+	ny <- length(lat)
+	lon1 <- matrix(lon, nx, ny)
+	lat1 <- t(matrix(lat, ny, nx))	
+	# Transform the matrices if lat,lon.  Proj only transforms if col.names=0
+	if(!labels.only) {
+		if(geopar$projection == "Mercator" && col.names[1] == "lon") {
+			z <- matrix(z, nrow = length(lon), ncol = length(lat))
+			lon2 <- c(matrix(lon[1], length(lat), 1))
+			lat2 <- c(matrix(lat[1], length(lon), 1))
+			xlat <- Proj(lat, lon2, geopar$scale, geopar$b0, geopar$
+				b1, geopar$l1, geopar$projection)
+			xlon <- Proj(lat2, lon, geopar$scale, geopar$b0, geopar$
+				b1, geopar$l1, geopar$projection)
+		}
+		else {
+			z <- matrix(z, nrow = length(lon), ncol = length(lat))
+			xlon <- list(x = lon)
+			xlat <- list(y = lat)
+		}
+	}
+	if(colors) {
+# plot contour lines in colors
+		if(is.null(levels)) {
+			if(nlevels == 0)
+				nlevels <- 10
+			levels <- pretty(z, nlevels)
+		}
+		nlevels <- length(levels)
+		if(length(lty) == length(levels) && length(levels) > 1)
+			linetypes <- T
+		else linetypes <- F
+		if(length(lwd) == length(levels) && length(levels) > 1)
+			linew <- T
+		else linew <- F
+		if(length(col) == 1) {
+			if(length(lty) == length(levels))
+				color <- rep(1, nlevels)
+			else {
+				mincol <- 2
+				color <- c(1:nlevels)
+				color <- round(2 + ((color - 1) * maxcol)/(
+				  nlevels))
+			}
+		}
+		else color <- col
+		if(!labels.only) {
+			if(length(ind) > 1)
+				z[ind] <- NA
+			if(geopar$projection == "Lambert") {
+				lev <- contour(lon + 400, lat, z, levels = 
+				  levels,  , triangles = triangles, save = T, 
+				  plotit = F)
+				for(i in 1:length(lev)) {
+				  if(linew)
+				    lw <- lwd[i]
+				  else lw <- 0
+				  if(linetypes)
+				    lt <- lty[i]
+				  else lt <- 0
+				  geolines(lev[[i]]$y, lev[[i]]$x - 400, col = 
+				    color[i], lty = lt, lwd = lw)
+				}
+			}
+			else {
+				for(i in 1:nlevels) {
+				  if(linetypes)
+				    par(lty = lty[i])
+				  if(linew)
+				    par(lwd = lwd[i])
+				  lev <- contour(xlon$x, xlat$y, z, axes = F, 
+				    levels = c(levels[i], levels[i]), add = T, 
+				    triangles = triangles, labex = labex, xlim
+				     = geopar$limx, ylim = geopar$limy, col = 
+				    color[i], xlab = " ", ylab = " ", save = F, 
+				    plotit = T)
+				}
+			}
+		}
+	}
+	else {
+# one color. 
+		if(length(ind) > 1) z[ind] <- NA
+		if(geopar$projection == "Lambert") {
+			if(length(levels) == 1)
+				lev <- contour(lon + 400, lat, z, nlevels = 
+				  nlevels, triangles = triangles, save = T, 
+				  plotit = F)
+			else {
+				lev <- contour(lon + 400, lat, z, axes = F, 
+				  levels = levels, triangles = triangles, add
+				   = T, labex = labex, col = col, xlab = " ", 
+				  ylab = " ", save = T, plotit = F)	
+	# +400 v. galla
+				for(i in 1:length(lev))
+				  geolines(lev[[i]]$y, lev[[i]]$x - 400, col = 
+				    col)
+			}
+		}
+		else {
+			if(length(levels) == 1)
+				lev <- contour(xlon$x, xlat$y, z, nlevels = 
+				  nlevels, triangles = triangles, labex = labex,
+				  add = T, xlim = geopar$limx, ylim = geopar$
+				  limy, axes = F, col = col, xlab = " ", ylab
+				   = " ", save = save, plotit = plotit)
+			else lev <- contour(xlon$x, xlat$y, z, axes = F, levels
+				   = levels, triangles = triangles, add = T, 
+				  labex = labex, xlim = geopar$limx, ylim = 
+				  geopar$limy, col = col, xlab = " ", ylab = 
+				  " ", save = save, plotit = plotit)
+		}
+	}
+	if(geopar$projection == "Lambert")
+		par(geopar$gpar)
+	if(length(label.location) == 1)
+		if(label.location == "locator") label.location <- geolocator(n
+				 = 2)	# use the locator.  
+	if(length(label.location) > 1) {
+#label located somewhere in drawing
+		label.location <- Proj(label.location, scale = geopar$scale, b0
+			 = geopar$b0, b1 = geopar$b1, l1 = geopar$l1, 
+			projection = geopar$projection)
+		if(geopar$projection == "none")
+			paint.window.x(label.location, border = T)
+		else paint.window(label.location, border = T)
+		labels.line(levels, digits, color, lty, xlim = label.location$x,
+			ylim = label.location$y, linew)
+	}
+	if(geopar$cont && colors) {
+# if labels needed.  
+		par(plt = geopar$contlab)
+		par(new = T)
+		plot(c(0, 1, 1, 0, 0), c(0, 0, 1, 1, 0), type = "l", axes = F, 
+			xlab = " ", ylab = " ")
+		labels.line(levels, digits, color, lty, linew)
+	}
+#	Add borders
+	if(length(reg) > 1 && paint) {
+		nx <- length(lon)
+		ny <- length(lat)
+		lon <- matrix(lon, nx, ny)
+		lat <- t(matrix(lat, ny, nx))
+		shadeborder(reg, lat, lon)
+	}
+	if(cond1 || cond2) {
+		par(oldpar)
+	}
+	if(save) {
+		return(invisible(lev))
+	}
+	else return(invisible())
+}
+"geocontour.fill"<-
+function(grd, z, levels = NULL, nlevels = 0, csi = 0.08, digits = 1, col = NULL, working.space = 0, labels = 1, ratio = 1000, only.positive = F, fill = 0,maxcol = 155, white = F, label.location = 0, labels.only = F, bordercheck = F, maxn = 10000, bcrat = 0.05, limits = NULL,col.names=c("lon","lat"),minsym="<",label.resolution=0,labtxt=NULL,boxcol=0,first.color.trans=T,mai=c(0,1,0,1),leftrat=0.1,labbox=T)
+{
+  if(!is.null(attributes(grd)$grid)){
+    z <- grd
+    grd <- attributes(grd)$grid
+  }
+  set<-NA
+  fact <- 2
+
+  grd <- Set.grd.and.z(grd,z,NULL,set,col.names) # Set data on correct form.
+
+  z <- grd$z
+					# Perturb z a little
+  z <- z+rnorm(length(z))*1e-9
+  grd <- grd$grd
+  if(is.null(levels)) {
+					# changed before cont < 2  
+    if(nlevels == 0) nlevels <- 10
+    levels <- pretty(range(z,na.rm=T), nlevels)
+    levels <- levels[2:(length(levels) - 1)]
+  }
+  ncont <- length(levels)	#	Set colors if needed
+  if(is.null(col)) {
+    if(white) {
+# lowest values white.  
+      mincol <- 2
+      colors <- c(1:(ncont ))
+      colors <- floor(mincol + ((colors - 1) * (maxcol - 
+						mincol))/(length(colors) - 1))
+      colors <- c(0, colors)
+    }
+    else {
+      mincol <- 2
+      colors <- c(1:(ncont + 1))
+      colors <- floor(mincol + ((colors - 1) * (maxcol - 
+						mincol))/(length(colors) - 1))
+    }
+  }
+  else colors <- col
+  levels.1 <- levels
+  colors.1 <- colors
+  m <- max(z[!is.na(z)])
+  if(!is.null(levels)) {
+    i <- c(1:length(levels))
+    i <- i[levels > max(z[!is.na(z)])]
+    if(length(i) > 0) {
+      levels <- levels[ - i]
+      if(length(colors) > 1) {
+	i <- i + 1
+	colors <- colors[ - i]
+      }
+    }
+  }
+   ncont <- nlevels <- length(levels)
+  cont <- levels	# change names of variables
+  grd <- extract(grd, z, maxn, limits,col.names=col.names)	# extract.   
+  z <- grd$z
+  grd <- grd$grd1
+
+  ind <- c(1:length(z))
+  ind <- ind[is.na(z)]
+  if(length(ind) > 0) {
+    if(fill == 0)
+      z[ind] <- -99999
+    if(fill == 1)
+      z[ind] <- 0
+    if(fill == 2)
+      z[ind] <- mean(z)
+  }
+  lon <- grd[[col.names[1]]]
+  lat <- grd[[col.names[2]]]
+
+ 
+  if(only.positive) {                            # put z<0 to 0
+    ind <- c(1:length(z))
+    ind <- ind[z < mean(z[z > 0])/1000 & z != -99999]
+    z[ind] <- mean(z[z > 0])/1000
+  }
+
+# Check if a setup from geoplot is to be used.  
+  
+  cond1 <- col.names[1] == "lon" && col.names[2] == "lat"
+  cond2 <- col.names[1] == "x" && col.names[2] == "y" && geopar$projection=="none"
+  if(cond1 || cond2) {
+    oldpar <- par()
+    on.exit(par(oldpar))
+    par(geopar$gpar)
+    if(geopar$cont) # label beside the plot.  
+      par(plt = geopar$contlines)
+  }
+  
+
+  if(csi != 0)
+    par(csi = csi)
+  nx <- length(lon)
+  ny <- length(lat)
+  mcont <- mean( - cont[1:(ncont - 1)] + cont[2:(ncont)])
+  lon1 <- matrix(lon, nx, ny)
+  lat1 <- t(matrix(lat, ny, nx))
+
+  # Transform the matrices if lat,lon.  Proj only transforms if col.names=0
+
+  if(col.names[1] == "lon" & col.names[2] == "lat") {
+    x1 <- Proj(lat1, lon1, geopar$scale, geopar$b0, geopar$b1, geopar$l1, 
+	       geopar$projection,col.names)
+    y1 <- x1$y
+    x1 <- x1$x
+  }
+  else { # no projection.
+    x1 <- lon1
+    y1 <- lat1
+  }
+
+  # Check what is inside borders if given.  
+  
+ 
+  cutreg <- F
+
+  lx <- length(x1)
+  x1 <- x1 + rnorm(lx)/1000000	
+  inni <- 0
+  indd <- c(0, 1, 4, 1, 2, 4, 2, 3, 4, 3, 0, 4)
+  cont <- c(cont, max(c(max(abs(cont)) * 1.1, max(z) * 1.1)))	# change.
+  cont <- c(min(c(min(z[z != -99999]) - 1, cont[1] - 1)), cont)
+  if(cont[2] - cont[1] < 1)
+    cont[1] <- cont[2] - 1
+  ncont <- ncont + 2
+  if(!labels.only) {
+    nel <- (nx - 1) * (ny - 1)
+    el <- matrix(0, nel, 4)
+
+    err <- 0	# error
+#    flag
+    if(working.space == 0) {
+# Try to calculate working space
+      z1 <- z[z > -99998]
+      zm <- mean(abs(z1[3:(length(z1) - 1)] - z1[2:(length(z1
+							   ) - 2)]))
+      cm <- mean(abs(cont[3:(length(cont) - 1)] - cont[2:(
+							  length(cont) - 2)]))
+      nel <- (nx - 1) * (ny - 1) * 4
+      working.space <- round(nel * (zm/cm + 3) * fact * 2)/2
+      if(working.space <= 20000) working.space <- 20000	
+	# maximum lenght of contour lines
+      if(working.space > 200000)
+	working.space <- 10 * length(x1)
+    }
+    polyx <- c(1:working.space)
+    polyx[1:working.space] <- 0
+    polyy <- c(1:working.space)
+    polyy[1:working.space] <- 0
+    print(paste("calculated working space is", working.space))
+    polyy <- .C("elcont",
+		as.double(c(x1)),
+		as.double(c(y1)),
+		as.double(c(z)),
+		as.integer(lx),
+		as.integer(nx),
+		as.integer(ny),
+		as.double(cont),
+		as.integer(ncont),
+		as.double(polyx),
+		as.double(polyy),
+		as.integer(el),
+		as.integer(nel),
+		as.integer(working.space),
+		as.integer(err),
+		as.integer(inni),
+		as.integer(cutreg),
+		as.integer(indd),
+		as.integer(white))
+    err <- polyy[[14]]
+    if(err == 1) {
+      print("error, working.space not big enough, try calling program again with bigger working.space")
+      return(invisible())
+    }
+    polyx <- polyy[[9]]
+    polyy <- polyy[[10]]
+    ind <- c(1:length(polyy))
+    ind <- ind[polyy > 90000]
+    indmax <- ind[length(ind)]
+    print(paste(" used working space is ",indmax))
+    polyy[ind] <- NA
+    col <- polyx[ind]	# find the color
+    polyx[ind] <- NA	# between polygons.  
+    polyx <- polyx[1:indmax]
+    polyy <- polyy[1:indmax]	#		Finding the colors.  
+    cont <- cont + 1e-05	# numerical problem
+    ncol <- cut(col, cont)
+    ncol <- colors[ncol]
+    ind <- c(1:length(ncol))
+    ind <- ind[is.na(ncol)]
+    ncol[ind] <- 0
+    if(bordercheck) {
+      eps <- 0.0001
+      lx <- geopar$limx - bcrat * (geopar$limx - mean(geopar$
+						      limx))
+      ly <- geopar$limy - bcrat * (geopar$limy - mean(geopar$
+						      limy))
+      lx[1] <- lx[1] - eps
+      lx[2] <- lx[2] + eps
+      ly[1] <- ly[1] - eps
+      ly[2] <- ly[2] + eps
+      ind <- c(1:length(polyx))
+      ind <- ind[is.na(polyx) | (polyx < lx[2] & polyx > lx[1
+							    ] & polyy < ly[2] & polyy > ly[1])]
+      polyx <- polyx[ind]
+      polyy <- polyy[ind]
+      n <- length(polyx)
+      ind <- c(1:length(polyx))
+      ind <- ind[!is.na(polyx)]
+      if(ind[1] != 1) {
+	ind2 <- c(1:(ind[1] - 1))
+	polyx <- polyx[ - ind2]
+	polyy <- polyy[ - ind2]
+	ncol <- ncol[ - ind2]
+      }
+      ind <- c(1:length(polyx))
+      ind <- ind[is.na(polyx)]
+      ind1 <- c(1:length(ind))
+      ind1 <- ind1[diff(ind) == 1]
+      ind2 <- ind[diff(ind) == 1]
+      if(length(ind1) > 0) {
+	ncol <- ncol[ - (ind1 + 1)]
+      }
+    }
+    polygon(polyx, polyy, col = ncol, border = F)	#	Add borders
+  }
+					# 	Add  labels around plot
+  if(length(label.location) == 1)
+    if(label.location == "locator"){
+      if(cond1 | cond2) 
+	label.location <- geolocator(n= 2)	# use the locator.
+      else
+	label.location <- locator(n=2)
+    }
+  if(length(label.location) > 1) {
+					#label located somewhere in drawing
+    if(labbox) 
+	paint.window(Proj(label.location,col.names=col.names), border = T,col.names=c("y","x"),col=boxcol)
+    label.location <- Proj(label.location, scale = geopar$scale, b0
+			   = geopar$b0, b1 = geopar$b1, l1 = geopar$l1, 
+			   projection = geopar$projection,col.name=col.names)
+    if(labels == 1) {
+					# labels for each contour line.  
+      labels1(levels.1, digits, colors.1, xlim = label.location$x,
+	      ylim = label.location$y,minsym=minsym,label.resolution=label.resolution,labtxt=labtxt,first.color.trans=first.color.trans,mai=mai,leftrat=leftrat)
+    }
+    else {
+					#more of a constant label. 
+      labels2(levels.1, digits, colors.1, xlim = label.location$x,
+	      ylim = label.location$y)
+    }
+  }
+  if(geopar$cont && labels != 0) {
+					# if labels needed.  
+    par(plt = geopar$contlab)
+    par(new = T)
+    plot(c(0, 1, 1, 0, 0), c(0, 0, 1, 1, 0), type = "l", axes = F, 
+	 xlab = " ", ylab = " ")
+    if(labels == 1) {
+					# labels for each contour line.  
+      labels1(levels.1, digits, colors.1, fill = geopar$cont,minsym=minsym,label.resolution=label.resolution,labtxt=labtxt,first.color.trans=first.color.trans,mai=mai,leftrat=leftrat)
+    }
+    else {
+					#more of a constant label. 
+      labels2(levels.1, digits, colors.1, fill = geopar$cont)
+    }
+  }
+  return(invisible())
+}
+"geoconvert"<-
+function(data, inverse = F, col.names = c("lat", "lon"))
+{
+	if(!inverse) {
+		if(is.data.frame(data)) {
+			if(any(is.na(match(col.names, names(data))))) {
+				cat(paste("Columns", colnames, "do not exist"))
+				return(invisible())
+			}
+			data[, col.names[1]] <- geoconvert.1(data[, col.names[1
+				]])
+			data[, col.names[2]] <- geoconvert.1(data[, col.names[2
+				]])
+		}
+		else data <- geoconvert.1(data)
+	}
+	else {
+# Convert to write out. 
+		if(is.data.frame(data)) {
+			if(any(is.na(match(col.names, names(data))))) {
+				cat(paste("Columns", colnames, "do not exist"))
+				return(invisible())
+			}
+			data[, col.names[1]] <- geoconvert.2(data[, col.names[1
+				]])
+			data[, col.names[2]] <- geoconvert.2(data[, col.names[2
+				]])
+		}
+		else data <- geoconvert.2(data)
+	}
+	return(data)
+}
+"breyta"<-geoconvert
+"geoconvert.1"<-
+function(x)
+{
+	i <- sign(x)
+	x <- abs(x)	
+	# x <- ifelse(abs(x) < 10000, x * 100, x) # This can not be allowed.  
+# Check for minutes > 60
+	x1 <- x %% 10000
+	k <- c(1:length(x1))
+	k <- k[x1 > 5999 & !is.na(x1)]
+	if(length(k) > 0)
+		print(paste("error > 60 min nr", k, x[k]))
+	min <- (x/100) - trunc(x/10000) * 100
+	return((i * (x + (200/3) * min))/10000)
+}
+"geoconvert.2"<-
+function(lat)
+{
+	i <- sign(lat)
+	lat <- abs(lat)
+	p1 <- floor(lat)
+	p2 <- floor((lat - p1) * 60)
+	p3 <- round((lat - p1 - p2/60) * 100 * 60)
+	return(i * (p1 * 10000 + p2 * 100 + p3))
+}
+"geocurve"<-
+function(data, df = nrow(data)/2, n = 10, open = T, arrow = "none", col = 1, lwd = 1, size = 0.2, angle = 15, smooth = T, plot = T, ...)
+{
+	if(df == "all")
+		df <- nrow(data) - 1
+	if(smooth) {
+		if(open)
+			data <- Open.curve(data, df, n)
+		else {
+			n <- nrow(data)
+			if(data[1, "lat"] != data[n, "lat"] || data[1, "lon"] != 
+				data[n, "lon"])
+				data <- rbind(data, data[1,  ])
+			data <- Closed.curve(data, df, n)
+		}
+	}
+	if(plot){
+	  geolines(data, lwd = lwd, col = col, ...)
+	  if(arrow == "start" || arrow == "both")
+		geolines.with.arrows(data, start = T, col = col, size = size, 
+			angle = angle)
+	  if(arrow == "end" || arrow == "both")
+		geolines.with.arrows(data, start = F, col = col, size = size, 
+			angle = angle)
+	}
+       return(invisible(data))
+}
+"geodefine"<-
+function(nholes = 0)
+{
+	oldpar <- par()
+	par(geopar$gpar)
+	on.exit(par(oldpar))
+	border <- giveborder(nholes = nholes)
+	reg <- border$reg
+	par(oldpar)
+	if(geopar$projection == "none")
+		reg <- list(x = reg$x, y = reg$y)
+	else reg <- list(lat = reg$lat, lon = reg$lon)
+	reg <- data.frame(reg)
+	return(reg)
+}
+"geogrid"<-
+function(lat, lon = 0, col = 1, type = "l", lwd = 0, lty = 0, pch = "+")
+{
+	oldpar <- par()	#par(geopar$gpar)
+	if(length(lon) == 1) {
+		if(geopar$projection == "none") {
+			lon <- lat$y
+			lat <- lat$x
+		}
+		else {
+			lon <- lat$lon
+			lat <- lat$lat
+		}
+	}
+	if(geopar$projection == "Lambert")
+		nx <- 10
+	else nx <- 1
+	if(geopar$projection != "none") {
+# degrees and minutes
+		if(mean(lat, na.rm = T) > 1000) {
+			lat <- convert(lat)
+			lon <-  - convert(lon)
+		}
+	}
+	if(type == "l") {
+#		lat <- c(lat,NA) ; lon <- c(lon,NA)
+		llon <- length(lon)
+		llat <- length(lat)
+		latgr <- t(matrix(lat, llat, llon))
+		longr <- matrix(lon, llon, llat)
+		n1 <- rep(NA, nrow(latgr))
+		n2 <- rep(NA, ncol(latgr) + 1)
+		latgr <- cbind(latgr, n1)
+		latgr <- rbind(latgr, n2)
+		longr <- cbind(longr, n1)
+		longr <- rbind(longr, n2)
+		geolines(latgr, longr, col = col, nx = nx)	# plot the lines.
+		llon <- length(lon)
+		llat <- length(lat)
+		latgr <- matrix(lat, llat, llon)
+		longr <- t(matrix(lon, llon, llat))
+		n1 <- rep(NA, nrow(latgr))
+		n2 <- rep(NA, ncol(latgr) + 1)
+		latgr <- cbind(latgr, n1)
+		latgr <- rbind(latgr, n2)
+		longr <- cbind(longr, n1)
+		longr <- rbind(longr, n2)
+		geolines(latgr, longr, col = col, lwd = lwd, lty = lty, nx = nx
+			)	# plot the lines.
+	}
+	else {
+		llon <- length(lon)
+		llat <- length(lat)
+		latgr <- c(t(matrix(lat, llat, llon)))
+		longr <- c(matrix(lon, llon, llat))
+		geopoints(latgr, longr, pch = pch)
+	}
+	return(invisible())
+	par(oldpar)
+}
+"geoidentify"<-
+function(lat, lon = NULL, labels = 1, n = 0, plot = T, atpen = T, offset = 0.5, 
+	col = 1, csi = 0.12)
+{
+	oldpar <- par()
+	par(geopar$gpar)
+	par(csi = csi)
+	par(col = col)
+	on.exit(par(oldpar))
+	if(is.null(lon)) {
+		if(geopar$projection == "none") {
+			lon <- lat$y
+			lat <- lat$x
+		}
+		else {
+			lon <- lat$lon
+			lat <- lat$lat
+		}
+	}
+	if(geopar$projection != "none") {
+# degrees and minutes
+		if(mean(lat, na.rm = T) > 1000) {
+			lat <- convert(lat)
+			lon <-  - convert(lon)
+		}
+	}
+	if(length(labels) == 1 && length(lat) > 1)
+		labels <- seq(along = lat)
+	if(n == 0)
+		n <- length(lat)
+	xx <- Proj(lat, lon, geopar$scale, geopar$b0, geopar$b1, geopar$l1, 
+		geopar$projection)
+	z <- identify(xx$x, xx$y, labels = labels, n = n, plot = plot, atpen = 
+		atpen, offset = offset)
+	return(z)
+}
+
+"geoinside"<-
+function(data, reg, option = 1, col.names = c("lat", "lon"), na.rm = T, robust
+	 = F)
+{
+  if(!is.data.frame(data)){
+    i <- match(col.names, names(data))
+    data <- data.frame(data[[i[1]]],data[[i[2]]])
+    names(data) <- col.names
+  }
+		       
+	i <- match(col.names, names(data))
+	index <- rep(NA,nrow(data));j <- rep(T,nrow(data))
+	tmp <- data
+	if(na.rm) {
+		j <- !is.na(data[, i[1]]) & !is.na(data[, i[2]])
+		data <- data[j,  ]
+	}
+	i1 <- match(col.names, names(reg))
+	regx <- reg[[i1[1]]]
+	regy <- reg[[i1[2]]]
+	n <- length(regx) 
+        k <- (regx[1] != regx[n] || regy[1] != regy[n]) && length(regx) != 2
+        if(k && !is.na(k)) {
+	   regx <- c(regx,regx[1])
+	   regy <- c(regy,regy[1])
+    	}
+	reg <- list(x = regx,y=regy)
+	if(length(reg$x) == 2)
+		reg <- list(x = c(reg$x[1], reg$x[2], reg$x[2], reg$x[1], reg$x[
+			1]), y = c(reg$y[1], reg$y[1], reg$y[2], reg$y[2], reg$
+			y[1]))
+	data <- list(x = data[[i[1]]], y = data[[i[2]]])
+	border <- adapt(reg$y, reg$x, projection = "none")
+	inside <- rep(0, length(data$x))	
+	# Robust method using trigonometric functions.  
+	if(robust) {
+		a <- a1 <- rep(0, length(reg$x))
+		inside <- .C("marghc",
+			as.double(data$x),
+			as.double(data$y),
+			as.integer(length(data$y)),
+			as.double(border$x),
+			as.double(border$y),
+			as.integer(length(border$y)),
+			as.integer(border$lxv),
+			as.integer(length(border$lxv)),
+			as.integer(inside),
+			as.double(a),
+			as.double(a1))
+		inside <- inside[[9]]
+	}
+	else {
+# Faster method.  
+		tmpinside <- rep(0, length(border$lxv))
+		inside <- .C("geomarghc",
+			as.double(data$x),
+			as.double(data$y),
+			as.integer(length(data$y)),
+			as.double(border$x),
+			as.double(border$y),
+			as.integer(border$lxv),
+			as.integer(length(border$lxv)),
+			as.integer(inside),
+			as.integer(tmpinside))
+		inside <- inside[[8]]
+	}
+        index[j] <- inside;inside <- index
+
+	ind <- c(1:length(inside))
+ 	ind <- ind[inside > 0 & !is.na(inside)]
+	if(option == 1) {
+		tmp <- tmp[ind,  ]
+		return(tmp)
+	}
+	else if(option == 2) {
+		tmp <- tmp[ - ind,  ]
+		return(tmp)
+	}
+	else if(option == 3)
+		return(inside)
+	else if(option == 4)
+		return(1 - inside)
+	else if(option == 5) {
+		ind <- c(1:length(inside))
+		ind <- ind[inside == 0]
+		return(ind)
+	}
+	else if(option == 6) {
+		ind <- c(1:length(inside))
+		ind <- ind[inside != 0]
+		return(ind)
+	}
+	else return(ind)
+}
+
+"geolegend"<-
+function(pos, legend, ...)
+{
+	oldpar <- par()
+	par(geopar$gpar)
+	on.exit(par(oldpar))
+	xx <- Proj(pos$lat, pos$lon)
+	legend(xx$x, xx$y, legend = legend, ...)
+}
+"geolines"<-
+function(lat, lon = 0, col = 1, lwd = 0, lty = 0, nx = 1, outside = F,return.data=F)
+{
+	if(length(lon) == 1) {
+# For polygon structures.
+		if(!is.null(lat$length)) n <- lat$length else n <- max(c(length(
+				lat$y), length(lat$lat)))
+		if(geopar$projection == "none") {
+			lon <- lat$y[1:n]
+			lat <- lat$x[1:n]
+		}
+		else {
+			lon <- lat$lon[1:n]
+			lat <- lat$lat[1:n]
+		}
+	}
+	if(geopar$projection != "none") {
+# degrees and minutes
+		if(mean(lat, na.rm = T) > 1000) {
+			lat <- convert(lat)
+			lon <-  - convert(lon)
+		}
+	}
+	if(outside)
+		par(xpd = T)
+	else par(xpd = F)
+	if(nx > 1) {
+# fill in with points for lambert. 
+		x <- fill.points(lat, lon, nx, option = 2)
+		lat <- x$x
+		lon <- x$y
+	}
+	oldpar <- par()
+	par(geopar$gpar)
+	if(lwd != 0)
+		par(lwd = lwd)
+	if(lty != 0)
+		par(lty = lty)
+	on.exit(par(oldpar))
+	xx <- Proj(lat, lon, geopar$scale, geopar$b0, geopar$b1, geopar$l1, 
+		geopar$projection)
+	if(!outside) {
+		gx <- geopar$limx
+		gy <- geopar$limy
+		border <- list(x = c(gx[1], gx[2], gx[2], gx[1], gx[1]), y = c(
+			gy[1], gy[1], gy[2], gy[2], gy[1]))
+		xx <- findline(xx, border)
+	}
+	else par(xpd = F)	#c program not used
+	lines(xx$x, xx$y, col = col)
+	par(oldpar)
+	if(return.data) {
+	  xx <- invProj(xx)
+ 	  xx <- data.frame(lat=xx$lat,lon=xx$lon)
+	  return(invisible(xx))
+	}
+	else 
+	  return(invisible())
+}
+"geolines.with.arrows"<-
+function(data, start = T, size = 0.20000000000000001, ...)
+{
+	if(!is.data.frame(data))
+		data <- data.frame(data)
+	n <- nrow(data)
+	if(start)
+		i <- c(1:n)
+	else i <- seq(n, 1, by = -1)
+	tmpdata <- data[i,  ]
+	limits <- invProj(geopar$limx, geopar$limy)
+	plt.size <- geopar$gpar$pin
+	dlon <- size/plt.size[1] * diff(limits$lon)
+	dlat <- size/plt.size[2] * diff(limits$lat)
+	theta <- seq(0, 2 * pi, by = 0.10000000000000001)
+	lat <- tmpdata[1, "lat"] + dlat * sin(theta)
+	lon <- tmpdata[1, "lon"] + dlon * cos(theta)
+	circle <- data.frame(lat = lat, lon = lon)
+	xr <- findline(tmpdata, circle, plot = F)
+	i <- is.na(xr$lat)
+	i1 <- c(1:length(i))
+	i1 <- i1[i]
+	n <- min(i1) - 1
+	pos <- list(lat = c(xr$lat[n], tmpdata$lat[1]), lon = c(xr$lon[n], 
+		tmpdata$lon[1]))
+	pos <- Arrow(pos, ...)
+	return(invisible(pos))
+}
+"geolocator"<-
+function(type=" ",n=0) {
+	oldpar <- par();par(geopar$gpar)
+	on.exit(par(oldpar))
+	if(n==0)x <- locator(type=type)
+	else x <- locator(type=type,n=n) 
+	if(!is.null(x$x)) {
+	  lat <- invProj(x$x,x$y,geopar$scale,geopar$b0,geopar$b1,geopar$l1,projection=geopar$projection)
+	  if(geopar$projection=="none")return(x<-data.frame(x=lat$x,y=lat$y))
+	    else return(lat<-data.frame(lat=lat$lat,lon=lat$lon))
+	}
+	else
+	  return(list())
+}
+"geoplot"<-
+function(lat = NULL, lon = 0, type = "p", pch = "*", xlim = c(0, 0), ylim = c(0,
+	0), b0 = 65, r = 1.05, country = "default", xlab = " ", ylab = " ", 
+	option = "cut", grid = T, new = F, cont = F, csi = 0.10000000000000001, 
+	col = 1, lcont = c(0.13, 0.20999999999999999), plotit = T, reitur = F, 
+	smareitur = F, reittext = F, csirt = 0.10000000000000001, axratio = 1, 
+	lwd = 0, lwd1 = 0, locator = F, axlabels = T, projection = "Mercator", 
+	b1 = b0, dlat = 0, dlon = 0, jitter = 0,zoom)
+{ 	if(!missing(zoom)){
+	  xlim<-geolocator(n=2)}
+               
+
+	oldpar.1 <- par()	# first version of old parameters
+	command <- sys.call()
+	if((oldpar.1$fig[2] - oldpar.1$fig[1]) <= 0.59999999999999998 || (
+		oldpar.1$fig[4] - oldpar.1$fig[3]) <= 0.59999999999999998)
+		multfig <- T
+	else multfig <- F
+	if(projection == "none") {
+		if(!is.null(xlim$y) && !is.null(xlim$x)) {
+			ylim <- xlim$y
+			xlim <- xlim$x
+		}
+	}
+	else {
+		if(!is.null(xlim$lat) && !is.null(xlim$lon)) {
+			ylim <- xlim$lat
+			xlim <- xlim$lon
+		}
+	}
+	if(is.null(lat) && xlim[2] == xlim[1] && ylim[2] == ylim[1] && !locator
+		) {
+#std plot
+		if(!multfig) par(fig = geopar.std$fig)
+		if(!multfig)
+			par(plt = geopar.std$plt)
+		xlim <- geopar.std$xlim
+		ylim <- geopar.std$ylim
+		if(!multfig)
+			par(mex = geopar.std$mex)
+	}
+	if(is.null(lat)) {
+		lat <- c(65, 66)
+		lon <- c(-28, -27)
+		type <- "n"
+	}
+	oldpar <- par()
+	if(locator&missing(zoom)) {
+		limits <- geolocator(n = 2)
+		if(geopar$projection == "none") {
+			xlim <- limits$x
+			ylim <- limits$y
+		}
+		else {
+			xlim <- limits$lon
+			ylim <- limits$lat
+		}
+	}
+	xlim <- sort(xlim)
+	ylim <- c(ylim)
+	if(projection == "none") {
+		if(length(country) == 1)
+			if(country == "default")
+				country <- "none"
+	}
+	else {
+		if(length(country) == 1)
+			if(country == "default")
+				country <- island
+	}
+	init(lat, lon = lon, type = type, pch = pch, xlim = xlim, ylim = ylim, 
+		b0 = b0, r = r, country = country, xlab = xlab, ylab = ylab, 
+		option = option, grid = grid, new = new, cont = cont, csi = csi,
+		col = col, lcont = lcont, plotit = plotit, reitur = reitur, 
+		smareitur = smareitur, reittext = reittext, axratio = axratio, 
+		lwd = lwd, axlabels = axlabels, oldpar = oldpar, projection = 
+		projection, b1 = b1, dlat = dlat, dlon = dlon, command = 
+		command, jitter = jitter)
+	oldpar.1$fig <- geopar$gpar$fig
+	oldpar.1$mfg <- geopar$gpar$mfg
+	par(oldpar.1)
+	if(reittext)
+		plot.reitnr(csirt, lwd = lwd)	# number of squares
+	if(length(country) > 1 && plotit)
+		geolines(country, col = col, lwd = lwd1)	
+	# plot country
+	return(invisible())
+}
+"geopoints"<-
+function(lat, lon = 0, pch = "*", csi = 0.12, col = 1, lwd = 0, outside = F,jitter=NULL,mkh=NULL)
+{
+	if(length(lon) == 1 && length(lat) > 1) {
+		if(geopar$projection == "none") {
+			lon <- lat$y
+			lat <- lat$x
+		}
+		else {
+			lon <- lat$lon
+			lat <- lat$lat
+		}
+	}
+	if(geopar$projection != "none") {
+# degrees and minutes
+		if(mean(lat, na.rm = T) > 1000) {
+			lat <- convert(lat)
+			lon <-  - convert(lon)
+		}
+	}
+	if(!is.null(jitter)) {
+	  lat <- lat+runif(length(lat),-1,1)*jitter
+	  lon <- lon+runif(length(lon),-1,1)*jitter*2
+ 	}
+	oldpar <- par()
+	par(geopar$gpar)
+	if(lwd != 0)
+		par(lwd = lwd)
+	if(outside)
+		par(xpd = T)
+	else par(xpd = F)
+	on.exit(par(oldpar))
+	par(csi = csi)
+	xx <- Proj(lat, lon, geopar$scale, geopar$b0, geopar$b1, geopar$l1, 
+		geopar$projection)
+	if(!outside) {
+		ind <- c(1:length(lat))
+		ind <- ind[xx$x > geopar$limx[2] | xx$x < geopar$limx[1] | xx$y <
+			geopar$limy[1] | xx$y > geopar$limy[2] | is.na(xx$x) | 
+			is.na(xx$y)]
+		if(length(ind) > 0) {
+			xx$x <- xx$x[ - ind]
+			xx$y <- xx$y[ - ind]
+		}
+	}
+	if(!is.null(mkh))
+	  points(xx$x, xx$y, pch = pch, col = col,mkh=mkh)
+	else
+	  points(xx$x, xx$y, pch = pch, col = col)
+	return(invisible())
+}
+"geopolygon"<-
+function(lat, lon = NULL, col = 0, border = F, exterior = F, nx = 1, outside = F, 
+		       plot = T, save = F, rat = 0.005, density = -1, Projection = NULL, angle
+		       = 45, allowed.size = 4000,option=1)
+{
+  if(is.null(Projection)) Projection <- geopar$projection	
+					# 	for structures too large for hardware
+  index <- lat$index
+  RANGE <- lat$range
+  LENGTH <- lat$length
+  if(exterior) in.or.out <- 1
+  else in.or.out <- 0
+  err <- F
+  if(is.null(lon)) {
+    if(Projection == "none") {
+      lon <- lat$y
+      lat <- lat$x
+    }
+    else {
+      lon <- lat$lon
+      lat <- lat$lat
+    }
+  }
+  if(Projection != "none") {
+# degrees and minutes
+    if(mean(lat, na.rm = T) > 1000) {
+      lat <- geoconvert(lat)
+      lon <-  - geoconvert(lon)
+    }
+  }
+  if(length(lat) == 2) {
+    lat <- c(lat[1], lat[1], lat[2], lat[2], lat[1])
+    lon <- c(lon[1], lon[2], lon[2], lon[1], lon[1])
+  }
+  if(nx > 1) {
+					# fill in with points for lambert. 
+    x <- fill.points(lat, lon, nx, option = 2)
+    lat <- x$x
+    lon <- x$y
+  }
+  oldpar <- par()
+  par(geopar$gpar)
+  if(outside)
+    par(xpd = T)
+  else par(xpd = F)
+  on.exit(par(oldpar))
+  gx <- geopar$limx
+  rx <- gx[2] - gx[1]
+  gy <- geopar$limy
+  ry <- gy[2] - gy[1]
+  gx[1] <- gx[1] + rat * rx
+  gx[2] <- gx[2] - rat * ry
+  gy[1] <- gy[1] + rat * ry
+  gy[2] <- gy[2] - rat * ry
+  brd <- data.frame(x = c(gx[1], gx[2], gx[2], gx[1], gx[1]), y = c(gy[
+							  1], gy[1], gy[2], gy[2], gy[1]))
+  brd1 <- invProj(brd)
+  brd1 <- data.frame(lat=brd1$lat,lon=brd1$lon)
+  if(!is.null(index)) {
+    limits <- invProj(geopar$limx, geopar$limy)
+    for(i in 1:length(index)) {
+      xx <- Proj(lat[index[[i]]], lon[index[[i]]])
+      if(!outside) xx <- cut.multipoly(xx, brd,in.or.out)
+      if(length(xx$x) > 0) 
+        polygon(xx$x, xx$y, col = col, border = border, 
+	      density = density, angle = angle)
+    }
+    return(invisible())
+  }
+  else {
+    if(exterior){
+      i1 <- geoinside(brd1,data.frame(lat=lat,lon=lon),option=0)
+      i<- 1:4;i <- i[is.na(match(i,i1))]
+      if(length(i) ==0) return(invisible())
+      else i1 <- i[1]
+      i <- geoinside(data.frame(lat=lat,lon=lon),brd1,na.rm=T,robust=F,option=0)
+      if(length(i) == length(lat) || option != 1) {
+	lat <- lat[!is.na(lat)];lon <- lon[!is.na(lon)]
+	dist <- (lat-brd1$lat[i1])^2+(lon-brd1$lon[i1])^2*cos(mean(lat)*pi/180)^2
+	o <- order(dist)
+	lat <- c(lat[c(o[1]:length(lat),1:o[1])],brd1$lat[c(i1:4,1:i1)],lat[o[1]])
+	lon <- c(lon[c(o[1]:length(lon),1:o[1])],brd1$lon[c(i1:4,1:i1)],lon[o[1]])
+	xx <- Proj(lat, lon, geopar$scale, geopar$b0, geopar$b1,
+		   geopar$l1, Projection)
+	if(plot) { polygon(xx$x, xx$y, col = col, border = border, 
+			   density = density, angle = angle)
+		   return(invisible())
+		 }
+	else return(invisible(invProj(xx)))
+      }
+    }
+  }
+  err <- F
+  xx <- Proj(lat, lon, geopar$scale, geopar$b0, geopar$b1,
+	     geopar$l1, Projection)
+  if(!outside) xx <- cut.multipoly(xx, brd,in.or.out)
+  if(length(xx$x) > allowed.size && plot) {
+    ind <- seq(along = xx$x)
+    ind <- ind[is.na(xx$x)]
+    if(length(ind) == 0)
+      err <- T
+    else {
+      ind <- c(1, ind, length(xx$x))
+      if(max(diff(ind)) > allowed.size)
+	err <- T
+      else err <- F
+      
+    }
+  }
+  if(plot) {
+    if(!err)
+      polygon(xx$x, xx$y, col = col, border = border, 
+	      density = density, angle = angle)
+    else print("too large polygon, change parameter allowed.zize"
+	       )
+  }
+  if(save) {
+    xx <- invProj(xx$x, xx$y, geopar$scale, geopar$b0, 
+		  geopar$b1, geopar$l1, Projection)
+    return(list(lat = xx$lat, lon = xx$lon))
+  }
+  return(invisible())
+}
+
+
+
+"geosubplot"<-
+function(fun, pos, size = c(2, 2), fill, fillcol, ...)
+{
+	if(length(pos$lat) == 1) {
+# Calculate new limits.
+		plt.size <- par()$pin
+		rlon <- (diff(geopar$origin$lon) * size[1])/plt.size[1]
+		rlat <- (diff(geopar$origin$lat) * size[2])/plt.size[2]
+		pos <- data.frame(lat = pos$lat + c(-0.5, 0.5) * rlat, lon = 
+			pos$lon + c(-0.5, 0.5) * rlon)
+	}
+	if(!missing(fill)) {
+		if(!missing(fillcol))
+			geopolygon(pos, col = fillcol)
+		else geopolygon(pos, col = 0)
+	}
+	pos <- Proj(pos)
+	oldpar <- par()
+	par(geopar$gpar)
+	on.exit(par(oldpar))
+	pr <- subplot(fun, pos, ...)
+	return(invisible())
+}
+"geosymbols"<-
+function(lat,lon=0,z,levels=NULL,reflevels=NULL,labels.only =F,csi=0.1,chs=0.1,z1=0,circles=0,squares=0,rectangles=c(0,0),vbars=0,hbars=0,perbars=0,parbars=0,sqrt=F,col=1,maxn=0,colplot=F,nlevels=10,colors=0,n=25,maxcol=155,only.positive=F,digits=0,white=F,lwd=1,label.location=NULL,labels=1,fill.circles=F,density=0,angle=45,rotate=0,outside=F,minsym="<",boundcheck=0,na.rm=T,label.resolution=0,characters=F,pch,marks,charcol=0,open.circles=F,col.names=c("lat","lon"),border=F,bordercol=0) {
+  options(warn=-1)
+  if(!is.null(label.location))
+    if(is.list(label.location)) label.location <- as.data.frame(label.location)
+  if(is.data.frame(lat)) {
+    i <- match(col.names,names(lat))
+    data <- data.frame(lat=lat[,i[1]],lon=lat[,i[2]])
+  }
+  else{
+    data <- data.frame(lat=lat,lon=lon)
+  }
+  if(na.rm) { # delete na.
+    ind <- c(1:length(data$lat))
+    ind <- ind[is.na(data$lat) | is.na(data$lon) ] 
+    if(length(ind)>0) {
+      data$lat <- data$lat[-ind];data$lon <- data$lon[-ind];z <- z[-ind]
+    }
+  } 
+  ind <- c(1:length(data$lat));ind <- ind[is.na(z) ] 
+  if(length(ind)>0) {
+    data$lat[ind] <- NA;data$lon[ind] <- NA;z[ind] <- mean(z,na.rm=T)
+  }
+
+  if(fill.circles) colplot <- T
+  if(open.circles) colplot <- T
+  if(density >0) colplot <- T
+  if(maxn == 0) maxn <- max(abs(z))
+  if(only.positive) {ind <- c(1:length(z));ind<-ind[z<0];z[ind]<-0}
+  if(boundcheck !=0){
+    dataprj <- Proj(data$lat,data$lon)
+    ind <- c(1:length(data$lat));
+    ind <- ind[dataprj$x <geopar$limx[1] | dataprj$x > geopar$limx[2] | 
+	       dataprj$y <geopar$limy[1] | dataprj$y > geopar$limy[2] ]
+    if( length(ind) >0)  {
+      ind1 <- paste(ind,collapse=",")
+      print(paste("points",ind1,"out of bounds"))
+    }
+    if(boundcheck==2) {
+      if(length(ind) >0){
+	data$lat <- data$lat[-ind];data$lon <- data$lon[-ind];z <- z[-ind]
+      }
+    }
+  }
+  oldpar<- par() ; par(geopar$gpar)
+  on.exit(par(oldpar))
+  if(outside) par(xpd=T)
+  else	par(xpd=F)
+  if(colplot){
+    if(labels.only){
+      if(csi !=0)par(csi=csi)
+      colsymbol(data$lat,data$lon,z,circles,squares,rectangles,hbars,vbars,perbars,parbars,levels,nlevels,colors
+		,white,n,maxcol,digits,label.location,labels,fill.circles,density,angle,rotate,minsym,label.resolution,col,labels.only=T,open.circles=open.circles,lwd=lwd,border=border,bordercol=bordercol)
+	  }
+    else{
+      if(csi!=0)par(csi=csi)
+      colsymbol(data$lat,data$lon,z,circles,squares,rectangles,hbars,vbars,perbars,parbars,levels,nlevels,colors
+		,white,n,maxcol,digits,label.location,labels,fill.circles,density,angle,rotate,minsym,label.resolution,col,open.circles=open.circles,lwd=lwd,border=border,bordercol=bordercol)
+    }
+  }
+  else { 
+    x <-  Proj(data$lat,data$lon,geopar$scale,geopar$b0,geopar$b1,geopar$l1,geopar$projection)
+    y <- x$y ; x <- x$x
+    ein.pr.in <-(geopar$limy[2]-geopar$limy[1])/geopar$gpar$pin[2]
+    if(!is.null(label.location) ) {
+      if(label.location=="locator" || label.location==0)
+	label.location<-geolocator(n=2)
+      limits <- Proj(label.location)
+      xlim <- limits$x	
+      ylim <- limits$y
+      if(xlim[1]>xlim[2]){
+	temp<-xlim[1]
+	xlim[1]<-xlim[2]
+	xlim[2]<-temp
+      }
+      if(ylim[1]>ylim[2]){
+	temp<-ylim[1]
+	ylim[1]<-ylim[2]
+	ylim[2]<-temp
+      }
+      if(is.null(levels)){
+	rg<-range(z)
+	lrg<-rg[2]-rg[1]
+	levels<-signif(seq(rg[1]+lrg/10,rg[2]-lrg/10,length=nlevels),2)
+      }
+      lbox<-length(levels)
+      boxy <- c(1:lbox)
+      boxy <-  - boxy/lbox + 1
+      boxy1 <- boxy + 1/(1.2 * lbox)
+      yloc <- (boxy + boxy1)/2
+      xloc <- matrix(0.85, length(yloc))
+      
+      par(adj = 0)
+      textx <- as.character(levels)
+      boxx <- c(matrix(0.1, 1, length(boxy)))
+      boxx <- xlim[1] + abs((xlim[2] - xlim[1])) * boxx
+      xloc <- xlim[1] + abs((xlim[2] - xlim[1])) * xloc
+      yloc <- ylim[1] + abs((ylim[2] - ylim[1])) * yloc
+      boxy <- ylim[1] + (ylim[2] - ylim[1]) * boxy
+      ll <- (ylim[2] - ylim[1]) * 0.05
+      if(circles!=0|squares!=0|hbars!=0|vbars!=0|perbars!=0)
+	text(boxx, boxy + ll, textx,csi=chs)
+    }
+    if(circles!=0){       # plot circles.
+      rg<-range(circles)
+      rglen<-rg[2]-rg[1]
+      lev<-seq(rg[1]+rglen/10,rg[2]-rglen/10,length=5)
+      if((circles >100) | (circles < 0)) circles<-0.2  #default value.  
+      circles <- ein.pr.in*circles  # size in units
+      if(sqrt){
+	if(!labels.only) symbols(x,y,circles=circles*sqrt(abs(z)/maxn),
+				 inches=F,add=T,col=col,lwd=lwd)
+	if(!is.null(label.location)) symbols(c(xloc), c(yloc), circles =  circles*sqrt(abs(levels)/maxn), add = T, inches = F,lwd=lwd)
+      }
+      else {
+	if(!labels.only) symbols(x,y,circles=circles*(abs(z)/maxn),add=T,inches=F,col=col,lwd=lwd)
+	if(!is.null(label.location))symbols(c(xloc), c(yloc), circles = circles*abs(levels)/maxn, add = T,inches = F,lwd=lwd)
+      }
+      
+    }
+    if(squares!=0){		#plot squares.
+      if((squares >100) | (squares < 0)) squares<-0.2 #default value.  
+      squares <- ein.pr.in*squares  # size in units  
+      if(sqrt){
+	if(!labels.only) symbols(x,y,squares=squares*sqrt(abs(z)/maxn),add=T,inches=F,col=col,lwd=lwd)
+	symbols(c(xloc), c(yloc), squares = squares*sqrt(abs(levels)/maxn), add = T, inches = F,lwd=lwd)
+      }
+      else {
+	if(!labels.only) symbols(x,y,squares=squares*(abs(z)/maxn)
+				 ,add=T,inches=F,col=col,lwd=lwd)
+	symbols(c(xloc), c(yloc), squares = squares*abs(levels)/maxn, add = T,inches = F,lwd=lwd)}
+    }
+    if((rectangles[1]!=0) | (rectangles[2] !=0) ) { # plot rectangles
+      if((rectangles[1] >100) | (rectangles[1]<0) ) 
+	rectangles[1]<-0.2 # thickness
+      if((rectangles[2] >100) | (rectangles[2]<0) ) 
+	rectangles[2]<-0.2   # length
+      rectangles[1] <- ein.pr.in*rectangles[1]  # size in units  
+      rectangles[2] <- ein.pr.in*rectangles[2]  # size in units  
+      m <- matrix(rectangles[1],length(z),2)
+      if(sqrt) m[,1]<- rectangles[1]*sqrt(abs(z)/maxn)
+      else m[,1]<- rectangles[1]*abs(z)/maxn
+      if(length(z1)>1 ) {
+	if(sqrt) m[,2]<- rectangles[2]*sqrt(abs(z1)/max(abs(z1)))
+	else m[,2]<- rectangles[2]*abs(z1)/max(abs(z1))
+      }
+      symbols(x,y,rectangles=m,add=T,inches=F,col=col,lwd=lwd)
+    }	
+    if(vbars!=0)  { # plot vertical bars
+      if(vbars >100) vbars <- 0.4
+      mx <- matrix(NA,3,length(x)) ; my <- mx
+      mx[1,] <- x ; my[1,]<-y; mx[2,]<-x
+#      mlocx<- matrix(NA,3,length(levels)); mlocy<-mlocx
+#      mlocx[1,]<-c(xloc) ; mlocy[1,]<-c(yloc); mlocx[2,]<-c(xloc)
+      r <- ein.pr.in*vbars  # size in units  
+      if(sqrt) {my[2,]<-my[1,]+r*sqrt(abs(z)/maxn)
+#		mlocy[2,]<-mlocy[1,]+r*sqrt(abs(levels)/maxn)
+	      }
+      else {my[2,]<-my[1,]+r*abs(z)/maxn
+#	    mlocy[2,]<-my[1,]+r*abs(levels)/maxn
+	  }
+      if(!labels.only)
+	lines(mx,my,col=col,lwd=lwd)   # plot bars
+#      lines(mlocx,mlocy,col=col,lwd=lwd)
+    }
+    if(hbars!=0)  { # plot horizontal bars
+      if(hbars >100) hbars <- 0.4
+      mx <- matrix(NA,3,length(x)) ; my <- mx
+      mx[1,] <- x ; my[1,]<-y; my[2,]<-y
+#      mlocx<- matrix(NA,3,length(levels)); mlocy<-mlocx
+#      mlocx[1,]<-c(xloc) ; mlocy[1,]<-c(yloc); mlocy[2,]<-c(yloc)
+      r <- ein.pr.in*hbars  # size in units
+      if(sqrt){ mx[2,]<-mx[1,]+r*sqrt(abs(z)/maxn)
+#		mlocx[2,]<-mlocx[1,]+r*sqrt(abs(levels)/maxn)
+		    }
+      else {mx[2,]<-mx[1,]+r*abs(z)/maxn
+#	    mlocx[2,]<-mlocx[1,]+r*abs(levels)/maxn
+	  }
+      if(!labels.only)
+	lines(mx,my,col=col,lwd=lwd)   # plot bars
+#      lines(mlocx,mlocy,col=col)
+    }
+    if(perbars != 0)  { # plot bars perpendicular to cruiselines
+      if(perbars >100) perbars <- 0.4
+      mx <- matrix(NA,3,length(x)) ; my <- mx
+      mx[1,] <- x ; my[1,]<-y;
+#      mlocx<- matrix(NA,3,length(levels)); mlocy<-mlocx
+#      mlocx[1,]<-c(xloc) ; mlocy[1,]<-c(yloc); mlocy[2,]<-c(yloc)
+      r <- ein.pr.in*perbars  # size in units  
+      dx <- c(1:length(x));dx[1]<- x[2]-x[1] ; 
+      dx[2:(length(x)-1)]<-x[3:(length(x))]-x[1:(length(x)-2)]
+      dx[length(x)]<- x[length(x)]-x[length(x)-1]
+      dy <- c(1:length(y)); dy[1]<- y[2]-y[1]  
+      dy[2:(length(y)-1)]<-y[3:length(y)]-y[1:(length(y)-2)]
+      dy[length(y)]<- y[length(x)]-y[length(y)-1]
+      dxy <-sqrt(dx*dx+dy*dy); dx <- dx/dxy ; dy <- dy/dxy
+      if(sqrt) mx[2,]<- mx[1,]-dy*r*sqrt(abs(z)/maxn)
+      else  mx[2,]<- mx[1,]-dy*r*abs(z)/maxn  	  
+      if(sqrt) my[2,]<- my[1,]+dx*r*sqrt(abs(z)/maxn)
+      else  my[2,]<- my[1,]+dx*r*abs(z)/maxn
+#      if(sqrt)  mlocx[2,]<-mlocx[1,]+r*sqrt(abs(levels)/maxn)
+#      else  mlocx[2,]<-mlocx[1,]+r*abs(z)/maxn
+      if(!labels.only)
+	lines(mx,my,col=col)   # plot bars
+#      lines(mlocx,mlocy,col=col)
+    }
+#    if(!is.null(label.location)) points(xloc, yloc, pch = ".") 
+  }
+  par(oldpar)
+  
+  if(characters){   
+    
+    if(missing(marks)) marks <- rep(-1,length(pch))
+    if(missing(pch)) pch <- rep(" ",length(marks))
+    if(!is.numeric(levels)){
+      if(!is.numeric(z)) 
+	ind <- match(z,levels)
+      else {
+	if(is.null(reflevels)){ print("Error");return()}
+	ind <- match(z,reflevels)
+      }
+      n <- length(levels)
+    }
+    else {
+      if(charcol != 0) col <- charcol
+      n <- length(levels)+1
+      levels <- c(-1e6,levels,1e6)
+      ind <- cut(z,levels)
+    }
+    if(length(col) ==1) col <- rep(col,n)
+    if(length(csi) ==1) csi <- rep(csi,n)
+    if(!labels.only) {
+      for( i in 1:n) {
+	tmp <- data[ind==i,]
+	if(nrow(tmp) > 0){
+	  if(marks[i] < 0) 
+	    geopoints(tmp,pch=pch[i],csi=csi[i],col=col[i])
+	  else
+	    geopoints(tmp,pch=marks[i],csi=csi[i],col=col[i])
+	}
+      }
+    }
+    if( !is.null(label.location) ){  ########
+    if(!is.list(label.location))
+      if(label.location=="locator") label.location<- geolocator(n=2)
+    oldpar <- par()
+    on.exit(par(oldpar))
+    par(geopar$gpar)
+    paint.window(label.location)
+    label.location <- Proj(label.location)
+    if(is.numeric(levels)) 
+      Pointlabel(levels[2:(length(levels)-1)],digits,label.location$x,label.location$y,minsym,label.resolution,marks,pch,col,csi,chs)
+    else
+      Charlabel(levels,label.location$x,label.location$y,label,marks,pch,col,csi,chs)
+  }
+  }
+  options(warn=0)
+  return(invisible())
+}
+"geotext"<-
+function(lat, lon = 0, z, csi = 0.12, adj = 0.5, col = 1, digits = 0, pretext
+	 = "", lwd = 0, aftertext = "", outside = F, angle = 0,jitter=NULL)
+{
+	if(length(lon) == 1 && length(lat) > 1) {
+		if(geopar$projection == "none") {
+			lon <- lat$y
+			lat <- lat$x
+		}
+		else {
+			lon <- lat$lon
+			lat <- lat$lat
+		}
+	}
+	if(geopar$projection != "none") {
+# degrees and minutes
+		if(mean(lat, na.rm = T) > 1000) {
+			lat <- convert(lat)
+			lon <-  - convert(lon)
+		}
+	}
+	if(!is.null(jitter)) {
+	  lat <- lat+runif(length(lat),-1,1)*jitter
+	  lon <- lon+runif(length(lon),-1,1)*jitter*2
+ 	}
+
+	oldpar <- par()
+	par(geopar$gpar)
+	if(outside)
+		par(xpd = T)
+	else par(xpd = F)
+	if(lwd != 0)
+		par(lwd = lwd)
+	on.exit(par(oldpar))
+	par(csi = csi)
+	par(adj = adj)
+	xx <- Proj(lat, lon, geopar$scale, geopar$b0, geopar$b1, geopar$l1, 
+		geopar$projection)
+	ind <- c(1:length(xx$x))
+	if(is.character(z)) {
+		if(pretext == "")
+			txt <- z
+		else txt <- paste(pretext, z, sep = "")
+		if(aftertext != "")
+			txt <- paste(txt, aftertext, sep = "")
+	}
+	else {
+		if(pretext == "")
+			txt <- format(round(z, digits = digits))
+		else txt <- paste(pretext, format(round(z, digits = digits)), 
+				sep = "")
+		if(aftertext != "")
+			txt <- paste(txt, aftertext, sep = "")
+	}
+	if(!outside) {
+		ind <- c(1:length(xx$x))
+		ind <- ind[(!is.na(xx$x)) & (xx$x < geopar$limx[1] | xx$x > 
+			geopar$limx[2] | xx$y < geopar$limy[1] | xx$y > geopar$
+			limy[2])]
+		xx$x[ind] <- NA
+		xx$y[ind] <- NA
+	}
+	if(length(angle) == length(xx$x) || length(col) == length(xx$x)) {
+		if(length(angle) < length(xx$x))
+			angle <- rep(angle[1], length(xx$x))
+		if(length(col) < length(xx$x))
+			col <- rep(col[1], length(xx$x))
+		for(i in 1:length(xx$x)) {
+			text(xx$x[i], xx$y[i], txt, col = col[i], srt = angle[i
+				])
+		}
+	}
+	else text(xx$x, xx$y, txt, col = col, srt = angle)
+	return(invisible())
+}
+"geoworld"<-
+function(regions = ".", exact = F, boundary = T, fill = F, color = 1, lwd = 1, 
+	lty = 1, plot = T, type = "l", pch = ".", database = "world.thin", 
+	return.data = F,outside)
+{
+	resolution <- 1
+	interior <- F
+	r <- 1.2
+	if(return.data)
+		doproj <- F
+	else doproj <- T
+	if(fill)
+		interior <- T
+	if(missing(outside)){ 
+	  if(fill)
+	    outside <- T
+	  else
+	    outside <- F
+	}
+	if(geopar$projection == "Lambert") {
+# complicated borders in lat,lon
+		p1 <- list(x = c(geopar$limx[1], mean(geopar$limx), geopar$limx[
+			1], geopar$limx[2]), y = c(geopar$limy[1], geopar$limy[
+			2], geopar$limy[2], geopar$limy[2]))
+		limits <- invProj(p1$x, p1$y, geopar$scale, geopar$b0, geopar$
+			b1, geopar$l1, geopar$projection)
+		xlim <- c(limits$lon[3], limits$lon[4])
+		ylim <- c(limits$lat[1], limits$lat[2])
+	}
+	else {
+		limits <- invProj(geopar$limx, geopar$limy, geopar$scale, 
+			geopar$b0, geopar$b1, geopar$l1, geopar$projection)
+		xlim <- c(limits$lon[1], limits$lon[2])
+		ylim <- c(limits$lat[1], limits$lat[2])
+	}
+	xlim <- mean(xlim) + r * (xlim - mean(xlim))	# add
+	ylim <- mean(ylim) + r * (ylim - mean(ylim))	# to get everything
+# parameter checks
+	coordtype <- maptype(database)	
+	# turn the region names into a list of polygon numbers
+	gon <- mapname(database, regions, exact)
+	n <- length(gon)
+	if(n == 0) stop("nothing to draw: no recognized region names")	
+	# turn the polygon numbers into a list of polyline numbers
+	line <- mapgetg(database, gon, fill, c(-1000000, 1000000), c(-1000000, 
+		1000000))
+	if(length(line$number) == 0) stop(
+			"nothing to draw: all regions out of bounds")	
+	# turn the polyline numbers into x and y coordinates
+	if(fill)
+		coord <- mapgetl(database, line$number, c(-1000000, 1000000), c(
+			-1000000, 1000000))
+	else {
+		l <- abs(line$number)
+		if(boundary && interior)
+			l <- unique(l)
+		else if(boundary)
+			l <- l[!match(l, l[duplicated(l)], F)]
+		else l <- l[duplicated(l)]
+		coord <- mapgetl(database, l, xlim, ylim)
+		if(length(coord) == 0)
+			stop("all data out of bounds")
+	}
+	if(doproj) {
+		coord <- Proj(coord$y, coord$x, geopar$scale, geopar$b0, geopar$
+			b1, geopar$l1, geopar$projection)
+		coord$error <- F
+	}
+# for filled regions, turn NA breaks at polylines into
+# NA breaks at polygons, deleting polygons for which
+# there is a corresponding NA color
+	if(fill) {
+		gonsize <- line$size
+		color <- rep(color, length = length(gonsize))
+		keep <- !is.na(color)
+		coord[c("x", "y")] <- makepoly(coord, gonsize, keep)
+		color <- color[keep]
+	}
+	if(return.data) return(data.frame(lat = coord$y, lon = coord$x))	
+	# do the plotting, if requested
+	if(plot) {
+		if(resolution != 0 && type != "n") {
+			uin <- par("uin")
+			rsz <- par("rsz")
+			resolution <- resolution * min(rsz[1]/uin[1], rsz[2]/
+				uin[2])
+			coord[c("x", "y")] <- mapthin(coord, resolution)
+		}
+		par(new = T)	# do thinning
+# suppress warnings about clipping
+		if(type != "n") {
+		  if(fill) {
+		    if(!outside) {
+		      oldpar <- par()
+		      geopolygon(coord, col = color, Projection = 
+				 "none")
+		    }
+		    else {
+				  gx <- geopar$limx
+				  gy <- geopar$limy
+				  border <- list(x = c(gx[1], gx[2], gx[2], gx[
+				    1], gx[1]), y = c(gy[1], gy[1], gy[2], gy[2
+				    ], gy[1]))
+				  oldpar <- par()
+				  par(geopar$gpar)
+				  on.exit(par(oldpar))
+				  oerr <- par(err = -1)
+				  on.exit(par(oerr))
+				  i <- c(1:length(coord$x))
+				  i <- i[is.na(coord$x)]
+				  if(length(i) > 0) {
+				    i1 <- c(1, (i + 1))
+				    i2 <- c(i - 1, length(coord$x))
+				  }
+				  else {
+				    i1 <- 1
+				    i2 <- length(coord$x)
+				  }
+				  for(i in 1:length(i1)) {
+				    j <- i1[i]:i2[i]
+				    if(length(j) > 2) {
+				      plx <- list(x = coord$x[j], y = coord$y[j
+				        ])
+				      n <- length(plx$x)
+				      if(plx$x[1] != plx$x[n] || plx$y[1] != 
+				        plx$y[n]) {
+				        plx$x <- c(plx$x, plx$x[1])
+				        plx$y <- c(plx$y, plx$y[1])
+				      }
+				      plc <- data.frame(x=plx$x,y=plx$y)
+				      ii <- geoinside(plx, border, option = 0, 
+						      col.names = c("x", "y"),robust=F)
+				      if(length(ii) > 0)
+				        polygon(plx$x, plx$y, col = color)
+				    }
+				  }
+#		      polygon(coord, col = color)
+		    }
+		  }
+		  else {
+		    oldpar <- par()
+		    par(geopar$gpar)
+		    on.exit(par(oldpar))
+		    oerr <- par(err = -1)
+		    on.exit(par(oerr))
+		    if(type == "l") {
+		      gx <- geopar$limx
+		      gy <- geopar$limy
+		      border <- list(x = c(gx[1], gx[2], gx[2], gx[
+				       1], gx[1]), y = c(gy[1], gy[1], gy[2], gy[2
+						     ], gy[1]))
+		      coord <- findline(coord, border)
+		      lines(coord$x, coord$y, col = color, lwd = 
+			    lwd, lty = lty)
+		    }
+		    else {
+		      coord <- coord[coord$x > geopar$limx[1] & 
+				     coord$y > geopar$limy[1] & coord$y < geopar$
+				     limy[2] & coord$x < geopar$limx[2]]
+		      points(coord, col = col, pch = pch)
+		    }
+		  }
+		}
+	}
+	if(plot) {
+		par(oldpar)
+		geolines(faeroes)
+	}
+	return(invisible())
+}
+"giveborder"<-
+function(nholes = 0)
+{
+	cat(" Give the border of estimating area (not holes) : \n")
+	xb <- locator(type = "l")
+	lines(c(xb$x[length(xb$x)], xb$x[1]), c(xb$y[length(xb$x)], xb$y[1]))	
+	# last to fyrst point
+	xba <- xb	# vector to use for plotting
+	xba$x <- c(xb$x, xb$x[1])	#new
+	xba$y <- c(xb$y, xb$y[1])	#new
+#	Read in the data for holes.  Stored in two vectors (added to
+#	the border.  xba has NA's and the first point of each point
+#	twice and is used for plotting while xb is used for the
+#	program "margh" and has each point only once and no NA's.
+	lxv <- c(1:(nholes + 2))
+	lxv[] <- 0
+	if(nholes > 0) {
+		lx1 <- 1	#index
+		for(i in 1:nholes) {
+			xba$x <- c(xba$x, xb$x[lx1], NA)	# vector to use in
+			xba$y <- c(xba$y, xb$y[lx1], NA)	
+	# contourplots first point	    
+			cat("Hole (or other area) ", i, "\n")
+			lx1 <- length(xb$x) + 1	# preserve last length
+			lxv[i + 1] <- length(xb$x)
+			xb1 <- locator(type = "l")
+			xb$x <- c(xb$x, xb1$x)
+			xb$y <- c(xb$y, xb1$y)
+			xba$x <- c(xba$x, xb1$x)
+			xba$y <- c(xba$y, xb1$y)
+			lx2 <- length(xb$x)
+			xba$x <- c(xba$x, xb$x[lx1])
+			xba$y <- c(xba$y, xb$y[lx1])	#new
+			lines(c(xb$x[lx2], xb$x[lx1]), c(xb$y[lx2], xb$y[lx1]))
+		}
+	}
+	if(nholes == 0) lx1 <- 1	#  	xba$x <-c(xba$x,xb$x[lx1])
+#	xba$y <-c(xba$y,xb$y[lx1])
+	reg <- invProj(xba$x, xba$y, geopar$scale, geopar$b0, geopar$b1, geopar$
+		l1, geopar$projection)
+	lxv[nholes + 2] <- length(xb$x)
+	xb <- invProj(xb$x, xb$y, geopar$scale, geopar$b0, geopar$b1, geopar$l1,
+		geopar$projection)
+	if(geopar$projection == "none") {
+		x <- xb$x
+		y <- xb$y
+		return(list(reg=reg, x=x, y=y, lxv=lxv))
+	}
+	else {
+		lat <- xb$lat
+		lon <- xb$lon
+		return(list(reg=reg, lat=lat, lon=lon, lxv=lxv))
+	}
+}
+"grid"<-
+function(lat, lon = 0, type = "p", pch = "*", xlim = c(0, 0), ylim = c(0, 0), 
+	b0 = 65, r = 1.1000000000000001, country = island, xlab = "default", 
+	ylab = "default", option = "cut", reg = 0, dx = c(0, 0), nx = c(0, 0), 
+	grpkt = 0, scale = "km", find = F, new = F, grid = T, projection = 
+	"Mercator", n = 2500, b1 = b0, nholes = 0)
+{
+	if(length(lon) == 1) {
+		if(projection == "none") {
+			lon <- lat$y
+			lat <- lat$x
+		}
+		else {
+			lon <- lat$lon
+			lat <- lat$lat
+		}
+	}
+	geoplot(lat, lon, type = type, pch = pch, xlim = xlim, ylim = ylim, b0
+		 = b0, r = r, country = country, xlab = xlab, ylab = ylab, 
+		option = option, new = new, grid = grid, projection = 
+		projection, b1 = b1)	
+	# Find borders either given or with the locator.  
+	oldpar <- par()
+	par(geopar$gpar)	# set graphical parameters
+	on.exit(par(oldpar))
+	if(length(reg) == 1) {
+# use the locator.  
+		reg <- define.area(nholes = nholes)
+	}
+	xgr <- gridpoints(reg, dx, grpkt, nx, n)	# grid points.  
+	grpt <- xgr$xgr
+	xgr <- xgr$xgra	# change names
+	geopoints(xgr, pch = ".")	# 	Find what is inside the borders.  
+	if(find) {
+		xgr <- inside(xgr, reg = reg)
+		geopoints(xgr, pch = "+")
+		return(list(xgr=xgr, grpt=grpt, reg=reg, find=find))
+	}
+	else return(list(grpt=grpt, reg=reg, find=find))
+}
+"gridaxes"<-
+function(limx, limy, scale, b0, xyratio, grid, col, reitur, smareitur, axratio, 
+	axlabels, b1, l1, projection, dlat, dlon)
+{
+	o <- invProj(limx, limy, scale, b0, b1, l1, projection)
+	r1 <- (limy[2] - limy[1])/(limx[2] - limx[1])	# ratio
+	nlon <- 30
+	nlat <- round((nlon * r1)/xyratio) * 2
+	if(dlat == 0 && dlon == 0) {
+		if((o$lon[2] - o$lon[1]) > 40)
+			dlon <- 10
+		if((o$lon[2] - o$lon[1]) > 1)
+			dlon <- 1/3
+		if((o$lon[2] - o$lon[1]) > 3)
+			dlon <- 1/2
+		if((o$lon[2] - o$lon[1]) > 6)
+			dlon <- 1
+		if((o$lon[2] - o$lon[1]) > 10)
+			dlon <- 2
+		if((o$lon[2] - o$lon[1]) > 20)
+			dlon <- 4
+		if((o$lon[2] - o$lon[1]) <= 1)
+			dlon <- 1/6
+		if((o$lon[2] - o$lon[1]) < 0.40000000000000002)
+			dlon <- 1/12
+		if((o$lon[2] - o$lon[1]) < 0.20000000000000001)
+			dlon <- 1/30
+		if((o$lon[2] - o$lon[1]) < 0.10000000000000001)
+			dlon <- 1/60
+		if((o$lon[2] - o$lon[1]) < 0.050000000000000003)
+			dlon <- 1/120
+		dlat <- dlon/2
+		if(reitur) {
+			dlon <- 1
+			dlat <- 0.5
+		}
+		if(smareitur) {
+			dlon <- 0.5
+			dlat <- 0.25
+		}
+	}
+	if(dlat == 0 && dlon != 0)
+		dlat <- dlon/2
+	if(dlat != 0 && dlon == 0)
+		dlon <- dlat * 2
+	dlat <- dlat/axratio
+	dlon <- dlon/axratio
+	olo <- o$lon[1] - ((o$lon[1]/dlon) - floor(o$lon[1]/dlon)) * dlon
+	ola <- o$lat[1] - ((o$lat[1]/dlat) - floor(o$lat[1]/dlat)) * dlat
+	latgr <- ola + c(0:(nlat * 2)) * dlat
+	latgr[latgr > 85] <- 85
+	longr <- olo + c(0:(nlon * 2)) * dlon
+	latgr <- latgr[(latgr <= o$lat[2]) & (latgr > o$lat[1])]	#171
+	longr <- longr[(longr <= o$lon[2]) & (longr > o$lon[1])]
+	latgr2 <- c(o$lat[1], latgr, o$lat[2])
+	longr2 <- c(o$lon[1], longr, o$lon[2])
+	nlat <- length(latgr2)
+	nlon <- length(longr2)
+	latgr1 <- matrix(latgr2, nlat, nlon)
+	longr1 <- t(matrix(longr2, nlon, nlat))	# 	plot grid
+	plotgr2 <- Proj(latgr1, longr1, scale, b0, b1, l1, projection)
+	n <- ncol(plotgr2$x)
+	n1 <- c(1:n)
+	n1[1:n] <- NA	# add NA for plot
+	plx.lon <- rbind(plotgr2$x, n1)
+	ply.lon <- rbind(plotgr2$y, n1)
+	par(err = -1)
+	if(grid)
+		lines(plx.lon, ply.lon, col = col)	# plot grid. 
+	n <- nrow(plotgr2$x)
+	n1 <- c(1:n)
+	n1[1:n] <- NA	# add NA for plot
+	plx.lat <- rbind(t(plotgr2$x), n1)
+	ply.lat <- rbind(t(plotgr2$y), n1)
+	par(err = -1)
+	if(grid) lines(plx.lat, ply.lat, col = col)	# plot grid.
+# 	Plot axes
+	latcha <- round((abs(latgr) - trunc(abs(latgr))) * 60, digits = 2)
+	loncha <- round((abs(longr) - trunc(abs(longr))) * 60, digits = 2)
+	indlat <- latcha == 60
+	indlon <- loncha == 60
+	latchar <- as.character(trunc(abs(latgr)) + indlat)
+	lonchar <- as.character(trunc(abs(longr)) + indlon)
+	latcha <- as.character(latcha - indlat * 60)
+	loncha <- as.character(loncha - indlon * 60)
+	latmin <- rep("'", length(latcha))
+	lonmin <- rep("'", length(loncha))
+	if(floor(dlat) == dlat) {
+		ind <- c(1:length(latcha))
+		ind <- ind[latcha == "0"]
+		latcha[ind] <- " "
+		latmin[ind] <- " "
+	}
+	else latcha[latcha == "0"] <- "00"
+	if(floor(dlon) == dlon) {
+		ind <- c(1:length(loncha))
+		ind <- ind[loncha == "0"]
+		loncha[ind] <- " "
+		lonmin[ind] <- " "
+	}
+	else loncha[loncha == "0"] <- "00"
+	latchar <- paste(latchar, "\260", latcha, latmin, sep = "")
+	lonchar <- paste(lonchar, "\260", loncha, lonmin, sep = "")
+	latchar <- c(" ", latchar, " ")
+	lonchar <- c(" ", lonchar, " ")	
+	#	vect<-c(1:length(longr2)); vect[1:length(longr2)] <- o$y[1] 
+	vect <- rep(60, length(longr2))	# bretting 11-7
+	plotgrlon <- Proj(vect, longr2, scale, b0, b1, l1, projection)
+	vect <- c(1:length(latgr2))
+	vect[1:length(latgr2)] <- o$x[1]
+	plotgrlat <- mercator(latgr2, vect, scale, b0)
+	par(adj = 0.5)
+	if(axlabels) {
+		if(grid) {
+# how the axes are plotted. 
+			axis(1, plotgrlon$x, lonchar, ticks = F, col = col)
+			axis(2, plotgrlat$y, latchar, ticks = F, col = col)
+		}
+		else {
+			axis(1, plotgrlon$x, lonchar, ticks = F, col = col)
+			axis(3, plotgrlon$x, F, ticks = F, col = col)
+			axis(2, plotgrlat$y, latchar, ticks = F, col = col)
+			axis(4, plotgrlat$y, F, ticks = F, col = col)
+			xgr <- Proj(latgr, longr, scale, b0, b1, l1, projection
+				)
+			plot.nogrid(o, xgr$x, xgr$y, col)	# bua til asa
+		}
+	}
+	else {
+# no axlabels
+		if(grid) {
+# how the axes are plotted. 
+			axis(1, plotgrlon$x, F, ticks = F, col = col)
+			axis(2, plotgrlat$y, F, ticks = F, col = col)
+		}
+		else {
+			xgr <- Proj(latgr, longr, scale, b0, b1, l1, projection
+				)
+			plot.nogrid(o, xgr$x, xgr$y, col)	# bua til asa
+		}
+	}
+	return(invisible())
+}
+"gridaxes.Lambert"<-
+function(limx, limy, scale, b0, xyratio, grid, col, reitur, smareitur, axratio, 
+	axlabels, b1, l1, projection, dlat, dlon, col1 = 1)
+{
+	lx <- c(limx[1], limx[1], limx[2], mean(limx))
+	ly <- c(limy[2], limy[1], limy[2], limy[2])
+	o1 <- invProj(lx, ly, scale, b0, b1, l1, projection)
+	o <- invProj(limx, limy, scale, b0, b1, l1, projection)
+	lines(c(o$x[1], o$x[2], o$x[2], o$x[1], o$x[1]), c(o$y[1], o$y[1], o$y[
+		2], o$y[2], o$y[1]))
+	r1 <- (limy[2] - limy[1])/(limx[2] - limx[1])	# ratio
+	if(dlat == 0 && dlon == 0) {
+		if((o$lon[2] - o$lon[1]) > 1)
+			dlon <- 1/3
+		if((o$lon[2] - o$lon[1]) > 3)
+			dlon <- 1/2
+		if((o$lon[2] - o$lon[1]) > 6)
+			dlon <- 1
+		if((o$lon[2] - o$lon[1]) > 10)
+			dlon <- 2
+		if((o$lon[2] - o$lon[1]) > 20)
+			dlon <- 4
+		if((o$lon[2] - o$lon[1]) > 40)
+			dlon <- 8
+		if((o$lon[2] - o$lon[1]) <= 1)
+			dlon <- 1/6
+		if((o$lon[2] - o$lon[1]) < 0.40000000000000002)
+			dlon <- 1/12
+		if((o$lon[2] - o$lon[1]) < 0.20000000000000001)
+			dlon <- 1/30
+		if((o$lon[2] - o$lon[1]) < 0.10000000000000001)
+			dlon <- 1/60
+		if((o$lon[2] - o$lon[1]) < 0.050000000000000003)
+			dlon <- 1/120
+		dlat <- dlon/2
+		if(reitur) {
+			dlon <- 1
+			dlat <- 0.5
+		}
+		if(smareitur) {
+			dlon <- 0.5
+			dlat <- 0.25
+		}
+	}
+	if(dlat == 0 && dlon != 0)
+		dlat <- dlon/2
+	if(dlat != 0 && dlon == 0)
+		dlon <- dlat * 2
+	nx <- floor((o$lon[2] - o$lon[1]) * 0.29999999999999999) + 2
+	dlat <- dlat/axratio
+	dlon <- dlon/axratio
+	nlon <- floor(o1$lon[3] - o1$lon[1])/dlon + 1
+	nlat <- floor(o1$lat[1] - o1$lat[2])/dlat + 1
+	olo <- o1$lon[1] - ((o1$lon[1]/dlon) - floor(o1$lon[1]/dlon)) * dlon
+	ola <- o1$lat[2] - ((o1$lat[2]/dlat) - floor(o1$lat[2]/dlat)) * dlat
+	latgr <- ola + c(0:(nlat * 2)) * dlat
+	latgr <- latgr[latgr < o1$lat[4] + dlat]
+	longr <- olo + c(-1:(nlon * 2)) * dlon
+	longr <- longr[longr < o1$lon[3] + dlon]
+	latgr2 <- latgr
+	longr2 <- longr
+	nlat <- length(latgr2)
+	nlon <- length(longr2)
+	latgr1 <- matrix(latgr2, nlat, nlon)
+	longr1 <- t(matrix(longr2, nlon, nlat))	# 	plot grid vertical.  
+	plotgr2 <- Proj(latgr1, longr1, scale, b0, b1, l1, projection)
+	n <- ncol(plotgr2$x)
+	n1 <- c(1:n)
+	n1[1:n] <- NA	# add NA for plot
+	plx.lon <- rbind(plotgr2$x, n1)
+	ply.lon <- rbind(plotgr2$y, n1)
+	plx <- cut.box.1(plx.lon, ply.lon, o$x, o$y)
+	if(!grid)
+		plx1 <- adjust.grd(plx)
+	else plx1 <- plx
+	par(err = -1)
+	if(grid) lines(plx1$x, plx1$y, col = col)	# plot grid. 
+#	Horizontal grid
+	plx$x <- matrix(plx$x, 3,  )
+	n <- nrow(latgr1)
+	n1 <- c(1:n)
+	n1[1:n] <- NA	# add NA for plot
+	pl.lat <- rbind(t(latgr1), n1)
+	pl.lon <- rbind(t(longr1), n1)
+	x <- fill.points(pl.lon, pl.lat, nx = 10)
+	x <- Proj(x$y, x$x, scale, b0, b1, l1, projection)
+	ply <- cut.box.2(x$x, x$y, o$x, o$y)
+	if(!grid)
+		ply1 <- adjust.grd(ply)
+	else ply1 <- ply
+	par(err = -1)
+	lines(ply1$x, ply1$y, col = col)	# plot grid.
+# 	Plot axes
+	indx <- c(1:length(latgr))
+	indx <- indx[latgr < o1$lat[1] & latgr > o1$lat[2]]
+	longr <- longr[plx$ind]
+	latcha <- round((abs(latgr) - trunc(abs(latgr))) * 60, digits = 2)
+	loncha <- round((abs(longr) - trunc(abs(longr))) * 60, digits = 2)
+	ind1 <- c(1:length(latcha))
+	ind1 <- ind1[latcha == 0]
+	ind2 <- c(1:length(loncha))
+	ind2 <- ind2[loncha == 0]
+	indlat <- latcha == 60
+	indlon <- loncha == 60
+	latchar <- as.character(trunc(abs(latgr)) + indlat)
+	lonchar <- as.character(trunc(abs(longr)) + indlon)
+	latcha <- as.character(latcha - indlat * 60)
+	loncha <- as.character(loncha - indlon * 60)
+	if(length(ind1) == 0)
+		latchar <- paste(latchar, "\260", latcha, "'", sep = "")
+	else {
+		if(floor(dlat) == dlat)
+			latchar[ind1] <- paste(latchar[ind1], "\260")
+		else latchar[ind1] <- paste(latchar[ind1], "\260", "00'", sep
+				 = "")
+		latchar[ - ind1] <- paste(latchar[ - ind1], "\260", latcha[ - 
+			ind1], "'", sep = "")
+	}
+	if(length(ind2) == 0)
+		lonchar <- paste(lonchar, "\260", loncha, "'", sep = "")
+	else {
+		if(floor(dlon) == dlon)
+			lonchar[ind2] <- paste(lonchar[ind2], "\260")
+		else lonchar[ind2] <- paste(lonchar[ind2], "\260", "00'", sep
+				 = "")
+		lonchar[ - ind2] <- paste(lonchar[ - ind2], "\260", loncha[ - 
+			ind2], "'", sep = "")
+	}
+	par(adj = 0.5)
+	if(axlabels) {
+		axis(1, plx$x[1, plx$ind], lonchar, ticks = F, col = col1)
+		axis(2, ply$y1[indx], latchar[indx], ticks = F, col = col1)
+	}
+	return(invisible())
+}
+"gridpoints"<-
+function(border, dx, grpkt, nx, n)
+{
+	if(length(grpkt) == 1) {
+# gridpoints not given.  
+		if(geopar$projection == "none") {
+			xmin <- min(border$x)
+			xmax <- max(border$x)
+			ymin <- min(border$y)
+			ymax <- max(border$y)
+		}
+		else {
+			xmin <- min(border$lon)
+			xmax <- max(border$lon)
+			ymin <- min(border$lat)
+			ymax <- max(border$lat)
+			meanlat <- (mean(border$lat) * pi)/180
+		}
+		if(dx[1] == 0) {
+			if(nx[1] == 0) {
+				n <- sqrt(n)
+				if(geopar$projection == "none")
+				  k <- (xmax - xmin)/(ymax - ymin)
+				else k <- ((xmax - xmin) * cos(meanlat))/(ymax - 
+				    ymin)
+				nx[1] <- round(n * sqrt(k))
+				nx[2] <- round(n/sqrt(k))
+			}
+			dx[1] <- (xmax - xmin)/nx[1]
+			dx[2] <- (ymax - ymin)/nx[2]
+		}
+		else {
+			tmp <- dx[1]
+			dx[1] <- dx[2]
+			dx[2] <- tmp	#exchange lat lon.  
+			nx[1] <- trunc((xmax - xmin)/dx[1])
+			nx[2] <- trunc((ymax - ymin)/dx[2])
+		}
+		xgr <- (xmin - dx[1]) + c(1:(nx[1] + 2)) * dx[1]
+		ygr <- (ymin - dx[2]) + c(1:(nx[2] + 2)) * dx[2]
+	}
+	else if(projection == "none") {
+		xgr <- grpkt$x
+		ygr <- grpkt$y
+	}
+	else {
+		xgr <- grpkt$lon
+		ygr <- grpkt$lat
+	}
+	lx <- length(xgr)
+	ly <- length(ygr)
+	xgra <- c(matrix(xgr, lx, ly))
+	ygra <- c(t(matrix(ygr, ly, lx)))
+	if(geopar$projection == "none") {
+		xgra <- list(x = xgra, y = ygra)
+		xgr <- list(x = xgr, y = ygr)
+	}
+	else {
+		xgra <- list(lon = xgra, lat = ygra)
+		xgr <- list(lon = xgr, lat = ygr)
+	}
+	return(list(xgr=xgr, xgra=xgra))
+}
+"init"<-
+function(lat, lon = 0, type = "p", pch = "*", xlim = c(0, 0), ylim = c(0, 0), 
+	b0 = 65, r = 1.05, country = iceland, xlab = "Longitude", ylab = 
+	"Latitude", option = "cut", grid = T, new = F, cont = F, csi = 
+	0.10000000000000001, col = 1, lcont = c(0.13, 0.20999999999999999), 
+	plotit = T, reitur = F, smareitur = F, reittext = F, axratio = 1, lwd
+	 = 0, axlabels = T, oldpar, projection = "Mercator", b1 = 65, dlat = 0, 
+	dlon = 0, command = 0, jitter = 0)
+{
+	if(exists("geopar"))
+	  geopar <- geopar
+	else
+	  geopar <- list()
+	if(projection == "none") {
+		if(length(lon) == 1) {
+			lon <- lat$y
+			lat <- lat$x
+		}
+	}
+	else {
+		if(length(lon) == 1) {
+			lon <- lat$lon
+			lat <- lat$lat
+		}
+# Structure in call.  
+	}
+	nlat <- length(lat)
+	lat <- lat + (runif(nlat) - 0.5) * jitter
+	lon <- lon + (runif(nlat) - 0.5) * jitter
+	if(xlim[1] == xlim[2])
+		l1 <- mean(range(lon[!is.na(lon)]))
+	else l1 <- mean(xlim)
+	par(xpd = F)
+	scale <- "km"
+	xgr <- Proj(lat, lon, scale, b0, b1, l1, projection)	# 	size of text
+	par(csi = csi)
+	if(lwd != 0)
+		par(lwd = lwd)
+	if(!axlabels) {
+		xlab <- ""
+		ylab <- ""
+	}
+# 	contourplot
+	if(!cont) {
+		lcont[1] <- 0
+		lcont[2] <- 0
+	}
+	if(cont)
+		option <- "nocut"
+	plt <- oldpar$plt
+	contlab <- plt
+	contlines <- plt
+	contlines[1] <- plt[1] + lcont[2] * (plt[2] - plt[1])
+	contlab[2] <- plt[1] + lcont[1] * (plt[2] - plt[1])
+	par(plt = contlines)
+	if(cont) geopar$cont <- T else geopar$cont <- F	
+	# Find borders, adjust them if given.  
+	xyratio <- par()$pin[1]/par()$pin[2]	#*1.04777  ratio of axes.
+	if(projection == "none") {
+		ind <- c(1:length(xgr$x))
+		ind <- ind[!is.na(xgr$x)]	#No NAs
+		if(xlim[1] == xlim[2]) {
+			xmin <- min(xgr$x[ind])
+			xmax <- max(xgr$x[ind])
+		}
+		else {
+			xmin <- xlim[1]
+			xmax <- xlim[2]
+			r <- 1
+		}
+		if(ylim[1] == ylim[2]) {
+			ymin <- min(xgr$y[ind])
+			ymax <- max(xgr$y[ind])
+		}
+		else {
+			ymin <- ylim[1]
+			ymax <- ylim[2]
+			r <- 1
+		}
+	}
+	else {
+		ind <- c(1:length(xgr$lon))
+		ind <- ind[!is.na(xgr$lon)]	#No NAs
+		if(xlim[1] == xlim[2]) {
+			xmin <- min(xgr$lon[ind])
+			xmax <- max(xgr$lon[ind])
+		}
+		else {
+			xmin <- xlim[1]
+			xmax <- xlim[2]
+			r <- 1
+		}
+		if(ylim[1] == ylim[2]) {
+			ymin <- min(xgr$lat[ind])
+			ymax <- max(xgr$lat[ind])
+		}
+		else {
+			ymin <- ylim[1]
+			ymax <- ylim[2]
+			r <- 1
+		}
+	}
+	if(projection == "Lambert") {
+		xt1 <- c(l1, xmin, xmax, xmax)
+		xt2 <- c(ymin, ymin, ymin, ymax)
+	}
+	else if(projection == "none") {
+		xt2 <- c(xmin, xmax)
+		xt1 <- c(ymin, ymax)
+	}
+	else {
+		xt1 <- c(xmin, xmax)
+		xt2 <- c(ymin, ymax)
+	}
+	xl <- Proj(xt2, xt1, scale, b0, b1, l1, projection)
+	xmin <- min(xl$x)
+	ymin <- min(xl$y)
+	xmax <- max(xl$x)
+	ymax <- max(xl$y)
+	xymax <- max((ymax - ymin), (xmax - xmin)/xyratio)
+	meanx <- (xmin + xmax)/2
+	meany <- (ymin + ymax)/2
+	r1 <- r + (r - 1)/2
+	r1 <- r1 - 0.5
+	if(option == "cut") {
+# cut figure and graph region 
+		limx <- c(meanx - r1 * (xmax - xmin), meanx + r1 * (xmax - xmin
+			))
+		limy <- c(meany - r1 * (ymax - ymin), meany + r1 * (ymax - ymin
+			))
+		xyr <- (ymax - ymin)/((xmax - xmin)/xyratio)
+		pinpar <- c(1:2)
+		if(xyr > 1) {
+			pinpar[1] <- par()$pin[1]/xyr
+			pinpar[2] <- par()$pin[2]
+		}
+		else {
+			pinpar[1] <- par()$pin[1]
+			pinpar[2] <- par()$pin[2] * xyr
+		}
+		par(pin = pinpar)	# set graph region
+	}
+	else {
+		limx <- c(meanx - r1 * xymax * xyratio, meanx + r1 * xymax * 
+			xyratio)
+		limy <- c(meany - r1 * xymax, meany + r1 * xymax)
+	}
+	if(type == "l") {
+		gx <- limx
+		gy <- limy
+		border <- list(x = c(gx[1], gx[2], gx[2], gx[1], gx[1]), y = c(
+			gy[1], gy[1], gy[2], gy[2], gy[1]))
+		xx <- findline(xgr, border)
+	}
+	else {
+		ind <- c(1:length(xgr$x))
+		ind <- ind[(xgr$x > limx[1]) & (xgr$x < limx[2]) & (xgr$y > 
+			limy[1]) & (xgr$y < limy[2])]
+		xx <- list(x = xgr$x[ind], y = xgr$y[ind])
+	}
+	if(length(xx$x) == 0) {
+		type <- "n"
+		xx <- xgr
+	}
+# to get rid of errors if no point in plot. 
+	par(new = new)
+	if(plotit) {
+		if(projection == "none") {
+			plot(xx$x, xx$y, type = type, pch = pch, xlim = limx, 
+				ylim = limy, xlab = xlab, ylab = ylab, col = 
+				col)
+		}
+		else {
+			plot(xx$x, xx$y, type = type, pch = pch, xlim = limx, 
+				ylim = limy, axes = F, xlab = xlab, ylab = ylab,
+				col = col)
+			if(projection == "Lambert")
+				gridaxes.Lambert(limx, limy, scale, b0, xyratio,
+				  grid, col, reitur, smareitur, axratio, 
+				  axlabels, b1, l1, projection, dlat, dlon)	
+	# plot grid and axes
+			else gridaxes(limx, limy, scale, b0, xyratio, grid, col,
+				  reitur, smareitur, axratio, axlabels, b1, l1, 
+				  projection, dlat, dlon)	# plot grid and axes
+		}
+	}
+	else plot(xx$x, xx$y, type = "n", pch = pch, xlim = limx, ylim = limy, 
+			axes = F, xlab = "", ylab = "", col = col)
+	par(new = T)
+	gpar <- par()	# save graphical setup
+	o <- invProj(limx, limy, scale, b0, b1, l1, projection)
+	geopar <- list(gpar = gpar, limx = limx, limy = limy, scale = scale, b0
+		 = b0, b1 = b1, l1 = l1, contlab = contlab, contlines = 
+		contlines, cont = cont, projection = projection, origin = o, 
+		command = command)
+	assign("geopar", geopar, where=0,immediate=F)
+	return(invisible())
+}
+"inside.reg.bc"<-
+function(data, only.sv.1to10 = F, ignore.latlon = F, ignore.area0 = T)
+{
+	if(is.na(match("lat", names(data)))) {
+		data$lat <- data$lon <- rep(NA, nrow(data))
+	}
+	if(!is.na(match("area", names(data)))) {
+		print("warning column area exists")
+		return(invisible(data))
+	}
+	n <- nrow(data)
+	data$area <- rep(NA, nrow(data))
+	index <- !is.na(data$lat) & !is.na(data$lon)
+	index1 <- c(1:length(index))
+	index1 <- index1[index]
+	if(ignore.latlon)
+		index1 <- NULL
+	if(length(index1) > 0) {
+		area <- inside.reg.bc1(data[index1, c("lat", "lon")])$area
+		data$area[index1] <- area
+	}
+	if(is.na(match("reitur", names(data))))
+		return(data)
+	if(ignore.latlon)
+		index1 <- c(1:nrow(data))
+	else {
+		index <- (is.na(data$lat) | is.na(data$lon)) & !is.na(data$
+			reitur)
+		if(ignore.area0)
+			index <- index | (data$area == 0 & !is.na(data$area))
+		index1 <- c(1:length(index))
+		index1 <- index1[index]
+	}
+	if(length(index1) > 0) {
+		reitdata <- data[index1,  ]
+		if(only.sv.1to10) {
+			reitdata$area <- Reitur2Svaedi1to10(reitdata$reitur)
+		}
+		else {
+			if(is.na(match("smareitur", names(reitdata))))
+				reitdata$smareitur <- rep(0, nrow(reitdata))
+			else reitdata$smareitur[is.na(reitdata$smareitur)] <- 0
+			tmp <- data.frame(sr2d(reitdata$reitur * 10 + reitdata$
+				smareitur))
+			ind <- c(1:nrow(tmp))
+			ind <- ind[!is.na(tmp$lat)]
+			reitdata$area[ind] <- inside.reg.bc1(tmp[ind,  ])$area
+		}
+		data$area[index1] <- reitdata$area
+	}
+	return(data)
+}
+"inside.reg.bc1"<-
+function(data)
+{
+	if(nrow(data) > 1)
+		tmpdata <- data[, c("lat", "lon")]
+	else tmpdata <- as.data.frame(data[, c("lat", "lon")])
+	tmpdata$area <- rep(0, nrow(tmpdata))
+	i <- 1
+	ind <- geoinside(tmpdata, reg = reg.bc[[i]], option = 0, robust = F)
+	if(length(ind) > 0)
+		tmpdata[ind, "area"] <- i
+	i <- 2
+	j <- tmpdata$area == 0
+	j1 <- c(1:length(j))
+	j1 <- j1[j == T]
+	if(length(j1) > 0) {
+		ind <- geoinside(tmpdata[j1,  ], reg = reg.bc[[i]], option = 0, 
+			robust = F)
+		if(length(ind) > 0)
+			tmpdata[j1[ind], "area"] <- i
+	}
+	i <- 3
+	j <- tmpdata$area == 0
+	j1 <- c(1:length(j))
+	j1 <- j1[j == T]
+	if(length(j1) > 0) {
+		ind <- geoinside(tmpdata[j1,  ], reg = reg.bc[[i]], option = 0, 
+			robust = F)
+		if(length(ind) > 0)
+			tmpdata[j1[ind], "area"] <- i
+	}
+	i <- 4
+	j <- tmpdata$area == 0
+	j1 <- c(1:length(j))
+	j1 <- j1[j == T]
+	if(length(j1) > 0) {
+		ind <- geoinside(tmpdata[j1,  ], reg = reg.bc[[i]], option = 0, 
+			robust = F)
+		if(length(ind) > 0)
+			tmpdata[j1[ind], "area"] <- i
+	}
+	i <- 5
+	j <- tmpdata$area == 0
+	j1 <- c(1:length(j))
+	j1 <- j1[j == T]
+	if(length(j1) > 0) {
+		ind <- geoinside(tmpdata[j1,  ], reg = reg.bc[[i]], option = 0, 
+			robust = F)
+		if(length(ind) > 0)
+			tmpdata[j1[ind], "area"] <- i
+	}
+	i <- 6
+	j <- tmpdata$area == 0
+	j1 <- c(1:length(j))
+	j1 <- j1[j == T]
+	if(length(j1) > 0) {
+		ind <- geoinside(tmpdata[j1,  ], reg = reg.bc[[i]], option = 0, 
+			robust = F)
+		if(length(ind) > 0)
+			tmpdata[j1[ind], "area"] <- i
+	}
+	i <- 7
+	j <- tmpdata$area == 0
+	j1 <- c(1:length(j))
+	j1 <- j1[j == T]
+	if(length(j1) > 0) {
+		ind <- geoinside(tmpdata[j1,  ], reg = reg.bc[[i]], option = 0, 
+			robust = F)
+		if(length(ind) > 0)
+			tmpdata[j1[ind], "area"] <- i
+	}
+	i <- 8
+	j <- tmpdata$area == 0
+	j1 <- c(1:length(j))
+	j1 <- j1[j == T]
+	if(length(j1) > 0) {
+		ind <- geoinside(tmpdata[j1,  ], reg = reg.bc[[i]], option = 0, 
+			robust = F)
+		if(length(ind) > 0)
+			tmpdata[j1[ind], "area"] <- i
+	}
+	i <- 9
+	j <- tmpdata$area == 0
+	j1 <- c(1:length(j))
+	j1 <- j1[j == T]
+	if(length(j1) > 0) {
+		ind <- geoinside(tmpdata[j1,  ], reg = reg.bc[[i]], option = 0, 
+			robust = F)
+		if(length(ind) > 0)
+			tmpdata[j1[ind], "area"] <- i
+	}
+	i <- 10
+	j <- tmpdata$area == 0
+	j1 <- c(1:length(j))
+	j1 <- j1[j == T]
+	if(length(j1) > 0) {
+		ind <- geoinside(tmpdata[j1,  ], reg = reg.bc[[i]], option = 0, 
+			robust = F)
+		if(length(ind) > 0)
+			tmpdata[j1[ind], "area"] <- i
+	}
+	i <- 11
+	j <- tmpdata$area == 0
+	j1 <- c(1:length(j))
+	j1 <- j1[j == T]
+	if(length(j1) > 0) {
+		ind <- geoinside(tmpdata[j1,  ], reg = reg.bc[[i]], option = 0, 
+			robust = F)
+		if(length(ind) > 0)
+			tmpdata[j1[ind], "area"] <- i
+	}
+	i <- 12
+	j <- tmpdata$area == 0
+	j1 <- c(1:length(j))
+	j1 <- j1[j == T]
+	if(length(j1) > 0) {
+		ind <- geoinside(tmpdata[j1,  ], reg = reg.bc[[i]], option = 0, 
+			robust = F)
+		if(length(ind) > 0)
+			tmpdata[j1[ind], "area"] <- i
+	}
+	i <- 13
+	j <- tmpdata$area == 0
+	j1 <- c(1:length(j))
+	j1 <- j1[j == T]
+	if(length(j1) > 0) {
+		ind <- geoinside(tmpdata[j1,  ], reg = reg.bc[[i]], option = 0, 
+			robust = F)
+		if(length(ind) > 0)
+			tmpdata[j1[ind], "area"] <- i
+	}
+	i <- 14
+	j <- tmpdata$area == 0
+	j1 <- c(1:length(j))
+	j1 <- j1[j == T]
+	if(length(j1) > 0) {
+		ind <- geoinside(tmpdata[j1,  ], reg = reg.bc[[i]], option = 0, 
+			robust = F)
+		if(length(ind) > 0)
+			tmpdata[j1[ind], "area"] <- i
+	}
+	i <- 15
+	j <- tmpdata$area == 0
+	j1 <- c(1:length(j))
+	j1 <- j1[j == T]
+	if(length(j1) > 0) {
+		ind <- geoinside(tmpdata[j1,  ], reg = reg.bc[[i]], option = 0, 
+			robust = F)
+		if(length(ind) > 0)
+			tmpdata[j1[ind], "area"] <- i
+	}
+	i <- 16
+	j <- tmpdata$area == 0
+	j1 <- c(1:length(j))
+	j1 <- j1[j == T]
+	if(length(j1) > 0) {
+		ind <- geoinside(tmpdata[j1,  ], reg = reg.bc[[i]], option = 0, 
+			robust = F)
+		if(length(ind) > 0)
+			tmpdata[j1[ind], "area"] <- i
+	}
+	data$area <- tmpdata$area
+	return(data)
+}
+"invProj"<-
+function(x, y = NULL, scale = geopar$scale, b0 = geopar$b0, b1 = geopar$b1, l1
+	 = geopar$l1, projection = geopar$projection)
+{
+	if(is.null(y)) {
+		y <- x$y
+		x <- x$x
+	}
+	if(projection == "Lambert") {
+		x <- invlambert(x, y, b0, l1, b1, scale, old = T)
+	}
+	else if(projection == "Mercator") {
+		x <- invmerc(x, y, scale, b0)
+	}
+	else if(projection == "none") {
+		x <- list(x = x, y = y)
+	}
+}
+"invlambert"<-
+function(x, y, lat0, lon0, lat1, scale = "km", old = F)
+{
+	a <- 6378.3879999999999	# radius at equator
+	e <- sqrt(2/297 - (1/297)^2)	# eccensitret.
+	lat11 <- lat1	# temporary storage
+# 	change to radians  
+	lat1 <- (lat1 * pi)/180
+	lat0 <- (lat0 * pi)/180
+	lon0 <- (lon0 * pi)/180	#	one or two touching points.  
+	if(length(lat1) == 2) {
+		lat2 <- lat1[2]
+		lat1 <- lat1[1]
+		np <- 2
+	}
+	else np <- 1
+	m1 <- cos(lat1)/sqrt(1 - e * e * (sin(lat1))^2)
+	if(old) {
+		t1 <- tan(pi/4 - 1/2 * atan((1 - e * e) * tan(lat1)))
+		t0 <- tan(pi/4 - 1/2 * atan((1 - e * e) * tan(lat0)))
+	}
+	else {
+		t1 <- tan(pi/4 - lat1/2)/((1 - e * sin(lat1))/(1 + e * sin(lat1
+			)))^(e/2)
+		t0 <- tan(pi/4 - lat0/2)/((1 - e * sin(lat0))/(1 + e * sin(lat0
+			)))^(e/2)
+	}
+	if(np == 1)
+		n <- sin(lat1)	# one tangent.   
+	else {
+		m2 <- cos(lat2)/(1 - e * e * (sin(lat2))^2)
+		if(old)
+			t2 <- tan(pi/4 - 1/2 * atan((1 - e * e) * tan(lat2)))
+		else t2 <- tan(pi/4 - lat2/2)/((1 - e * sin(lat2))/(1 + e * sin(
+				lat2)))^(e/2)
+		n <- (ln(m1) - ln(m2))/(ln(t1) - ln(t2))	
+	# two section points.  
+	}
+	F1 <- m1/(n * t1^n)
+	p0 <- a * F1 * t0^n
+	p <- sign(n) * sqrt(x^2 + (p0 - y)^2)
+	theta <- atan(x/(p0 - y))
+	t <- (p/(a * F1))^(1/n)
+	lon <- theta/n + lon0
+	lat <- pi/2 - 2 * atan(t)
+	for(i in 1:2) {
+# very rapid convergence in all cases.  
+		lat <- pi/2 - 2 * atan(t * ((1 - e * sin(lat))/(1 + e * sin(lat
+			)))^(e/2))
+	}
+	return(invisible(list(lat = (lat * 180)/pi, lon = (lon * 180)/pi, x = x,
+		y = y, scale = scale, projection = "lambert", lat0 = (lat0 * 
+		180)/pi, lon0 = (lon0 * 180)/pi, lat1 = lat11)))
+}
+"invmerc"<-
+function(x, y, scale = "km", B0 = 65)
+{
+	radius <- 6378.3879999999999
+	m.p.km <- 1.8520000000000001
+	mult <- radius
+	if(scale != "km")
+		mult <- mult/m.p.km
+	b0 <- (B0 * pi)/180
+	lon <- (x/(mult * cos(b0)) * 180)/pi	
+	# Have to find latitude by iteration.
+	c1 <- exp(y/(mult * cos(b0)))
+	lat1 <- c(1:length(y))
+	lat1[1:length(y)] <- b0	# initial guess
+	lat <- c(1:length(y))
+	ind <- c(1:length(y))	#index.
+	ind <- ind[c1 != "NA"]	# NA dont work in sum.
+	while(sum(abs(lat1[ind] - lat[ind]))/sum(abs(lat[ind])) > 
+		9.9999999999999995e-08) {
+		lat <- lat1
+		lat1 <- lat - ((1 + sin(lat))/cos(lat) - c1)/((1 + sin(lat))/(
+			cos(lat)^2))
+	}
+	lat <- lat1
+	lat <- (lat * 180)/pi
+	return(invisible(list(lat = lat, lon = lon, x = x, y = y, scale = scale,
+		projection = "mercator", B0 = B0, L0 = NULL)))
+}
+"invutm"<-
+function(x, y, lon0 = -21)
+{
+	if(!is.null(x$y)) {
+		y <- x$y
+		x <- x$x
+	}
+	x1 <- x
+	x <- y
+	y <- x1	#	lengd
+# 	storas sporbaugsflatar metrar
+	a <- 6378388	# hayford
+#	a <- 6378206.4   # clarkes
+# 	slettun (flattening)
+	f <- 1/297	#	 eccentrisitet
+	e <- sqrt(2/297 - 1/297^2)
+	e2 <- e^2
+	emerki2 <- e2/(1 - e2)
+	lon0 <- (lon0 * pi)/180	# lengd a beltismidju
+	k0 <- 0.99960000000000004
+	M0 <- 0
+	e1 <- (1 - sqrt(1 - e2))/(1 + sqrt(1 - e2))
+	M <- M0 + y/k0	#her kemur yhnit inn
+	my <- M/(a * (1 - e^2/4 - (3 * e^4)/64 - (5 * e^6)/256))
+	lat1 <- my + ((3 * e1)/2 - (27 * e1^3)/32) * sin(2 * my) + ((21 * e1^2)/
+		16 - (55 * e1^4)/32) * sin(4 * my) + ((151 * e1^3)/96) * sin(6 * 
+		my) + ((1097 * e1^4)/512) * sin(8 * my)
+	N1 <- a/sqrt(1 - e^2 * (sin(lat1))^2)
+	TT1 <- (tan(lat1))^2
+	C1 <- emerki2 * (cos(lat1))^2
+	R1 <- (a * (1 - e2))/((1 - e2 * (sin(lat1))^2)^1.5)
+	D1 <- (x - 500000)/(N1 * k0)
+	ilat <- lat1 - ((N1 * tan(lat1))/R1) * (D1^2/2 - ((5 + 3 * TT1 + 10 * 
+		C1 - 4 * C1^2 - 9 * emerki2) * D1^4)/24 + ((61 + 90 * TT1 + 298 *
+		C1 + 45 * TT1^2 - 252 * emerki2 - 3 * C1^2) * D1^6)/720)	# aa
+	ilon <- lon0 + (D1 - ((1 + 2 * TT1 + C1) * D1^3)/6 + ((5 - 2 * C1 + 28 * 
+		TT1 - -3 * C1^2 + 8 * emerki2 + 24 * TT1^2) * D1^5)/120)/cos(
+		lat1)
+	return(list(x = x, y = y, lat = (ilat * 180)/pi, lon = (ilon * 180)/pi)
+		)
+}
+"join"<-
+function(x, y, column, name.x, name.y, outer.join = T, set = NA)
+{
+	if(!missing(name.x)) {
+		if(!missing(column))
+			name.x <- unique(c(name.x, column))
+		x <- x[, name.x]
+	}
+	if(!missing(name.y)) {
+		if(!missing(column))
+			name.y <- unique(c(name.y, column))
+		y <- y[, name.y]
+	}
+	if(missing(column)) {
+		d1 <- row.names(x)
+		d2 <- row.names(y)
+	}
+	else {
+		d1 <- x[, column]
+		ind <- match(names(y), column)
+		ind <- ind[!is.na(ind)]
+		if(length(ind) == 0)
+			d2 <- row.names(y)
+		else d2 <- y[, column]
+	}
+	if(outer.join) {
+
+	  y0 <- matrix(set, nrow(x), ncol(y))
+	  y1 <- as.data.frame(y0)
+	  for( i in 1:ncol(y0)) y1[,i] <- I(y0[,i])
+	  names(y1) <- names(y)
+	  ind <- match(d1, d2)
+	  index <- c(1:length(ind))
+	  index <- index[!is.na(ind)]
+	  ind <- ind[index]
+	  y1[index,  ] <- y[ind,  ]
+	  outcome <- cbind(x, y1)
+	}
+	else {
+	  ind <- match(d1, d2)
+	  ind1 <- c(1:length(ind))
+	  ind1 <- ind1[!is.na(ind)]
+	  ind <- ind[!is.na(ind)]
+	  x <- (x[ind1,  ])
+	  y <- (y[ind,  ])
+	  outcome <- cbind(x, y)
+	}
+	if(!missing(column)) {
+	  i <- match(names(outcome), column)
+	  i1 <- c(1:length(i))
+	  i1 <- i1[!is.na(i)]
+	  if(length(i1) > 1) {
+	    i1 <- i1[-1]
+	    outcome <- outcome[,  - i1]
+	  }
+	}
+       j <- match(paste(column,"1",sep=""),names(outcome))
+       if(!is.na(j)) return(outcome[,-j])
+       return(outcome)     	
+}
+"join.data.frame"<-
+function(x, y)
+{
+	z <- data.frame(x, y)
+	names(z) <- c(names(x), names(y))
+	return(z)
+}
+"join.old"<-
+function(x, y, dalkur = NULL, option = 0, set = NA)
+{
+	if(is.null(dalkur)) {
+		d1 <- row.names(x)
+		d2 <- row.names(y)
+	}
+	else {
+		d1 <- x[, dalkur]
+		ind <- match(names(y), dalkur)
+		ind <- ind[!is.na(ind)]
+		if(length(ind) == 0)
+			d2 <- row.names(y)
+		else d2 <- y[, dalkur]
+	}
+	if(!is.null(dalkur) && ncol(y) > 1) {
+		i <- match(dalkur, names(y))
+		y <- y[,  - i]
+	}
+	if(option == 0) {
+		y1 <- data.frame(matrix(set, nrow(x), ncol(y)))
+		names(y1) <- names(y)
+		ind <- match(d1, d2)
+		index <- c(1:length(ind))
+		index <- index[!is.na(ind)]
+		ind <- ind[index]
+		y1[index,  ] <- y[ind,  ]
+		outcome <- cbind(x, y1)
+	}
+	else {
+		ind <- match(d1, d2)
+		ind1 <- c(1:length(ind))
+		ind1 <- ind1[!is.na(ind)]
+		ind <- ind[!is.na(ind)]
+		x <- x[ind1,  ]
+		y <- y[ind,  ]
+		outcome <- cbind(x, y)
+	}
+	return(outcome)
+}
+"labels.line"<-
+function(cont, digits, colors, lty, xlim = c(0, 1), ylim = c(0, 1), linew = F)
+{
+	xlim <- sort(xlim)
+	ylim <- sort(ylim)
+	ncont <- length(cont)
+	if(length(lty) == ncont)
+		linetypes <- T
+	else linetypes <- F
+	lbox <- ncont
+	boxy <- c(1:lbox)
+	boxy <-  - boxy/(lbox + 1) + 1
+	boxy1 <- boxy + 1/(1.2 * lbox)
+	ymat <- matrix(0, 2, length(boxy))
+	ymat[1,  ] <- boxy
+	ymat[2,  ] <- boxy
+	xmat <- matrix(0, 2, length(boxy))
+	xmat[1,  ] <- 0.69999999999999996
+	xmat[2,  ] <- 0.94999999999999996	#	put  text in figure
+	par(adj = 0)
+	cont <- round(cont, digits = digits)
+	textx <- format(cont)
+	boxx <- c(matrix(0.10000000000000001, 1, length(boxy)))
+	boxx <- xlim[1] + abs((xlim[2] - xlim[1])) * boxx
+	boxy <- ylim[1] + (ylim[2] - ylim[1]) * boxy
+	ll <- (ylim[2] - ylim[1]) * 0.040000000000000001
+	text(boxx, boxy + ll, textx, col = 1)	# put the lables.  
+	xmat <- xlim[1] + abs((xlim[2] - xlim[1])) * xmat
+	ymat <- ylim[1] + (ylim[2] - ylim[1]) * ymat
+	for(i in 1:ncont) {
+		if(linew)
+			par(lwd = lwd[i])
+		if(linetypes)
+			par(lty = lty[i])
+		lines(xmat[, i], ymat[, i] + ll, col = colors[i])
+	}
+}
+"labels.size"<-
+function(cont, digits, sizes, xlim = c(0, 1), ylim = c(0, 1), fill = F, n, rat, 
+	minsym = "<", label.resolution = 0,open=F,lwd=1,col=1)
+{
+	xlim <- sort(xlim)
+	ylim <- sort(ylim)
+	ncont <- length(cont)
+	lbox <- ncont + 1
+	if(fill)
+		lbox <- max(lbox, 20)
+	boxy <- c(1:lbox)
+	boxy <-  - boxy/lbox + 1
+	boxy1 <- boxy + 1/(1.2 * lbox)
+	if(fill) {
+		boxy <- boxy[1:(ncont + 1)]
+		boxy1 <- boxy1[1:(ncont + 1)]
+	}
+	yloc <- (boxy + boxy1)/2
+	xloc <- matrix(0.84999999999999998, length(yloc))
+	theta <- (c(0:n) * 2 * pi)/n
+	theta <- c(theta, NA)
+	theta <- c(matrix(theta, n + 2, length(yloc)))
+	par(adj = 0)
+	cont <- round(cont, digits = digits)
+	textx <- c(1:(length(cont) - 1))
+	textx1 <- textx
+	textx <- format(round(cont[1:(length(cont) - 1)] + label.resolution, 
+		digits = digits))
+	textx1 <- format(round(cont[2:length(cont)], digits = digits))
+	textx <- paste(textx, "-", textx1)
+	minsym <- paste(minsym, " ", sep = "")
+	tmp1 <- paste(minsym, format(round(cont[1], digits = digits)))
+	tmp2 <- paste("> ", format(round(cont[ncont], digits = digits)))
+	textx <- c(tmp1, textx, tmp2)
+	boxx <- c(matrix(0.10000000000000001, 1, length(boxy)))
+	boxx <- xlim[1] + abs((xlim[2] - xlim[1])) * boxx
+	xloc <- xlim[1] + abs((xlim[2] - xlim[1])) * xloc
+	yloc <- ylim[1] + abs((ylim[2] - ylim[1])) * yloc
+	boxy <- ylim[1] + (ylim[2] - ylim[1]) * boxy
+	ll <- (ylim[2] - ylim[1]) * 0.050000000000000003
+	if(fill)
+		text(boxx, boxy + ll/2, textx)	# put the labels.
+	else text(boxx, boxy + ll, textx)	# put the labels.
+	theta <- (c(0:n) * 2 * pi)/n
+	theta <- c(theta, NA)
+	theta <- c(matrix(theta, n + 2, length(boxy)))
+	y <- c(t(matrix(yloc, length(yloc), n + 2)))
+	x <- c(t(matrix(xloc, length(xloc), n + 2)))
+	sizes <- c(t(matrix(sizes, length(boxx), n + 2)))
+	y <- y + sizes * rat * sin(theta)
+	x <- x + sizes * rat * cos(theta)
+	if(!open) polygon(x, y, col = col, border = T)
+	else lines(x,y,col=col,lwd=lwd)
+}
+"labels1"<-
+function(cont, digits, colors, xlim = c(0, 1), ylim = c(0, 1), fill = F,minsym="<",label.resolution=0,labtxt=NULL,first.color.trans=T,mai=c(0,1,0,1),leftrat=0.1)
+{
+  xlim <- sort(xlim)
+  ylim <- sort(ylim)
+  dx <- (xlim[2]-xlim[1])
+  dy <- (ylim[2]-ylim[1])
+  xlim[2] <- xlim[1]+mai[2]*dx
+  xlim[1] <- xlim[1]+mai[1]*dx
+  ylim[2] <- ylim[1]+mai[4]*dy
+  ylim[1] <- ylim[1]+mai[3]*dy
+  ncont <- length(cont)
+  if(label.resolution=="none")
+    lbox<-ncont
+  else
+    lbox <- ncont + 1
+  if(fill)
+    lbox <- max(lbox, 20)
+  boxy <- c(1:lbox)
+  boxy <-  - boxy/lbox + 1
+  boxy1 <- boxy + 1/(1.2 * lbox)
+  if(fill) {
+    boxy <- boxy[1:(ncont + 1)]
+    boxy1 <- boxy1[1:(ncont + 1)]
+  }
+  ymat <- matrix(0, 5, length(boxy))
+  ymat[1,  ] <- boxy
+  ymat[2,  ] <- boxy
+  ymat[3,  ] <- boxy1
+  ymat[4,  ] <- boxy1
+  ymat[5,  ] <- NA
+  xmat <- matrix(0, 5, length(boxy))
+  xmat[1,  ] <- 0.7
+  xmat[2,  ] <- 0.95
+  xmat[3,  ] <- 0.95
+  xmat[4,  ] <- 0.7
+  xmat[5,  ] <- NA	#	put  text in figure
+  par(adj = 0)
+  cont <- round(cont, digits = digits)
+if(!label.resolution=="none"){
+  textx <- c(1:(length(cont) - 1))
+  textx1 <- textx
+  textx <- format(round(cont[1:(length(cont) - 1)]+label.resolution, digits = digits))
+  textx1 <- format(round(cont[2:length(cont)], digits = digits))
+  textx <- paste(textx, "-", textx1)
+  tmp1 <- paste(minsym, format(round(cont[1], digits = digits)))
+  tmp2 <- paste(">", format(round(cont[ncont], digits = digits)))
+  textx <- c(tmp1, textx, tmp2)
+}
+else{
+  print(cont)
+   textx <- c(1:length(cont) )
+  testx<-format(round(cont),digits=digits)
+}
+  print(1)
+  boxx <- c(matrix(leftrat, 1, length(boxy)))
+  boxx <- xlim[1] + abs((xlim[2] - xlim[1])) * boxx
+  boxy <- ylim[1] + (ylim[2] - ylim[1]) * boxy
+  ll <- (ylim[2] - ylim[1]) * 0.05
+  if(!is.null(labtxt)) textx <- labtxt
+  if(fill)
+    text(boxx, boxy + ll/2, textx)	# put the labels. 
+  else text(boxx, boxy + ll, textx)	# put the labels. 
+  xmat <- xlim[1] + abs((xlim[2] - xlim[1])) * xmat
+  ymat <- ylim[1] + (ylim[2] - ylim[1]) * ymat
+  if(label.resolution=="none")
+    {
+      colors<-colors[2:length(colors)]
+    }
+	polygon(xmat, ymat, border = T, col = colors)
+  if(colors[1] == 0 || first.color.trans) {
+    xmat <- c(xmat[1:4], xmat[1])	# if white color.  
+    ymat <- c(ymat[1:4], ymat[1])
+    lines(xmat, ymat)
+  }
+}
+"labels2"<-
+function(cont, digits, colors, xlim = c(0, 1), ylim = c(0, 1), nx = 4, fill = F
+	)
+{
+	xlim <- sort(xlim)
+	ylim <- sort(ylim)
+	ncont <- length(cont)
+	lbox <- ncont + 1
+	if(fill)
+		lbox <- max(lbox, 20)
+	boxy <- c(1:lbox)
+	boxy <-  - boxy/(lbox + 2) + 1
+	dy <- 1/lbox
+	boxy <- boxy - dy/2
+	boxy1 <- boxy + 1/lbox
+	ymat <- matrix(0, 5, length(boxy))
+	ymat[1,  ] <- boxy
+	ymat[2,  ] <- boxy
+	ymat[3,  ] <- boxy1
+	ymat[4,  ] <- boxy1
+	ymat[5,  ] <- NA
+	xmat <- matrix(0, 5, length(boxy))
+	xmat[1,  ] <- 0.59999999999999998
+	xmat[2,  ] <- 0.90000000000000002
+	xmat[3,  ] <- 0.90000000000000002
+	xmat[4,  ] <- 0.59999999999999998
+	xmat[5,  ] <- NA	#	put  text in figure
+	ind <- c(1, c(1:floor((length(cont))/nx)) * nx)
+	if(ind[length(ind)] == (length(cont)))
+		ind <- c(ind, (length(cont)))
+	par(adj = 0)
+	cont <- round(cont, digits = digits)
+	textx <- format(round(cont[ind], digits = digits))
+	boxx <- c(matrix(0.10000000000000001, 1, length(boxy)))
+	boxx <- xlim[1] + (xlim[2] - xlim[1]) * boxx
+	boxy <- ylim[1] + (ylim[2] - ylim[1]) * boxy
+	text(boxx[ind], boxy[ind], textx)	# put the lables.  
+	xmat <- xlim[1] + abs((xlim[2] - xlim[1])) * xmat
+	ymat <- ylim[1] + (ylim[2] - ylim[1]) * ymat
+	polygon(xmat, ymat, border = F, col = colors)
+	if(colors[1] == 0) {
+		xmat <- c(xmat[1:4], xmat[1])	# if white color.  
+		ymat <- c(ymat[1:4], ymat[1])
+		lines(xmat, ymat)
+	}
+}
+"lambert"<-
+function(lat, lon, lat0, lon0, lat1, scale = "km", old = F)
+{
+	a <- 6378.3879999999999	# radius at equator
+	e <- sqrt(2/297 - (1/297)^2)	# eccensitret.
+	lat11 <- lat1	# temporary storage
+# 	change to radians  
+	lat1 <- (lat1 * pi)/180
+	lat0 <- (lat0 * pi)/180
+	lon0 <- (lon0 * pi)/180
+	lat <- (lat * pi)/180
+	lon <- (lon * pi)/180	#	one or two touching points.  
+	if(length(lat1) == 2) {
+		lat2 <- lat1[2]
+		lat1 <- lat1[1]
+		np <- 2
+	}
+	else np <- 1
+	m1 <- cos(lat1)/sqrt(1 - e * e * (sin(lat1))^2)
+	if(old) {
+		t1 <- tan(pi/4 - 1/2 * atan((1 - e * e) * tan(lat1)))
+		t0 <- tan(pi/4 - 1/2 * atan((1 - e * e) * tan(lat0)))
+	}
+	else {
+		t1 <- tan(pi/4 - lat1/2)/((1 - e * sin(lat1))/(1 + e * sin(lat1
+			)))^(e/2)
+		t0 <- tan(pi/4 - lat0/2)/((1 - e * sin(lat0))/(1 + e * sin(lat0
+			)))^(e/2)
+	}
+	if(np == 1)
+		n <- sin(lat1)	# one tangent.   
+	else {
+		m2 <- cos(lat2)/(1 - e * e * (sin(lat2))^2)
+		if(old)
+			t2 <- tan(pi/4 - 1/2 * atan((1 - e * e) * tan(lat2)))
+		else t2 <- tan(pi/4 - lat2/2)/((1 - e * sin(lat2))/(1 + e * sin(
+				lat2)))^(e/2)
+		n <- (ln(m1) - ln(m2))/(ln(t1) - ln(t2))	
+	# two section points.  
+	}
+	F1 <- m1/(n * t1^n)
+	p0 <- a * F1 * t0^n
+	if(old)
+		t <- tan(pi/4 - 1/2 * atan((1 - e * e) * tan(lat)))
+	else t <- tan(pi/4 - lat/2)/((1 - e * sin(lat))/(1 + e * sin(lat)))^(e/
+			2)
+	p <- a * F1 * t^n
+	theta <- n * (lon - lon0)
+	x <- p * sin(theta)
+	y <- p0 - p * cos(theta)
+	return(invisible(list(lat = (lat * 180)/pi, lon = (lon * 180)/pi, x = x,
+		y = y, scale = scale, projection = "Lambert", lat0 = (lat0 * 
+		180)/pi, lon0 = (lon0 * 180)/pi, lat1 = lat11)))
+}
+"landm.2.lat.lon"<-
+function(x, y, scale = "m")
+{
+	if(!is.null(x$y)) {
+		y <- x$y
+		x <- x$x
+	}
+	if(scale == "m") {
+		x <- (x - 500000)/1000
+		y <- (y - 500000)/1000
+	}
+	lat <- invlambert( - x, y, 65, -18, 65, old = T)
+	return(invisible(list(lat = lat$lat, lon = lat$lon, x = x, y = y, scale
+		 = scale)))
+}
+
+"lat.lon.2.landm"<-
+function(lat, lon = 999, scale = "m")
+{
+	if(lon[1] == 999) {
+		lon <- lat$lon
+		lat <- lat$lat
+	}
+# if list.  
+	x <- lambert(lat, lon, 65, -18, 65)
+	x$x <-  - x$x	# west is positive. 
+	x$x <- x$x + 500
+	x$y <- x$y + 500
+	if(scale == "m") {
+		x$x <- x$x * 1000
+		x$y <- x$y * 1000
+	}
+# lambert returns km. 
+	return(invisible(list(lat = (lat$lat * 180)/pi, lon = (lon$lon * 180)/
+		pi, x = x$x, y = x$y, scale = scale)))
+}
+"litir"<-
+function(n)
+{
+	x <- c(1:(n + 1))
+	par(csi = 0.059999999999999998)
+	plot(x, x)
+	y <- x
+	for(j in 1:(n - 1)) {
+		for(i in 1:(n + 1)) {
+			polygon(c(x[i], x[i + 1], x[i + 1], x[i]), c(y[j], y[j],
+				y[j + 1], y[j + 1]), col = ((j - 1) * n + i - 1
+				))
+			lines(c(x[i], x[i + 1], x[i + 1], x[i], x[i]), c(y[j], 
+				y[j], y[j + 1], y[j + 1], y[j]), col = 1)
+			text((x[i] + x[i + 1])/2, (y[j] + y[j + 1])/2, 
+				as.character((j - 1) * n + i - 1))
+		}
+	}
+	return(invisible())
+}
+"locdist"<-
+function(scale = "Miles", type = "n")
+{
+	lat <- geolocator(n = 2, type = type)
+	x <- arc.dist(lat$lat[1], lat$lon[1], lat$lat[2], lat$lon[2])
+	if(scale == "km")
+		x <- x * 1.8520000000000001
+	return(x)
+}
+"make.arrow"<-
+function(pos, angle = 15)
+{
+	pos <- Proj(pos)
+	dx <-  - diff(pos$x)
+	dy <-  - diff(pos$y)
+	d <- sqrt(dy * dy + dx * dx)
+	d1 <- d * tan((angle * pi)/180)
+	p1y <- pos$y[1] + d1/d * dx
+	p1x <- pos$x[1] - d1/d * dy
+	p2y <- pos$y[1] - d1/d * dx
+	p2x <- pos$x[1] + d1/d * dy
+	d <- data.frame(y = c(pos$y[2], p1y, p2y, pos$y[2]), x = c(pos$x[2], 
+		p1x, p2x, pos$x[2]))
+	d <- invProj(d)
+	return(data.frame(lat = d$lat, lon = d$lon))
+}
+"makepoly"<-
+function(xy, gonsize, keep)
+{
+	x <- xy$x
+	y <- xy$y
+	n <- length(x)
+	gonsize <- gonsize[ - length(gonsize)]
+	discard <- seq(x)[is.na(x)]
+	if(length(discard) > 0)
+		discard <- c(discard, discard - 1, n)
+	if(length(gonsize) > 0)
+		discard <- discard[ - cumsum(gonsize)]
+	if(length(discard) > 0) {
+		x <- x[ - discard]
+		y <- y[ - discard]
+	}
+	keep <- rep(keep, diff(c(0, seq(x)[is.na(x)], length(x))))
+	list(x = x[keep], y = y[keep])
+}
+"mapgetg"<-
+function(database = "state", gons, fill = F, xlim = c(-1e+30, 1e+30), ylim = c(
+	-1e+30
+	, 1e+30))
+{
+	ngon <- length(gons)
+	gnames <- names(gons)
+	z <- .C("mapgetg",
+		as.character(database),
+		gons = as.integer(gons),
+		as.integer(ngon),
+		sizes = integer(ngon),
+		error = as.integer(0),
+		as.double(c(xlim, ylim)),
+		as.integer(fill))[c("gons", "sizes", "error")]
+	gons <- z$gons
+	sizes <- z$sizes
+	if(z$error < 0)
+		stop("error in reading polygon headers")
+	z <- .C("mapgetg",
+		as.character(database),
+		as.integer(gons),
+		as.integer(ngon),
+		lines = integer(sum(sizes)),
+		error = as.integer(1),
+		as.double(c(xlim, ylim)),
+		as.integer(fill))[c("lines", "error")]
+	if(z$error < 0)
+		stop("error in reading polyline numbers")
+	lines <- z$lines
+	ok <- sizes > 0
+	list(number = lines, size = sizes[ok], name = gnames[ok])
+}
+"mapgetl"<-
+function(database = "state", lines, xlim = c(-1e+30, 1e+30), ylim = c(-1e+30, 
+	1e+30))
+{
+	nline <- as.integer(length(lines))
+	if(nline == 0)
+		return(integer(0))
+	z <- .C("mapgetl",
+		as.character(database),
+		linesize = as.integer(lines),
+		error = as.integer(nline),
+		as.integer(0),
+		as.double(0),
+		as.double(0),
+		as.double(c(xlim, ylim)))[c("linesize", "error")]
+	if(z$error < 0)
+		return(integer(0))
+	ok <- z$linesize != 0
+	lines <- lines[ok]
+	nline <- length(lines)
+	if(nline == 0)
+		return(integer(0))
+	linesize <- z$linesize[ok]
+	N <- sum(linesize) + nline - 1
+	xy <- .C("mapgetl",
+		as.character(database),
+		as.integer(lines),
+		as.integer(nline),
+		as.integer(1),
+		x = double(N),
+		y = double(N),
+		range = double(4))[c("x", "y", "range")]
+	flip <- c(1, -1, 1, -1)
+	box <- flip * pmax(flip * c(xlim, ylim), flip * xy$range)
+	if(any(diff(box)[-2] <= 0))
+		stop("nothing to draw: data range and limits don't intersect")
+	xy$range <- box
+	xy
+}
+"mapname"<-
+function(database = "state", patterns, exact = F)
+{
+	if(exact)
+		patterns <- paste(patterns, "\t", sep = "")
+	regexp <- paste("(^", patterns, ")", sep = "", collapse = "|")
+	dir <- unix(paste("echo $S_MAP_DATA_DIR"))
+	if(dir == "")
+		dir <- "$SHOME/library/maps/data"
+	a <- unix(paste(sep = "", "egrep -i \"", regexp, "\" ", dir, "/", 
+		database, ".N"))
+	if(length(a) == 0)
+		return(NULL)
+	r <- as.integer(unix("awk -F'\t' '{print $2}'", input = a))
+	names(r) <- unix("awk -F'\t' '{print $1}'", input = a)
+	r
+}
+"mapthin"<-
+function(xy, delta, symmetric = T)
+{
+	x <- xy$x
+	y <- xy$y
+	xy <- .C("mapthin",
+		x = as.double(x),
+		y = as.double(y),
+		n = as.integer(length(x)),
+		as.double(delta),
+		as.integer(symmetric),
+		NAOK = T)[c("x", "y", "n")]
+	length(xy$x) <- xy$n
+	length(xy$y) <- xy$n
+	xy[c("x", "y")]
+}
+"maptype"<-
+function(database = "state")
+{
+	switch(.C("maptype",
+			as.character(database),
+			as.integer(1))[[2]] + 2,
+		"unknown",
+		"spherical",
+		"planar")
+}
+"mercator"<-
+function(lat, lon, scale = "km", B0 = 65)
+{
+	radius <- 6378.3879999999999
+	m.p.km <- 1.8520000000000001
+	mult <- radius
+	if(scale != "km")
+		mult <- mult/m.p.km
+	l1 <- (lon * pi)/180
+	b1 <- (lat * pi)/180
+	b0 <- (B0 * pi)/180
+	x <- mult * cos(b0) * l1
+	y <- mult * cos(b0) * log((1 + sin(b1))/cos(b1))
+	return(invisible(list(lat = lat, lon = lon, x = x, y = y, scale = scale,
+		projection = "mercator", B0 = B0, L0 = NULL)))
+}
+"na.mean"<-
+function(v1, v2)
+{
+	ind <- c(1:length(v1))
+	ind1 <- ind[is.na(v1) & !is.na(v2)]
+	ind2 <- ind[is.na(v2) & !is.na(v1)]
+	v <- (v1 + v2)/2
+	if(length(ind1) > 0)
+		v[ind1] <- v2[ind1]
+	if(length(ind2) > 0)
+		v[ind2] <- v1[ind2]
+	return(v)
+}
+"orthproj"<-
+function(pts, curve)
+{
+	pts1 <- lambert(pts$lat, pts$lon, 65, -18, 65)
+	curve1 <- lambert(curve$lat, curve$lon, 65, -18, 65)
+	pts$x <- pts1$x/1.8520000000000001
+	pts$y <- pts1$y/1.8520000000000001
+	curve$x <- curve1$x/1.8520000000000001
+	curve$y <- curve1$y/1.8520000000000001
+	pardist <- perdist <- rep(0, length(pts$lat))
+	x <- .C("Curvedist",
+		as.double(curve$x),
+		as.double(curve$y),
+		as.double(curve$dist),
+		as.integer(length(curve$x)),
+		as.double(pts$x),
+		as.double(pts$y),
+		as.double(perdist),
+		as.double(pardist),
+		as.integer(length(pts$y)))
+	pardist <- x[[7]]
+	perdist <- x[[8]]	# Points inside curve get negative perdist.
+	i <- geoinside(pts, reg = curve, option = 0,robust=F)
+	perdist[i] <-  - perdist[i]
+	return(list(pardist=pardist,perdist= perdist))
+}
+"paint.window"<-
+function(listi, col = 0, border = T, poly = T, col.names = c("lon", "lat"))
+{
+	lat <- c(listi[[col.names[2]]][1], listi[[col.names[2]]][1], listi[[
+		col.names[2]]][2], listi[[col.names[2]]][2], listi[[col.names[2
+		]]][1])
+	lon <- c(listi[[col.names[1]]][1], listi[[col.names[1]]][2], listi[[
+		col.names[1]]][2], listi[[col.names[1]]][1], listi[[col.names[1
+		]]][1])
+	x <- Proj(lat, lon, geopar$scale, geopar$b0, geopar$b1, geopar$l1, 
+		geopar$projection, col.names = col.names)
+	rx <- range(x$x)
+	ry <- range(x$y)
+	t1 <- c(rx[1], rx[2], rx[2], rx[1], rx[1])
+	t2 <- c(ry[1], ry[1], ry[2], ry[2], ry[1])
+	if(poly)
+		polygon(t1, t2, col = 0)
+	if(border) {
+		mx <- mean(t1[1:4])
+		my <- mean(t2[1:4])
+		t11 <- t1 + 0.02 * (t1 - mx)
+		t22 <- t2 + 0.02 * (t2 - my)
+		lines(t11, t22, lwd = 1.5, col = 1)
+	}
+}
+"pdist"<-
+function(lat, lon, lat1, lon1)
+{
+	rad <- 6367	#radius of earth in km
+	return(rad * acos(sin(lat) * sin(lat1) + cos(lat) * cos(lat1) * cos(lon -
+		lon1)))
+}
+"plot.nogrid"<-
+function(o, xgr, ygr, col)
+{
+	frame <- list(x = c(o$x[1], o$x[2], o$x[2], o$x[1], o$x[1]), y = c(o$y[
+		1], o$y[1], o$y[2], o$y[2], o$y[1]))
+	dx <- (o$x[2] - o$x[1])/100
+	ly <- length(ygr)
+	lx <- length(xgr)
+	lengd <- ly * 2 + lx * 2
+	o1 <- o$x[1]
+	ind <- c(1:ly)
+	my <- mx <- matrix(NA, lengd, 3)
+	mx[ind, 1] <- o1
+	mx[ind, 2] <- o1 + dx
+	my[ind, 1] <- my[ind, 2] <- ygr
+	o1 <- o$x[2]
+	ind <- c((ly + 1):(ly * 2))
+	mx[ind, 1] <- o1 - dx
+	mx[ind, 2] <- o1
+	my[ind, 1] <- my[ind, 2] <- ygr
+	o1 <- o$y[1]
+	ind <- c((ly * 2 + 1):(ly * 2 + lx))
+	my[ind, 1] <- o1
+	my[ind, 2] <- o1 + dx
+	mx[ind, 1] <- mx[ind, 2] <- xgr
+	o1 <- o$y[2]
+	ind <- c((ly * 2 + lx + 1):(ly * 2 + lx * 2))
+	my[ind, 1] <- o1 - dx
+	my[ind, 2] <- o1
+	mx[ind, 1] <- mx[ind, 2] <- xgr
+	lines(t(mx), t(my), col = col)
+	lines(frame, col = col)
+	return(invisible())
+}
+"plot.reitnr"<-
+function(csirt, lwd = 0)
+{
+	lat <- invProj(geopar$limx, geopar$limy, geopar$scale, geopar$b0, 
+		geopar$b1, geopar$l1, geopar$projection)
+	minlat <- floor(lat$lat[1] * 2)/2 - 0.5
+	minlon <- floor(lat$lon[1]) - 1
+	maxlon <- floor(lat$lon[2]) + 1
+	maxlat <- floor(lat$lat[2] * 2)/2 + 0.5
+	nlat <- (maxlat - minlat) * 2 + 1
+	nlon <- (maxlon - minlon) + 1
+	lon <- minlon + c(0:nlon)
+	lat <- minlat + c(0:nlat) * 0.5
+	lon <- lon + 0.5
+	lat <- lat + 0.25
+	nlat <- length(lat)
+	nlon <- length(lon)
+	lat <- c(matrix(lat, nlat, nlon))
+	lon <- c(t(matrix(lon, nlon, nlat)))
+	z <- d2r(lat, lon)
+	geotext(lat, lon, z, csi = csirt, lwd = lwd)
+}
+"plvar"<-
+function(vagram, n = 4, fit = T, type = "p")
+{
+	if(fit) {
+		vagr1 <- vagram$dist[vagram$dist < vagram$rang1 * n]	
+	# n x range
+		zva <- vagram$vario[1:length(vagr1)]
+		plot(vagr1, zva, xlim = c(0, max(vagr1)), ylim = c(0, max(zva) * 
+			1.05), xlab = "Distance", ylab = "Variogram", title = 
+			" ", type = type)
+		lines(c(0, vagr1[1]/2, vagr1), spherical(vagram$rang1, vagram$
+			sill, vagram$nugget, c(0, vagr1[1]/2, vagr1)))
+		tloc <- c(max(vagr1) * 0.90000000000000002, max(zva) * 1.04)
+		tloc <- matrix(tloc, 2, 2, byrow = T)
+		tloc[2, 2] <- max(zva) * 1.01
+		tmp <- vagram$nugget/vagram$sill
+		tmp <- round(tmp, digits = 2)
+		tmp <- as.character(tmp)
+		tmp <- substring(tmp, 1, 4)
+		txt <- c(paste("nugget/sill=", tmp), paste("range = ", 
+			as.character(round(vagram$rang1, digits = 2))))
+		print(txt)
+		text(tloc, txt)
+	}
+	else {
+		plot(c(0, vagram$dist), c(0, vagram$vario), ylim = c(0, max(
+			vagram$vario)), xlab = "Distance", ylab = "Variogram", 
+			title = " ")
+	}
+}
+"pointkriging"<-
+function(lat, lon, z, xgr, vagram, maxnumber = 16, scale = "km", option = 1, 
+	maxdist = 0, rat = 3, nb = 8, set = 0, areas = 0, varcalc = F, sill = 0,
+	minnumber = 2, suboption = 1, outside = T, degree = 0, lognormal = F, 
+	zeroset = F)
+{
+	i <- match("rang1",names(vagram)) 
+	if(is.na(i)){ 
+ 	  if(!is.na(match("range",names(vagram))))
+	    vagram$rang1 <- vagram$range
+          else {
+	    cat("variogram wrong");return(invisible())
+	  }
+	}
+	if(lognormal)
+		varcalc <- T
+	vgr <- c(vagram$rang1, vagram$sill, vagram$nugget)	
+	# components of variogram.  
+	ndata <- length(lat)
+	d <- c(1, 3, 6)
+	if(degree > 2) degree <- 2	#	get row indices.  
+	xxx <- bua(nb)
+	stdrrt <- xxx$rrt
+	stdcrt <- xxx$crt
+	dir <- xxx$dir
+	i1 <- xxx$i1	# 	get rid of data outside borders.  
+	if(length(xgr$grpt) == 0)
+		gr <- xgr
+	else gr <- xgr$grpt
+	if(outside) {
+		m <- length(gr$lat)
+		n <- length(gr$lon)
+		minlat <- gr$lat[1] - nb * (gr$lat[2] - gr$lat[1])
+		maxlat <- gr$lat[m] + nb * (gr$lat[m] - gr$lat[m - 1])
+		minlon <- gr$lon[1] - nb * (gr$lon[2] - gr$lon[1])
+		maxlon <- gr$lon[n] + nb * (gr$lon[n] - gr$lon[n - 1])
+		ind <- c(1:length(lat))
+		ind <- ind[lat > minlat & lat < maxlat & lon > minlon & lon < 
+			maxlon]
+		lat <- lat[ind]
+		lon <- lon[ind]
+		z <- z[ind]
+		ndata <- length(lat)
+	}
+#	Fill up matrix of data.  
+	if(length(xgr$grpt) == 0) {
+		lat1 <- c(t(matrix(xgr$lat, length(xgr$lat), length(xgr$lon))))
+		lon1 <- c(matrix(xgr$lon, length(xgr$lon), length(xgr$lat)))	
+	#		geopoints(lat1,lon1)
+		n <- length(xgr$lon)
+		m <- length(xgr$lat)
+		row <- cut(lat, c(-999, xgr$lat, 999))
+		col <- cut(lon, c(-999, xgr$lon, 999))
+		inni <- rep(1, length(lat1))
+	}
+#	What to set points outside the range of data to.  
+	if(set == 0)
+		mz <- 0
+	if(set > 0)
+		mz <- mean(z)
+	if(set < 0) mz <- -99999	#might be used for identification.  
+	reitur <- (n + 1) * (row - 1) + col
+	treitur <- rep(1, ndata)	# storage.  
+	pts.in.reit <- c(matrix(0, ndata * 1.2, 1))
+	maxrt <- max(reitur)
+	npts.in.reit <- rep(0, round((maxrt + 1)*1.2))	# 	mark points inside areas.  
+	if(length(areas) > 1) {
+		ind <- c(1:length(areas$lat))
+		ind <- ind[is.na(areas$lat)]
+		if(length(ind) == 0)
+			break()
+		nareas <- length(ind) + 1	#number of areas
+		ind <- c(0, ind, (length(areas$lat) + 1))
+		isub <- rep(0, length(lat))
+		isub1 <- rep(0, length(lat1))
+		subareas <- 1
+		for(i in (1:nareas)) {
+			reg <- list(lat = areas$lat[(ind[i] + 1):(ind[i + 1] - 
+				1)], lon = areas$lon[(ind[i] + 1):(ind[i + 1] - 
+				1)])
+			border <- adapt(reg$lat, reg$lon)
+			inn <- rep(0, length(lat))
+			inn1 <- rep(0, length(lat1))
+			inn <- .C("marghc",
+				as.double(lon),
+				as.double(lat),
+				as.integer(length(lat)),
+				as.double(border$lon),
+				as.double(border$lat),
+				as.integer(length(border$lat)),
+				as.integer(border$lxv),
+				as.integer(length(border$lxv)),
+				as.integer(inn))
+			isub <- inn[[9]] * i + isub
+			inn1 <- .C("marghc",
+				as.double(lon1),
+				as.double(lat1),
+				as.integer(length(lat1)),
+				as.double(border$lon),
+				as.double(border$lat),
+				as.integer(length(border$lat)),
+				as.integer(border$lxv),
+				as.integer(length(border$lxv)),
+				as.integer(inn1))
+			isub1 <- inn1[[9]] * i + isub1
+		}
+	}
+	else {
+# No special areas.  
+		subareas <- 0
+		isub <- rep(0, length(lat))
+		isub1 <- rep(0, length(lat1))
+	}
+	gr$lon <- (gr$lon * pi)/180
+	gr$lat <- (gr$lat * pi)/180
+	lat1 <- (lat1 * pi)/180
+	lon1 <- (lon1 * pi)/180
+	lat <- (lat * pi)/180
+	lon <- (lon * pi)/180
+	if(option == 4) {
+# look for dimensions of squares. 
+		if(maxdist == 0) maxdist <- vagram$rang1
+		d1 <- pdist(gr$lat[1], gr$lon[1], gr$lat[2], gr$lon[2])
+		d2 <- pdist(gr$lat[1], gr$lon[1], gr$lat[1], gr$lon[2])
+		nm <- max(c(floor(maxdist/d1 + 1), floor(maxdist/d2 + 1)))
+		if(nm > nb)
+			nm <- nb
+		i1 <- c(0, i1[nm + 1])
+	}
+	cov <- c(matrix(0, maxnumber + d[degree + 1], maxnumber + d[degree + 1]
+		))
+	rhgtside <- x <- rhgtsbck <- rep(0, maxnumber + d[degree + 1])
+	zgr <- variance <- lagrange <- rep(0, length(lat1))
+#	npts.in.reit <- rep(0, ndata)
+	indrt <- jrt <- npts.in.reit
+	if(varcalc && sill == 0) sill <- vagram$sill	# calculate variance.  
+	xy <- 0	# not xy coordinates
+	z <- .C("pointkriging",
+		as.double(lat),
+		as.double(lon),
+		as.double(z),
+		as.integer(ndata),
+		as.double(lat1),
+		as.double(lon1),
+		as.double(zgr),
+		as.integer(length(lat1)),
+		as.integer(reitur),
+		as.integer(n),
+		as.integer(m),
+		as.integer(pts.in.reit),
+		as.integer(npts.in.reit),
+		as.integer(maxnumber),
+		as.double(vgr),
+		as.integer(stdcrt),
+		as.integer(stdrrt),
+		as.integer(dir),
+		as.integer(i1),
+		as.integer(length(i1)),
+		as.integer(option),
+		as.integer(inni),
+		as.double(cov),
+		as.double(rhgtside),
+		as.double(x),
+		as.integer(indrt),
+		as.integer(jrt),
+		as.integer(maxrt),
+		as.integer(treitur),
+		as.double(rat),
+		as.double(maxdist),
+		as.double(mz),
+		as.integer(isub),
+		as.integer(isub1),
+		as.integer(subareas),
+		as.double(variance),
+		as.integer(varcalc),
+		as.double(rhgtsbck),
+		as.double(sill),
+		as.integer(minnumber),
+		as.integer(suboption),
+		as.integer(xy),
+		as.integer(d),
+		as.double(lagrange),
+		as.integer(zeroset))
+	zgr <- z[[7]]
+	zgr[zgr == -99999] <- NA
+	variance <- z[[36]]
+	lagrange <- z[[44]]
+	if(varcalc)
+		zgr <- list(zgr = zgr, variance = variance, lagrange = lagrange
+			)
+	attributes(zgr)$vagram <- vagram
+	attributes(zgr)$grid <- xgr
+	attributes(zgr)$nb <- nb
+	attributes(zgr)$option <- option
+	attributes(zgr)$maxnumber <- maxnumber
+	return(zgr)
+}
+"prepare.line"<-
+function(x)
+{
+	n <- length(x)
+	x1 <- x[2:n]
+	x2 <- x[1:(n - 1)]
+	ind <- c(1:(n - 1))
+	ind1 <- ind[!is.na(x1) & is.na(x2)]
+	ind2 <- ind[is.na(x1) & !is.na(x2)]
+	if(length(ind1) > 0)
+		lx1 <- ind1 + 1
+	if(length(ind2) > 0)
+		lx2 <- ind2
+	if(length(ind1) == 0)
+		lx1 <- 1
+	if(length(ind2) == 0)
+		lx2 <- n
+	if(!is.na(x[1]))
+		lx1 <- unique(c(1, lx1))
+	if(!is.na(x[n]))
+		lx2 <- unique(c(lx2, n))
+	nlx <- length(lx1)
+	return(list(lx1=lx1,lx2= lx2,nlx=nlx))
+}
+"pscolors"<-
+function()
+{
+	x <- matrix(1, 155, 3)
+	x[1, 1] <- 2/3
+	x[1, 2] <- 1
+	x[1, 3] <- 0	#black
+	x[2, 1] <- 2/3	#blue
+	x[53, 1] <- 1/3	#green
+	for(i in 3:52) {
+		x[i, 1] <- x[2, 1] - (i - 2)/153
+	}
+# blue -green
+	x[104, 1] <- 1/6	#yellow
+	for(i in 54:103) {
+		x[i, 1] <- x[53, 1] - (i - 53)/306
+	}
+# green - yellow
+	x[155, 1] <- 0	#red
+	for(i in 104:154) {
+		x[i, 1] <- x[103, 1] - (i - 103)/306
+	}
+# yellow -red
+	x <-  - (x > 1) + x
+	return(x)
+}
+"r2d"<-
+function(square)
+{
+	lat <- floor(square/100)
+	lon <- (square - lat * 100) %% 50
+	halfb <- (square - 100 * lat - lon)/100
+	lon <-  - (lon + 0.5)
+	lat <- lat + 60 + halfb + 0.25
+	return(list(lat = lat, lon = lon))
+}
+"reitaplott"<-
+function(reitur,smareitur=NULL,z,levels=NULL,colors=NULL,density=1,maxcol=155,nlevels=6,white=F
+	,border=F,angle=45,rotate=0,digits=0,csi=0,label.location=0,labels.only=F,col=1,outside=T,mincol=NULL){
+
+  oldpar <- par()
+  par(geopar$gpar)
+  on.exit(par(oldpar))
+  brd <- list(x=c(geopar$limx[1],geopar$limx[2],geopar$limx[2],geopar$limx[1],geopar$limx[1]),
+	      y=c(geopar$limy[1],geopar$limy[1],geopar$limy[2],geopar$limy[2],geopar$limy[1]))
+  if(geopar$cont)par(plt=geopar$contlines)
+  
+  z <- z+1e-8
+  brd$x <- brd$x+1e-6;brd$y <- brd$y+1e-7
+  if(abs(reitur[1]) > 999 && is.null(smareitur)) {
+    smareitur <- abs(reitur)-floor(abs(reitur)/10)*10
+    reitur <- sign(reitur)*floor(abs(reitur)/10)
+  }
+  
+  
+  or.angle <- angle
+  dlat <- c(0.125,0.125,-0.125,-0.125)
+  dlon <- c(-0.25,0.25,-0.25,0.25)
+  lat <- r2d(reitur)
+  lon <- lat$lon;lat <- lat$lat
+  if(!is.null(smareitur)) {
+    lat <- lat+dlat[smareitur]
+    lon <- lon+dlon[smareitur]
+    dlon <- c(-0.25,0.25,0.25,-0.25,-0.25)
+    dlat <- c(-0.125,-0.125,0.125,0.125,-0.125)
+  }
+  else {
+    dlon <- c(-0.5,0.5,0.5,-0.5,-0.5)
+    dlat <- c(-0.25,-0.25,0.25,0.25,-0.25)
+  }
+  nlat <- length(lat);nlon <- length(lon)		
+  lat <- t(matrix(lat,nlat,5))
+  lon <- t(matrix(lon,nlon,5))
+  dlon <-matrix(dlon,5,nlat)
+  dlat <- matrix(dlat,5,nlat)
+  lat <- lat+dlat
+  lon <- lon+dlon
+  n.a <- rep(NA,ncol(lat))
+  lat <- rbind(lat,n.a)
+  lon <- rbind(lon,n.a)
+
+# 	Set levels and color.  	
+	z <- z + 1e-7 # because of zeroes.  
+  if(is.null(levels))  {
+    if(nlevels == 0) nlevels <- 10
+    levels <- pretty(range(z,na.rm=T), nlevels)
+    levels <- levels[2:(length(levels) - 1)]
+  }
+  ncont <- length(levels) 
+  if(is.null(colors)){
+    if(density > 0 && is.null(mincol)) mincol <- 8
+    if(density ==0 && is.null(mincol)) mincol <- 2
+    
+    if(density > 0 && is.null(maxcol)) maxcol <- 70
+    if(density==0 && is.null(maxcol))maxcol <- 155
+    if(white) {					# lowest values white.  
+      colors <- c(1:(ncont ))
+      colors <- floor(mincol + ((colors - 1) * (maxcol - 
+						mincol))/(length(colors) - 1))
+      colors <- c(0, colors)
+    }
+    else {
+      colors <- c(1:(ncont + 1))
+      colors <- floor(mincol + ((colors - 1) * (maxcol - 
+						mincol))/(length(colors) - 1))
+    }
+  }
+  print(paste("calculated colors",paste(colors,collapse=",")))
+  print(paste("calculated levels",paste(levels,collapse=",")))
+  
+  levels.1 <- levels
+  colors.1 <- colors
+  
+  
+  m <- max(z[!is.na(z)])
+  if(!is.null(levels)) {
+    i <- c(1:length(levels))
+    i <- i[levels > max(z[!is.na(z)])]
+    if(length(i) > 0) {
+      levels <- levels[ - i]
+      if(length(colors) > 1) {
+	i <- i + 1
+	colors <- colors[ - i]
+      }
+    }
+  }
+
+  levels <- c(levels, max(c(max(abs(levels)) * 1.1, max(z) * 1.1)))   # change.
+  levels <- c(min(c(min(z[z != -99999]) - 1, levels[1] - 1)), levels)
+  if(levels[2] - levels[1] < 1)
+    levels[1] <- levels[2] - 1
+  print("adjusted contour are")
+  print(round(levels,3))
+  print("adjusted colors are")
+  print(round(colors,3))
+  
+  
+  
+					#	Define color for each point.  
+  
+  ind <- cut(z,levels)
+  ind1 <- ind
+  ind <- colors[ind]	# number of color. 
+  
+  x <- Proj(lat,lon,geopar$scale,geopar$b0,geopar$b1,geopar$l1,geopar$projection)
+  
+  
+  if(density > 0 || !outside ){
+    rot <- rep(0,length(colors))
+    rot[1]<- angle
+    for(i in 2:length(colors))
+      rot[i]<- rot[i-1]+rotate
+    rot <- rot[ind1]
+    if(!labels.only){ 
+      for(i in 1:length(ind)) {
+	if(geopar$projection=="Lambert") 
+	  x1 <- fill.points(x$x[1:5,i],x$y[1:5,i],nx=10,option=2)
+	else
+	  x1 <- list(x=x$x[1:5,i],y=x$y[1:5,i])
+	if(!outside) x1 <- findcut(x1,brd)
+	if(length(x1$x)>3) {
+	  if(density > 0) { 
+	    if(ind[i] > 100 ) polygon(x1$x,x1$y,col=1,border=border)
+	    else polygon(x1$x,x1$y,density=ind[i],border=border,angle=rot[i])
+	  }
+	  else polygon(x1$x,x1$y,col=ind[i],border=border) 
+	  
+	  if(border) {
+	    if(!outside) x1 <- findline(x1,brd) 
+	    if(length(x1$x) !=0) lines(x1$x,x1$y,col=col)
+	  }
+	}
+      }
+    }
+
+	#       Add  labels around plot
+    if(geopar$cont) {
+      par(plt = geopar$contlab)
+      par(new = T)
+      plot(c(0, 1, 1, 0, 0), c(0, 0, 1, 1, 0), type = "l", axes = F,
+	   xlab = " ", ylab = " ")
+      shading1(levels.1,digits,colors,angle=or.angle,rotate=rotate,csi=csi,fill=geopar$cont) 
+    }
+  }
+  
+  else { 	# use colors 
+	  
+    if(!labels.only) {
+      if(geopar$projection=="Lambert")x <- fill.points(x,y,10,option=2)
+      polygon(x$x,x$y,col=ind,border=border)
+      if(border==T)lines(x$x,x$y)
+    }
+					#       Add  labels around plot
+    if(geopar$cont) {
+      par(plt = geopar$contlab)
+      par(new = T)
+      plot(c(0, 1, 1, 0, 0), c(0, 0, 1, 1, 0), type = "l", axes = F,
+	   xlab = " ", ylab = " ")
+      if(csi != 0)par(csi=csi)
+      labels1(levels.1,digits,colors.1,fill=geopar$cont) 
+    }
+  }
+  
+					# 	Add  labels around plot 
+  if(length(label.location)==1) # use the locator.  
+  if(label.location=="locator")label.location <- geolocator(n=2)
+  
+  if(length(label.location)>1) { #label located somewhere in drawing
+    
+    label.location <- Proj(label.location$lat,label.location$lon,geopar$scale,geopar$b0,
+			   geopar$b1,geopar$l1,geopar$projection)
+    paint.window(label.location,border=T)
+    if(density > 0) 
+      shading1(levels.1,digits,colors.1,angle=or.angle,rotate=rotate,csi=csi,xlim=label.location$x,ylim=label.location$y)
+    else {
+      labels1(levels.1,digits,colors.1,xlim=label.location$x,ylim=label.location$y)
+		      }
+  }
+  
+  par(oldpar)
+  return(invisible())
+}
+"rm.columns"<-
+function(x, col.names)
+{
+	index <- 1
+	name <- names(x)
+	ind <- match(col.names, name)
+	ind <- ind[!is.na(ind)]
+	ind1 <- ind[is.na(ind)]
+	if(length(ind1) > 0) {
+		txt <- paste("D\341lkar", col.names[ind1], "ekki til")
+		print(txt)
+	}
+	if(length(ind) > 0)
+		x <- x[,  - ind]
+	return(x)
+}
+"select.columns"<-
+function(x, col.names)
+{
+	name <- names(x)
+	ind <- match(col.names, name)
+	ind <- ind[!is.na(ind)]
+	ind1 <- ind[is.na(ind)]
+	if(length(ind1) > 0) {
+		txt <- paste("D\341lkar", col.names[ind1], "ekki til")
+		print(txt)
+	}
+	if(length(ind) > 0)
+		x <- x[, ind]
+	return(x)
+}
+"select.rows"<-
+function(x, dalkur, listi)
+{
+	dlk <- match(dalkur, names(x))
+	ind <- match(x[, dlk], listi)
+	ind1 <- c(1:length(ind))
+	ind <- ind1[!is.na(ind)]
+	if(length(ind) == 0) {
+		print("Ekkert vali\360 ")
+		return(invisible())
+	}
+	x <- x[ind,  ]
+	return(x)
+}
+"shadeborder"<-
+function(reg, lat, lon, col = 0, col.names = c("lon", "lat"))
+{
+	ind <- c(1:length(reg[[col.names[2]]]))
+	ind1 <- ind[is.na(reg[[col.names[2]]])]
+	if(length(ind1) == 0 || ind1[1] != 1) {
+#external border does not begin with NA
+		if(length(ind1) < 1) ind2 <- length(reg[[col.names[2]]]) else 
+				ind2 <- ind1[1] - 1
+		reg.lat <- reg[[col.names[2]]][1:ind2]
+		reg.lon <- reg[[col.names[1]]][1:ind2]
+		lonx <- c(min(lon), min(lon), max(lon), max(lon), min(lon), min(
+			lon))
+		latx <- c(mean(lat), min(lat), min(lat), max(lat), max(lat), 
+			mean(lat))
+		ind2 <- ind[reg.lon == min(reg.lon)][1]
+		ind3 <- ind[reg.lon == max(reg.lon)][1]
+		ind6 <- ind[reg.lat == min(reg.lat)][1]
+		ind7 <- ind[reg.lat == max(reg.lat)][1]
+		i <- 0
+		if(ind6 > ind2)
+			i <- i + 1
+		if(ind3 > ind6)
+			i <- i + 1
+		if(ind7 > ind3)
+			i <- i + 1
+		if(ind2 > ind7)
+			i <- i + 1
+		if(i > 1)
+			ccw <- T
+		else ccw <- F
+		if(ccw) {
+#counterclockwise
+			if(ind3 > ind2) {
+				ind4 <- c(ind3:ind2)
+				ind5 <- c(ind3:length(reg.lat), 1:ind2)
+			}
+			else {
+				ind4 <- c(ind3:1, length(reg.lat):ind2)
+				ind5 <- c(ind3:ind2)
+			}
+		}
+		else {
+#clockwise
+			if(ind3 > ind2) {
+				ind4 <- c(ind3:length(reg.lat), 1:ind2)
+				ind5 <- c(ind3:ind2)
+			}
+			else {
+				ind4 <- c(ind3:ind2)
+				ind5 <- c(ind3:1, length(reg.lat):ind2)
+			}
+		}
+		mil <- min(min(lon), min(reg.lon) - 1)
+		mal <- max(max(lon), max(reg.lon) + 1)
+		rlat <- c(mean(lat), min(lat), min(lat), mean(lat))
+		rlon <- c(mil, mil, mal, mal)
+		rlon <- c(reg.lon[ind4], rlon)
+		rlat <- c(reg.lat[ind4], rlat)
+		rx <- Proj(rlat, rlon, geopar$scale, geopar$b0, geopar$b1, 
+			geopar$l1, geopar$projection, col.names = col.names)
+		lines(rx, lwd = 2)	
+	#    polygon(rx$x, rx$y, border = F, col = col)
+		rlat <- c(mean(lat), max(lat), max(lat), mean(lat))
+		rlon <- c(mil, mil, mal, mal)
+		rlon <- c(reg.lon[ind5], rlon)
+		rlat <- c(reg.lat[ind5], rlat)
+		rx <- Proj(rlat, rlon, geopar$scale, geopar$b0, geopar$b1, 
+			geopar$l1, geopar$projection, col.names = col.names)
+		lines(rx, lwd = 2, col = 70)	
+	#    polygon(rx$x, rx$y, border = F, col = col)
+		if(length(ind1) > 0) {
+			if(geopar$projection == "none") {
+				if(length(reg$x) - ind1[length(ind1)] < 3)
+				  return(invisible())
+				reg$x <- reg$x[(ind1[1] + 1):length(reg$x)]
+				reg$y <- reg$y[(ind1[1] + 1):length(reg$y)]
+			}
+			else {
+				if(length(reg[[col.names[2]]]) - ind1[length(
+				  ind1)] < 3)
+				  return(invisible())
+				reg[[col.names[2]]] <- reg[[col.names[2]]][(
+				  ind1[1] + 1):length(reg[[col.names[2]]])]
+				reg[[col.names[1]]] <- reg[[col.names[1]]][(
+				  ind1[1] + 1):length(reg[[col.names[1]]])]
+			}
+			rx <- Proj(reg, scale = geopar$scale, b0 = geopar$b0, 
+				b1 = geopar$b1, l1 = geopar$l1, projection = 
+				geopar$projection, col.names = col.names)
+			lines(rx, lwd = 2, col = 2)	
+	#      polygon(rx$x, rx$y, border = F, col = col)
+		}
+	}
+	else {
+		rx <- Proj(reg, scale = geopar$scale, b0 = geopar$b0, b1 = 
+			geopar$b1, l1 = geopar$l1, projection = geopar$
+			projection, col.names)
+		lines(rx, lwd = 2, col = 150)	
+	#    polygon(rx$x, rx$y, border = F, col = col)
+	}
+}
+"shading1"<-
+function(cont, digits, colors, xlim = c(0, 1), ylim = c(0, 1), fill = F, angle, 
+	rotate, csi, rat, minsym = "<")
+{
+	xlim <- sort(xlim)
+	ylim <- sort(ylim)
+	if(csi != 0)
+		par(csi = csi)
+	ncont <- length(cont)
+	if(fill)
+		lbox <- max(ncont + 1, 20)
+	else lbox <- ncont + 1
+	boxy <- c(1:lbox)
+	boxy <-  - boxy/lbox + 1
+	boxy1 <- boxy + 1/(1.2 * lbox)
+	if(fill) {
+		boxy <- boxy[1:(ncont + 1)]
+		boxy1 <- boxy1[1:(ncont + 1)]
+	}
+	ymat <- matrix(0, 5, length(boxy))
+	ymat[1,  ] <- boxy
+	ymat[2,  ] <- boxy
+	ymat[3,  ] <- boxy1
+	ymat[4,  ] <- boxy1
+	ymat[5,  ] <- NA
+	xmat <- matrix(0, 5, length(boxy))
+	xmat[1,  ] <- 0.75
+	xmat[2,  ] <- 0.96999999999999997
+	xmat[3,  ] <- 0.96999999999999997
+	xmat[4,  ] <- 0.75
+	xmat[5,  ] <- NA	#       put  text in figure
+	par(adj = 0)
+	cont <- round(cont, digits = digits)
+	textx <- c(1:(length(cont) - 1))
+	textx1 <- textx
+	textx <- as.character(round(cont[1:(length(cont) - 1)], digits = digits
+		))
+	textx1 <- as.character(round(cont[2:length(cont)], digits = digits))
+	textx <- paste(textx, "-", textx1)
+	minsym <- paste(minsym, " ", sep = "")
+	textx <- c(paste(minsym, as.character(round(cont[1], digits = digits))),
+		textx)
+	textx[ncont + 1] <- paste("> ", as.character(round(cont[ncont], digits
+		 = digits)))
+	boxx <- c(matrix(0.10000000000000001, 1, length(boxy)))
+	boxx <- xlim[1] + (xlim[2] - xlim[1]) * boxx
+	boxy <- ylim[1] + (ylim[2] - ylim[1]) * boxy
+	ll <- (ylim[2] - ylim[1]) * 0.050000000000000003
+	if(fill)
+		text(boxx, boxy + ll/2, textx)
+	else text(boxx, boxy + ll, textx)
+	xmat <- xlim[1] + (xlim[2] - xlim[1]) * xmat
+	ymat <- ylim[1] + (ylim[2] - ylim[1]) * ymat
+	for(i in 1:length(colors)) {
+		polygon(xmat[1:4, i], ymat[1:4, i], border = T, density = 
+			colors[i], angle = angle)
+		angle <- angle + rotate
+	}
+}
+"SMB.std.background"<- 
+function(depth,depthcol=1,depthlty=1,depthlwd=1,eyjar,depthlab,depthlabcsi=0.12,...) {
+  SMB.limits <- list(lat=c(62.85,67.5),lon=c(-27.8,-9.8))
+  geoplot(xlim=SMB.limits,...)
+  if(!missing(depth)) gbplot(depth,depthcol,depthlty,depthlwd,depthlab,depthlabcsi)
+  if(!missing(eyjar)) geolines(eyjar,...)
+}
+"sr2d"<-
+function(ssquare)
+{
+	square <- floor(ssquare/10)
+	ssquare <- ssquare - square * 10
+	lat <- floor(square/100)
+	lon <- (square - lat * 100) %% 50
+	halfb <- (square - 100 * lat - lon)/100
+	lon <-  - (lon + 0.5)
+	lat <- lat + 60 + halfb + 0.25
+	l1.lat <- c(0, 0.125, 0.125, -0.125, -0.125)
+	l1.lon <- c(0, -0.25, 0.25, -0.25, 0.25)
+	lat <- lat + l1.lat[ssquare + 1]
+	lon <- lon + l1.lon[ssquare + 1]
+	return(list(lat = lat, lon = lon))
+}
+"utm"<-
+function(lat, lon = 0, lon0 = -21)
+{
+	if(!is.null(lat$lon)) {
+		lon <- lat$lon
+		lat <- lat$lat
+	}
+#	lengd
+#	 storas sporbaugsflatar metrar
+	a <- 6378388	# hayford
+#	a <- 6378206.4   # clarkes
+# 	slettun (flattening)
+	f <- 1/297	# 	eccentrisitet
+	e <- sqrt(2/297 - 1/297^2)	# 	lengdar i midju
+#	skoelunarfaktor UTM
+	k0 <- 0.99960000000000004	
+	# 	utreikningar, formulur x og y bls 61 Mapproj.-Working man.
+	rlon <- ( - lon * pi)/180
+	rlat <- (lat * pi)/180
+	e2 <- 0.0067686600000000001
+	emerki2 <- e2/(1 - e2)
+	N <- a/sqrt(1 - e^2 * (sin(rlat))^2)
+	TT <- (tan(rlat))^2
+	C <- emerki2 * (cos(rlat))^2
+	A <- ( - ( - lon - ( - lon0)) * pi)/180 * cos(rlat)
+	M0 <- 0
+	M <- a * ((1 - e^2/4 - (3 * e^4)/64 - (5 * e^6)/256) * rlat - ((3 * e^2
+		)/8 + (3 * e^4)/32 + (45 * e^6)/256) * sin(2 * rlat) + ((15 * e^
+		4)/256 + (45 * e^6)/1024) * sin(4 * rlat) - ((35 * e^6)/3072) * 
+		sin(6 * rlat))
+	y <- k0 * N * ((A + ((1 - TT + C) * A^3)/6 + ((5 - 18 * TT + TT^2 + 72 * 
+		C - 58 * emerki2) * A^5)/120)) + 500000
+	x <- k0 * (M - M0 + N * tan(rlat) * (A^2/2 + ((5 - TT + 9 * C + 4 * C^2
+		) * A^4)/24 + ((61 - 58 * TT + TT^2 + 600 * C - 330 * emerki2) * 
+		A^6)/720))
+	k <- k0 * (1 + ((1 + C) * A^2)/2 + ((5 - 4 * TT + 42 * C + 13 * C^2 - 
+		28 * emerki2) * A^2)/24 + ((61 - 148 * TT + 16 * TT^2) * A^6)/
+		720)
+	return(list(lat = lat, lon = lon, x = x, y = y, projection = "utm", 
+		lon0 = lon0))
+}
+"variofit"<-
+function(vagram, model = 1, option = 2, interactivt = F, sill = 0)
+{
+	if(model == 1 && !interactivt && option < 5) {
+		if(sill == 0 && length(vagram$variance) > 0)
+			vagram$variance <- sill
+		vgr <- fitspher.aut.1(vagram, option, sill)
+		if(vgr$error == 1)
+			return()
+		return(list(rang1 = vgr$rang1, sill = vgr$sill, nugget = vgr$
+			nugget, dist = vagram$dist, vario = vagram$vario, 
+			number = vagram$number))
+	}
+	if(interactivt) {
+		k <- 1
+		ld <- floor(length(vagram$dist)/1.2)
+		sill <- rang1 <- nugget <- rep(0, 10)
+		ans <- "y"
+		col <- 10
+		plvar(vagram, fit = F)	
+	#		cat(" What type of model : , Gaussian, spherical ")
+		while(ans == "y" || ans == "Y") {
+			cat(" Give sill, range and nugget  in this order : \n")
+			x <- locator(n = 3)
+			sill[k] <- x$y[1]
+			rang1[k] <- x$x[2]
+			nugget[k] <- x$y[3]
+			txt0 <- paste(" k = ", as.character(k))
+			txt1 <- paste(" sill =", as.character(round(sill[k], 
+				digits = 2)))
+			txt2 <- paste("range = ", as.character(round(rang1[k], 
+				digits = 2)))
+			txt3 <- paste("nugget = ", as.character(round(nugget[k],
+				digits = 2)))
+			print(txt1)
+			print(txt2)
+			print(txt3)
+			lines(vagram$dist, spherical(rang1[k], sill[k], nugget[
+				k], vagram$dist), col = col)
+			text(vagram$dist[ld], sill[k], as.character(k), col = 
+				col)
+			col <- col + 10
+			cat(" \n Try again y/n  : ")
+			ans <- readline()
+			k <- k + 1
+			if(k == 10)
+				break()
+		}
+		nm <- 0
+		cat("Give the number of the best model, default the last one:")
+		nm <- scan(n = 1)
+		if(length(nm) == 0) nm <- k - 1	# default.  
+		rang1 <- rang1[nm]
+		sill <- sill[nm]
+		nugget <- nugget[nm]
+	}
+	return(list(rang1 = rang1, sill = sill, nugget = nugget, dist = vagram$
+		dist, vario = vagram$vario, number = vagram$number))
+}
+"variogram"<-
+function(lat, lon = 0, z, nbins = 100, maxdist = 0, Hawk = T, throwout = F, 
+	scale = "km", evennumber = T, zzp = F, minnumber = 0, col.names = c(
+	"lat", "lon"))
+{
+	if(is.data.frame(lat)) {
+		lon <- lat[[col.names[2]]]
+		lat <- lat[[col.names[1]]]
+	}
+	eps <- 9.9999999999999995e-07
+	rad <- 6378.3879999999999	# Radius of earth in km.
+	if(col.names[1] == "lat" && col.names[2] ==  "lon") {
+	  xy <- F
+	  if(length(lon) < 2) {
+	    lon <- lat$lon
+	    lat <- lat$lat
+	  }
+#list  
+	  if(scale == "Miles") rad <- rad/1.8520000000000001	
+					# distances in miles.  
+	  lon <- (lon * pi)/180	# change from degrees to radians
+	  lat <- (lat * pi)/180
+	}
+	else xy <- T
+	if(throwout) {
+# throw out zero points.  
+		lat <- lat[abs(z) > eps]
+		lon <- lon[abs(z) > eps]
+		z1 <- z[abs(z) > eps]
+		z <- z1
+	}
+	variance <- var(z)
+	count <- length(lon)	# measurements
+	if(maxdist == 0) {
+		rlat <- range(lat)
+		rlon <- range(lon)
+		if(xy)
+			maxdist <- pdistx(rlat[2], rlon[2], rlat[1], rlon[1]) * 
+				0.69999999999999996
+		else maxdist <- pdist(rlat[2], rlon[2], rlat[1], rlon[1]) * 
+				0.69999999999999996
+		if(scale == "Miles")
+			maxdist <- maxdist/1.8520000000000001
+	}
+	varioa <- dista <- numbera <- rep(0, nbins)
+	if(evennumber)
+		nbins <- nbins * 10
+	ddist <- maxdist/nbins
+	dist <- vario <- number <- rep(0, nbins)
+	dist <- .C("variogram",
+		as.double(lat),
+		as.double(lon),
+		as.double(z),
+		as.double(ddist),
+		as.integer(number),
+		as.double(dist),
+		as.double(vario),
+		as.integer(count),
+		as.integer(nbins),
+		as.integer(Hawk),
+		as.integer(evennumber),
+		as.double(varioa),
+		as.double(dista),
+		as.integer(numbera),
+		as.integer(zzp),
+		as.integer(xy))
+	nbins <- dist[[9]]
+	vario <- dist[[7]]
+	xh <- dist[[6]]
+	number <- dist[[5]]
+	if(evennumber) {
+		vario <- vario[1:nbins]
+		xh <- xh[1:nbins]
+		number <- number[1:nbins]
+	}
+	dist <- xh
+	ind <- c(1:length(number))
+	ind <- ind[number < minnumber + 1]
+	if(length(ind) == 0)
+		return(list(vario=vario, dist=dist, number=number, variance=variance))
+	else return(list(vario = vario[ - ind], dist = dist[ - ind], number = number[
+			 - ind], variance=variance))
+}
+
+
+"spherical" <- 
+function(rang1, sill, nugget, x)
+{
+        x <- x/rang1
+        return((((sill - nugget) * (1.5 * x - 0.5 * x^3) + nugget) * (1 - sign(
+                x - 1)))/2 + (sill * (1 + sign(x - 1)))/2)
+}
+
+
+
+geoaxis <- function(side,pos,dist,dlat=0.5,dlon=1,csi=0.12,inside=T,r=1,...) {
+  m <- par()$cex*csi
+  if(inside) m <- -m
+  if(side==2 || side==4) ratio <- diff(geopar$origin$lon)/geopar$gpar$pin[1]
+  else ratio <- diff(geopar$origin$lat)/geopar$gpar$pin[2]
+
+  if(side==2 || side==4) {
+    if(missing(pos)) {
+      pos1 <- (geopar$origin$lat[1]%/%dlat)*dlat-dlat
+      pos2 <- (geopar$origin$lat[2]%/%dlat)*dlat+dlat
+      pos <- seq(pos1,pos2,by=dlat)
+    }
+    pos <- pos[pos <= geopar$origin$lat[2] & pos >= geopar$origin$lat[1]]
+
+    if(missing(dist)) {
+      if((side==4 && inside) || (side==2 && !inside)){
+	lat1 <- pos%%1
+	lat2 <- lat1*60%%1
+	if(any(lat2)) lm <- 8
+	else if(any(lat1)) lm <- 6
+	else lm <- 4
+	dist <- lm*m*0.6*r
+      }
+      else if(( side==2 && inside) || (side==4 && !inside)) dist <- m/2.5*r
+    }
+  }
+  else if(side==3 || side==1){ 
+    if(missing(dist)) dist <- m*r
+    if(missing(pos)) {
+      pos1 <- (geopar$origin$lon[1]%/%dlon)*dlon-dlon
+      pos2 <- (geopar$origin$lon[2]%/%dlon)*dlon+dlon
+      pos <- seq(pos1,pos2,by=dlon)
+    }
+    pos <- pos[pos <= geopar$origin$lon[2] & pos >= geopar$origin$lon[1]]
+  }
+  if(side==2 || side == 4) {
+    if(side==2) lonpos <- geopar$origin$lon[1]-ratio*dist
+    if(side==4) lonpos <- geopar$origin$lon[2]+ratio*dist
+    lat1 <- trunc(pos)
+    lat2 <- pos%%1
+    txt <- paste(lat1,"\260",sep="")
+    lat2 <- round(lat2*60,2)
+    i <- lat2 > 0
+    if(any(i))       txt[i] <- paste(txt[i],lat2[i],"'",sep="")
+    geotext(pos,rep(lonpos,length(lat1)),adj=0,txt,csi=csi,outside=T,...)
+    
+  }
+  else {
+    if(side==1) latpos <- geopar$origin$lat[1]-ratio*dist
+    if(side==3) latpos <- geopar$origin$lat[2]+ratio*dist
+    pos1 <- abs(pos)
+    lon1 <- trunc(pos1)
+    lon2 <- pos1%%1
+    txt <- paste(lon1,"\260",sep="")
+    lon2 <- round(lon2*60,2)
+    i <- lon2 > 0
+    if(any(i))       txt[i] <- paste(txt[i],lon2[i],"'",sep="")
+    geotext(rep(latpos,length(pos)),pos,txt,adj=0.5,csi=csi,outside=T,...)
+    
+  }
+}
+
+
+geozoom <- function() 
+{
+        if(as.character(geopar$command[length(geopar$command)]) != "123")
+                com <- c(geopar$command, zoom = 123)
+        else com <- geopar$command
+        eval(com)
+}
+
+geodezoom <- function()
+{
+        if(as.character(geopar$command[length(geopar$command)]) == "123")
+                com <- geopar$command[1:(length(geopar$command) - 1)]
+        else com <- geopar$command
+        eval(com)
+}
+
+geotows <- function(lat,lon,lat1,lon1,col.names=c("kastad.n.breidd","kastad.v.lengd","hift.n.breidd","hift.v.lengd"),...) {
+  if(is.data.frame(lat) && missing(lat1)){
+    lat1 <- lat[,col.names[3]]
+    lon1 <- lat[,col.names[4]]
+    lon <- lat[,col.names[2]]
+    lat <- lat[,col.names[1]]
+  }
+  if(is.data.frame(lat) && !missing(lat1)) {
+    lon <- lat$lon
+    lat <- lat$lat
+    lon1 <- lat1$lon
+    lat1 <- lat1$lat
+  }
+  lat <- matrix(lat,length(lat),3)
+  lat[,2] <- lat1
+  lat[,3] <- NA
+  lat <- c(t(lat))
+  lon <- matrix(lon,length(lon),3)
+  lon[,2] <- lon1
+  lon[,3] <- NA
+  lon <- c(t(lon))
+  geolines(lat,lon,...)
+  return(invisible())
+}
+
+COUNT <- function(x) return(length(x))
+
+apply.shrink.dataframe <- function(data, name.x, name.ind, FUNS = NULL, NA.rm = F, resp.name = NULL,
+	full.data.frame = F, Set = NA, name.res, ...)
+{
+	COUNT <- function(x)
+	return(length(x))
+	FUNS <- as.character(substitute(FUNS))
+	if(!is.na(match(FUNS[1], "c")))
+		FUNS <- FUNS[2:length(FUNS)]
+	i <- match(name.ind, names(data))
+	if(any(is.na(i))) {
+		i1 <- c(1.:length(i))
+		i1 <- i1[is.na(i)]
+		stop(paste("Column", name.ind[i1], "does not exist"))
+	}
+	i <- match(name.x, c(names(data), "NR"))
+	if(any(is.na(i))) {
+		i1 <- c(1.:length(i))
+		i1 <- i1[is.na(i)]
+		stop(paste("Column", name.x[i1], "does not exist"))
+	}
+	data$NR <- rep(1., nrow(data))
+	i <- match("", name.x)
+	# Eyða NA gildum.  
+	if(!is.na(i)) name.x[i] <- "NR"
+	i <- rep(1., nrow(data))
+	if(NA.rm) {
+		k <- match(name.x, names(data))
+		for(j in 1.:length(name.x)) {
+			if(is.numeric(data[, k[j]])) {
+				i <- i & !is.na(data[, k[j]])
+			}
+		}
+		data <- data[i,  ]
+	}
+	if(length(name.x) > 1 && length(FUNS) == 1)
+		FUNS <- rep(FUNS, length(name.x))
+	if(length(name.x)== 1 & length(FUNS) > 1) name.x <- rep(name.x,length(FUNS))
+        if(missing(name.res)) 
+	   name.res <- paste(name.x, FUNS, sep = ".")
+	name.res <- c(name.ind, name.res)
+	indices <- list()
+	for(i in 1:length(name.ind))
+		indices[[i]] <- data[, name.ind[i]]
+	if(full.data.frame) {
+		x <- tapply(rep(1, nrow(data)), indices, sum)
+		result <- expand.grid(dimnames(x))
+		x <- c(x)
+		j <- is.na(x)
+		for(i in 1:length(FUNS)) {
+			x <- c(tapply(data[, name.x[i]], indices, FUNS[i]))
+			if(any(j))
+				x[j] <- Set
+			result <- cbind(result, x)
+		}
+	}
+	else {
+		for(i in 1:length(FUNS)) {
+			x <- apply.shrink(data[, name.x[i]], indices, FUNS[
+				i])
+			if(i == 1)
+				result <- x
+			else result <- cbind(result, x[, ncol(x)])
+		}
+	}
+	names(result) <- name.res
+	return(result)
+}
+
+apply.shrink <- function(X, INDICES, FUN = NULL,names, ...)
+{
+	# GJ 9/94.
+	# 'apply.shrink' is identical to 'tapply' (see tapply).
+	# But it returns a data.frame were each 'index' represent a column
+	# and an extra column for the result of evaluating FUN for the partation
+	# on X given by the INDICES.
+	if(missing(FUN)) stop(
+			"No function to apply to data given (missing argument FUN)"
+			)
+	if(!is.list(INDICES))
+		INDICES <- # if just one index
+		list(INDICES)
+	len.data <- length(X)
+	all.indices <- rep(0., len.data)
+	for(i in rev(INDICES)) {
+		# combine all indices to one
+		if(length(i) != len.data) stop(
+				"Data and all indices must have same length")
+		i <- as.category(i)
+		all.indices <- all.indices * length(levels(i)) + # zero-origin
+		(as.vector(unclass(i)) - 1.)
+	}
+	# one-origin
+	all.indices <- all.indices + 1.
+	INDICES <- as.data.frame(INDICES)
+	INDICES <- INDICES[match(sort(unique(all.indices)), all.indices, 
+		nomatch = 0.),  ]
+	if(is.character(FUN))
+		FUN <- getFunction(FUN)
+	else if(mode(FUN) != "function") {
+		farg <- substitute(FUN)
+		if(mode(farg) == "name")
+			FUN <- getFunction(farg)
+		else stop(paste("\"", farg, "\" is not a function", sep = ""))
+	}
+	X <- split(X, all.indices)
+	X.apply <- lapply(X, FUN, ...)
+	numb.FUN.value <- length(X.apply[[1.]])
+	if(numb.FUN.value == 1.)
+		X.apply <- data.frame(X = unlist(X.apply))
+	else X.apply <- data.frame(matrix(unlist(X.apply), ncol = 
+			numb.FUN.value, byrow = T, dimnames = list(NULL, names(
+			X.apply[[1.]]))))
+	X.apply <- cbind(INDICES, X.apply)
+	if(!missing(names)) names(X.apply) <- names
+	return(X.apply)
+}
+
+Pivottable <- function(data, ...) {
+  if(is.data.frame(data)) 
+    return(apply.shrink.dataframe(data, ...))
+  else 
+    return(apply.shrink(data, ...) )
+}
+
+geointersect <-  function(data, border, in.or.out)
+{
+        tmp <- invProj(findcut(Proj(data), Proj(border), in.or.out))
+        return(data.frame(lat = tmp$lat, lon = tmp$lon))
+}
+
+expand <- geoexpand
+
+plotta.reitnr <- function(csirt, lwd = 0.)
+{
+        lat <- invProj(geopar$limx, geopar$limy, geopar$scale, geopar$b0, 
+                geopar$b1, geopar$l1, geopar$projection)
+        minlat <- floor(lat$lat[1.] * 2.)/2. - 0.5
+        minlon <- floor(lat$lon[1.]) - 1.
+        maxlon <- floor(lat$lon[2.]) + 1.
+        maxlat <- floor(lat$lat[2.] * 2.)/2. + 0.5
+        nlat <- (maxlat - minlat) * 2. + 1.
+        nlon <- (maxlon - minlon) + 1.
+        lon <- minlon + c(0.:nlon)
+        lat <- minlat + c(0.:nlat) * 0.5
+        lon <- lon + 0.5
+        lat <- lat + 0.25
+        nlat <- length(lat)
+        nlon <- length(lon)
+        lat <- c(matrix(lat, nlat, nlon))
+        lon <- c(t(matrix(lon, nlon, nlat)))
+        z <- d2r(lat, lon)
+        geotext(lat, lon, z, csi = csirt, lwd = lwd)
+}
+
+mapproject <- function(x, y, projection = "mercator", parameters = NULL, orientation = rep(
+	NA, 3.))
+{
+	r <- NULL
+	if(!is.null(x$x)) {
+		r <- x$range[1.:2.]
+		y <- x$y
+		x <- x$x
+	}
+	if(length(x) != length(y))
+		stop("lengths of x and y must match")
+	if(is.null(r))
+		r <- range(x[!is.na(x)])
+	default <- c(90., 0., mean(r))
+	new.projection <- !missing(projection) && projection != ""
+	if(new.projection) {
+		if(length(orientation) != 3.)
+			stop("orientation argument must have 3 elements")
+		orientation <- ifelse(is.na(orientation), c(90., 0., mean(
+			r)), orientation)
+	}
+	else {
+		if(!exists(".Last.projection", frame = 0.))
+			stop("no previous projection")
+		p <- get(".Last.projection", frame = 0.)
+		projection <- p$projection
+		if(missing(parameters))
+			parameters <- p$parameters
+		else if(length(parameters) != length(p$parameters))
+			stop(paste("expecting", length(p$parameters), 
+				"parameters for", projection, "projection"))
+		else parameters <- ifelse(is.na(parameters), p$parameters,
+				parameters)
+		if(missing(orientation))
+			orientation <- p$orientation
+		else if(length(orientation) != 3.)
+			stop("orientation argument must have 3 elements")
+		else orientation <- ifelse(is.na(orientation), p$orientation,
+				orientation)
+	}
+	error <- .C("setproj",
+		as.character(projection),
+		as.single(parameters),
+		as.integer(length(parameters)),
+		as.single(orientation),
+		error = character(1.))$error
+	if(error != "")
+		stop(error)
+	assign(".Last.projection", frame = 0., list(projection = projection,
+		parameters = parameters, orientation = orientation))
+	.C("doproj",
+		x = as.single(x),
+		y = as.single(y),
+		as.integer(length(x)),
+		range = single(4.),
+		error = integer(1.),
+		NAOK = T)[c("x", "y", "range", "error")]
+}
+map <- function(database = "state", regions = ".", exact = F, boundary = T, interior
+	 = T, fill = F, projection = "", parameters = NULL, orientation = rep(
+	NA, 3.), color = 1., add = F, plot = T, namesonly = F, xlim = c(-1e+30,
+	1e+30), ylim = c(-1e+30, 1e+30), resolution = 1., type = "l", ...)
+{
+	# parameter checks
+	if(!missing(resolution) && !plot) stop(
+			"must have plot=T if resolution is given")
+	if(!fill && !boundary && !interior)
+		stop("one of boundary and interior must be TRUE")
+	doproj <- !missing(projection) || !missing(parameters) || !missing(
+		orientation)
+	coordtype <- maptype(database)
+	if(coordtype == "unknown")
+		stop("missing database or unknown coordinate type")
+	# turn the region names into a list of polygon numbers
+	if(doproj && coordtype != "spherical") stop(paste(database, 
+			"database is not spherical; projections not allowed"))
+	gon <- mapname(database, regions, exact)
+	n <- length(gon)
+	# turn the polygon numbers into a list of polyline numbers
+	if(n == 0.) stop("nothing to draw: no recognized region names")
+	line <- mapgetg(database, gon, fill, xlim, ylim)
+	# turn the polyline numbers into x and y coordinates
+	if(length(line$number) == 0.) stop(
+			"nothing to draw: all regions out of bounds")
+	if(fill)
+		coord <- mapgetl(database, line$number, xlim, ylim)
+	else {
+		l <- abs(line$number)
+		if(boundary && interior)
+			l <- unique(l)
+		else if(boundary)
+			l <- l[!match(l, l[duplicated(l)], F)]
+		else l <- l[duplicated(l)]
+		coord <- mapgetl(database, l, xlim, ylim)
+		if(length(coord) == 0.)
+			stop("all data out of bounds")
+	}
+	# for filled regions, turn NA breaks at polylines into
+	# NA breaks at polygons, deleting polygons for which
+	# there is a corresponding NA color
+	if(doproj) {
+		coord <- mapproject(coord, pr = projection, pa = parameters,
+			or = orientation)
+		if(plot && coord$error)
+			if(all(is.na(coord$x)))
+				stop("projection failed for all data")
+			else warning("projection failed for some data")
+	}
+	# do the plotting, if requested
+	if(fill) {
+		gonsize <- line$size
+		color <- rep(color, length = length(gonsize))
+		keep <- !is.na(color)
+		coord[c("x", "y")] <- makepoly(coord, gonsize, keep)
+		color <- color[keep]
+	}
+	# return value is names or coords, but not both
+	if(plot) {
+		# for new plots, set up the coordinate system;
+		# if a projection was done, set the aspect ratio
+		# to 1, else set it so that a long-lat sqaure appears
+		# square in the middle of the plot
+		# do thinning
+		if(!add) {
+			xrange <- coord$range[1.:2.]
+			yrange <- coord$range[3.:4.]
+			aspect <- if(coordtype != "spherical" || doproj) c(
+					1., 1.) else c(cos((mean(yrange) * pi)/
+					180.), 1.)
+			d <- c(diff(xrange), diff(yrange)) * aspect
+			p <- par("pin")
+			d <- d/100. + ((p/min(p/d) - d)/2.)/aspect
+			par(usr = c(xrange, yrange) + rep(c(-1., 1.), 2.) *
+				rep(d, c(2., 2.)))
+			if(!par("new"))
+				frame()
+		}
+		# suppress warnings about clipping
+		if(resolution != 0. && type != "n") {
+			uin <- par("uin")
+			rsz <- par("rsz")
+			resolution <- resolution * min(rsz[1.]/uin[1.], rsz[
+				2.]/uin[2.])
+			coord[c("x", "y")] <- mapthin(coord, resolution)
+		}
+		if(type != "n") {
+			oerr <- par(err = -1.)
+			on.exit(par(oerr))
+			if(fill)
+				polygon(coord, col = color, ...)
+			else lines(coord, col = color, type = type, ...)
+		}
+	}
+	value <- if(namesonly) line$name else coord[c("x", "y", "range")]
+	if(plot)
+		invisible(value)
+	else value
+}
