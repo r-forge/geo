@@ -1,16 +1,20 @@
 \name{geolines}
 \alias{geolines}
+
 \title{
   Add lines to current plot initialized by geoplot.
 }
+
 \description{
 Add lines to a plot initialized by geoplot. Data is stored as lat, lon
 or x,y. Lists are assumed to have the components \code{$x} and \code{$y} if projection in geoplot was "none", else \code{$lat},\code{$lon}. The program transforms the data as specified in geoplot. Similar to the Splus function lies.
 }
+
 \usage{
 geolines(lat, lon = 0, col = 1, lwd = 0, lty = 0, nx = 1,
   outside = FALSE, return.data = FALSE)
 }
+
 \arguments{
 \item{lat}{
 Latitude of data. ( or x coordinate)
@@ -41,12 +45,14 @@ Logical, should lines outside the plot region be drawn? Default FALSE.
 Logical, should the data be returned? Default FALSE.
 }
 }
+
 \value{
 No values returned.
 }
 \section{Side Effects}{
 The projection is stored in geopar\$projection and parameters for the transform in \code{geopar$b0, geopar$b1 and geopar$l1}.
 }
+
 \seealso{
 \code{\link{geoplot}},
 \code{\link{geopolygon}},
@@ -57,6 +63,7 @@ The projection is stored in geopar\$projection and parameters for the transform 
 \code{\link{geogrid}},
 \code{\link{geocontour}}.
 }
+
 \examples{
        geolines(island)                      # plot iceland.
        geolines(island$lat, island$lon, col = 1) # same.
@@ -77,5 +84,5 @@ The projection is stored in geopar\$projection and parameters for the transform 
 #       geolines(janmayen, col = 40)
        # Plot some more countries using geolines.
 }
-% docclass is function
-% Converted by Sd2Rd version 43268.
+
+\keyword{aplot}

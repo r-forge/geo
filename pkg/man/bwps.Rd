@@ -47,6 +47,5 @@ geopolygon(island,col=0)#col 0 is now white
 geolines(island) # was transparent earlier
 dev.off() }
 }
-\keyword{<!--Put one or more s-keyword tags here-->}
-% docclass is function
-% Converted by Sd2Rd version 43268.
+
+\keyword{devices}
