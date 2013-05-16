@@ -4,7 +4,7 @@ Date: 2013-04-18
 Title: Draw and Annotate Maps, Especially of Stuff in the North Atlantic
 Author: Hoskuldur Bjornsson, with contributions from Arni Magnusson, Sigurdur Thor Jonsson, Bjarki Thor Elvarsson and probably many others
 Maintainer: Sigurdur Thor Jonsson <sigurdur@hafro.is>
-Depends: maps, mapdata, R (>= 2.10.0)
+Depends: maps, mapdata, splines, R (>= 2.10.0)
 LazyData: yes
 Description: Used by Hafro staff to draw maps showing the distribution of
   fishing intensity and catches, and of survey data for Icelandic fish stocks. 
