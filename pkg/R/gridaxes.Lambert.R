@@ -1,5 +1,5 @@
 gridaxes.Lambert <-
-function(limx, limy, scale, b0, grid, col, reitur, smareitur, axratio,
+function(limx, limy, scale, b0, xyratio, grid, col, reitur, smareitur, axratio,
 	axlabels, b1, l1, projection, dlat, dlon, col1 = 1)
 {
 	lx <- c(limx[1], limx[1], limx[2], mean(limx))
@@ -8,6 +8,7 @@ function(limx, limy, scale, b0, grid, col, reitur, smareitur, axratio,
 	o <- invProj(limx, limy, scale, b0, b1, l1, projection)
 	lines(c(o$x[1], o$x[2], o$x[2], o$x[1], o$x[1]), c(o$y[1], o$y[1],
 		o$y[2], o$y[2], o$y[1]))
+	r1 <- (limy[2] - limy[1])/(limx[2] - limx[1])
 	# ratio
 	if(dlat == 0 && dlon == 0) {
 		if((o$lon[2] - o$lon[1]) > 1)
