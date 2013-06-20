@@ -33,7 +33,7 @@ Needs further elaboration.
 }
 
 \seealso{
-Calls \code{\link{geotext}}, called by \code{\link{init}}, commented out of \code{gridaxes.Lambert}.
+Calls \code{\link{geotext}}, called by \code{\link{init}}.
 }
 
 \keyword{aplot}

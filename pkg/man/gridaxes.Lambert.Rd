@@ -13,21 +13,21 @@ gridaxes.Lambert(limx, limy, scale, b0, xyratio, grid, col, reitur, smareitur, a
 
 \arguments{
   \item{limx}{Longitude limits}
-  \item{limy}{Latiude limits}
+  \item{limy}{Latitude limits}
   \item{scale}{Scale to supply to \code{Proj, invProj}}
   \item{b0}{Base latitude for the Lambert projection.  Default value is 65 (typical for Iceland)}
   \item{xyratio}{Unused argument (?)}
-  \item{grid}{If grid is TRUE meridians and paralells are plotted, else not. Default TRUE}
+  \item{grid}{If grid is TRUE meridians and parallels are plotted, else not. Default TRUE}
   \item{col}{Color of gridlines}
   \item{reitur}{Should the grid show statistical rectangles?}
-  \item{smareitur}{Should the grid show sub--statistical rectangles?}
+  \item{smareitur}{Should the grid show statistical sub--rectangles?}
   \item{axratio}{Parameter usually not changed by the user (?)}
   \item{axlabels}{If FALSE no numbers are plotted on the axes. Default TRUE}
   \item{b1}{Second latitude to define Lambert projection}
   \item{l1}{The longitude defining the Lambert projection, default is the \code{l1} defined in geopar}
   \item{projection}{Projection (but is the function meaningful for other than Lambert?)}
   \item{dlat}{Latitude axis increment between labels}
-  \item{dlon}{Latongitude axis increment between labels}
+  \item{dlon}{Longitude axis increment between labels}
   \item{col1}{Color of axes and labels, default 1 (but might be \code{col}}
 }
 
@@ -36,7 +36,7 @@ No value, useful because of its side effect of adding axes to a Lambert geo--plo
 }
 
 \note{
-May need further elaboration or simplification (referring to the general geoplot help). Coordinate with the geoaxes helpfile (supply as one??).
+May need further elaboration or simplification (referring to the general geoplot help). Coordinate with the geoaxes and gridaxes helpfiles (supply as one??).
 }
 
 \seealso{

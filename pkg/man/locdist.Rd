@@ -1,51 +1,31 @@
 \name{locdist}
 \alias{locdist}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{ ~~function to do ... ~~ }
+
+\title{Distance between two locations}
+
 \description{
-  ~~ A concise (1-5 lines) description of what the function does. ~~
+Distance between two locations set out by clicking on a geo--plot.
 }
+
 \usage{
 locdist(scale = "nmi", type = "p")
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
-  \item{scale}{ ~~Describe \code{scale} here~~ }
-  \item{type}{ ~~Describe \code{type} here~~ }
+  \item{scale}{Unit of returned distance, default "nmi" for nautical miles, all other values return kilometers}
+  \item{type}{Display points "p" or lines "l" between clicks, "n" for nothing}
 }
-\details{
-  ~~ If necessary, more details than the description above ~~
-}
+
 \value{
-  ~Describe the value returned
-  If it is a LIST, use
-  \item{comp1 }{Description of 'comp1'}
-  \item{comp2 }{Description of 'comp2'}
-  ...
+Returns distance between two point clicks on a geoplot.
 }
-\references{ ~put references to the literature/web site here ~ }
-\author{ ~~who you are~~ }
-\note{ ~~further notes~~ 
 
- ~Make other sections like Warning with section{Warning }{....} ~
+\note{
+Rather limited functionality, could be built further?
 }
-\seealso{ ~~objects to See Also as \code{\link{help}}, ~~~ }
-\examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
 
-## The function is currently defined as
-function(scale = "nmi", type = "p")
-{
-        lat <- geolocator(n = 2, type = type)
-        x <- arcdist(lat$lat[1], lat$lon[1], lat$lat[2], lat$lon[2])
-        if(scale == "km")
-                x <- x * 1.852
-        return(x)
-  }
+\seealso{
+Calls \code{\link{arcdist}} and \code{\link{geolocator}}.
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+
+\keyword{iplot}

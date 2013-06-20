@@ -1,24 +1,28 @@
 \name{Elimcomp}
 \alias{Elimcomp}
 
-\title{Parameters manipulation.}
+\title{Parameters manipulation ?}
 \description{
-Parameters manipulation.
+Parameters manipulation?
 }
 \usage{
 Elimcomp(parlist)
 }
 
 \arguments{
-  \item{parlist}{List of parameters}
+  \item{parlist}{List of parameters ?}
 }
 
 \value{
-Manipulated parameterlist
+Manipulated (shortened ?) parameterlist
 }
 
 \note{
-Needs elaboration, this function is called by \code{\link{geoplot}}, \code{\link{init}} and \code{\link{selectedpar}}.
+Needs elaboration, \code{selectedpar} warps around this function, where parameter names in \code{nonsetpar} come from is a mystery.
 }
 
-\keyword{manip}
+\seealso{
+Called by \code{\link{geoplot}}, \code{\link{init}} and \code{\link{selectedpar}}.
+}
+
+\keyword{device}
