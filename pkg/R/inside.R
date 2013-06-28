@@ -38,8 +38,6 @@ function(lat, lon = 0., reg, option = 1., projection = "Mercator")
 	else border <- adapt(reg$lat, reg$lon)
 	inni <- rep(0., length(lat))
 	a <- a1 <- rep(0., length(reg$lat))
-	if(!is.loaded(symbol.C("marghc1")))
-		dyn.load(paste(DYN.HOME, "margh.new.o", sep = ""))
 	inni <- .C("marghc1", PACKAGE = "geo", 
 		as.single(lon),
 		as.single(lat),

@@ -145,7 +145,7 @@ function(lat, lon, z, circles, squares, rectangles, hbars, vbars, perbars,
 	}
 	if((rectangles[1] != 0 && !fill.circles) | (rectangles[2] != 0)) {
 		# plot rectangles
-		th <- atan(rectangles[2], rectangles[1])
+		th <- atan2(rectangles[2], rectangles[1])
 		th <- c(th, 2 * (pi/2 - th) + th)
 		theta <- c(th,  - th)
 		theta <- c(theta, NA)
