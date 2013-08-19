@@ -23,7 +23,7 @@
   r2d(r)
   sr2d(sr)
   mr2d(mr, dlat = 5, dlon = 10)
-  dr2d(dr, dlat = 1, dlon = 2)
+  dr2d(dr, dlat = 1, dlon = 2, startLat = 50)
 
 }
 
@@ -50,6 +50,9 @@
 \item{dlon}{
   As \code{dlat} except now width in longitude.
 }
+\item{startLat}{
+  Starting latitude for coding the rectangles.
+}
 
 }
 
@@ -69,7 +72,7 @@
   \code{dlon} minutes lat and lon,
 
   \item \code{dr2d} for rectangles with resolution given in \code{dlat} by
-  \code{dlon} degrees lat and lon,
+  \code{dlon} degrees lat and lon, code system starting at latitude \code{startLat}.
 
 }
 }

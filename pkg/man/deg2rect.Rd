@@ -22,7 +22,7 @@
   d2r(lat, lon = NULL)
   d2sr(lat, lon = NULL)
   d2mr(lat, lon = NULL, dlat = 5, dlon = 10)
-  d2dr(lat, lon = NULL, dlat = 1, dlon = 2)
+  d2dr(lat, lon = NULL, dlat = 1, dlon = 2, startLat = 50)
 
 }
 
@@ -38,6 +38,9 @@
   latitude and longitude for \code{d2dr} and \code{d2mr} respectively.
 }
 
+\item{startLat}{
+  Starting latitude used in coding the rectangles.
+}
 }
 
 \details{
