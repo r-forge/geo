@@ -5,6 +5,7 @@ function(lat, lon, z, circles, squares, rectangles, hbars, vbars, perbars,
 	"<", label.resolution = 0, col = 1, labels.only = F, open.circles,
 	lwd, border = F, bordercol = 0)
 {
+	geopar <- getOption("geopar")
 	cont <- levels
 	ncont <- nlevels
 	z <- z + 1e-07

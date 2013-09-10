@@ -8,7 +8,7 @@ function(lat = NULL, lon = 0, type = "p", pch = "*", xlim = c(0, 0),
   axlabels = TRUE, projection = "Mercator", b1 = b0, dlat = 0, dlon = 0, 
   jitter = 0, zoom, csi = NULL, xaxdist = 0.2, yaxdist = 0.3)
 {
-  
+  geopar <- getOption("geopar")
   if(!is.null(csirt)) cexrt <- cexrt*csirt/0.12
   if(!is.null(csi)) cex <- cex*csi/0.12
   if(!plotit) axlabels <- FALSE  # not plot axes if ther is no plot.  

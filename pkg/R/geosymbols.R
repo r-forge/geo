@@ -10,6 +10,7 @@ function(lat, lon = 0, z, levels = NULL, reflevels = NULL, labels.only = FALSE,
 	open.circles = FALSE, col.names = c("lat", "lon"), border = FALSE, bordercol = 
 	0)
 {
+	geopar <- getOption("geopar")
 	options(warn = -1)
 	if(!is.null(label.location))
 		if(is.list(label.location))

@@ -1,6 +1,7 @@
 paint.window <-
 function(listi, col = 0, border = T, poly = T, col.names = c("lon", "lat"))
 {
+	geopar <- getOption("geopar")
 	lat <- c(listi[[col.names[2]]][1], listi[[col.names[2]]][1], listi[[
 		col.names[2]]][2], listi[[col.names[2]]][2], listi[[col.names[
 		2]]][1])

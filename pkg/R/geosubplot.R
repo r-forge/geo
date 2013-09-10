@@ -1,6 +1,7 @@
 geosubplot <-
 function(fun, pos, size = c(2, 2), fill, fillcol, ...)
 {
+	geopar <- getOption("geopar")
 	if(length(pos$lat) == 1) {
 		# Calculate new limits.
 		plt.size <- par()$pin

@@ -1,6 +1,7 @@
 geolocator <-
 function(type = "p", n = 0)
 {
+	geopar <- getOption("geopar")
 	oldpar <- selectedpar()
 	par(geopar$gpar)
 	on.exit(par(oldpar))

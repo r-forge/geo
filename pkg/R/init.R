@@ -6,10 +6,6 @@ function(lat, lon = 0, type = "p", pch = "*", xlim = c(0, 0), ylim = c(0, 0),
 	reittext = F, axratio = 1, lwd = 0, axlabels = T, oldpar, projection = 
 	"Mercator", b1 = 65, dlat = 0, dlon = 0, command = 0, jitter = 0,xaxdist,yaxdist)
 {
-	if(exists("geopar"))
-		geopar <- geopar
-	else geopar <- list()
-  
 	if(projection == "none") {
 		if(length(lon) == 1) {
 			lon <- lat$y
@@ -52,9 +48,6 @@ function(lat, lon = 0, type = "p", pch = "*", xlim = c(0, 0), ylim = c(0, 0),
 	contlines[1] <- plt[1] + lcont[2] * (plt[2] - plt[1])
 	contlab[2] <- plt[1] + lcont[1] * (plt[2] - plt[1])
 	par(plt = contlines)
-	if(cont)
-		geopar$cont <- T
-	else geopar$cont <- F
 	# Find borders, adjust them if given.  
 	xyratio <- par()$pin[1]/par()$pin[2]
 	#*1.04777  ratio of axes.
@@ -205,8 +198,8 @@ function(lat, lon = 0, type = "p", pch = "*", xlim = c(0, 0), ylim = c(0, 0),
 		contlines, cont = cont, projection = projection, origin = o,
 		command = command)
         
-        # assign, pos=1 added in R version.
-  	assign("geopar", geopar, pos=1,immediate = F)
+        # store geopar list inside options(), where plot functions can access it
+        options(geopar=geopar)
         
         # Extra to get geoaxis instead of normal axis added in R version.
         

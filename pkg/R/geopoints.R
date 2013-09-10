@@ -2,6 +2,7 @@ geopoints <-
 function(lat, lon = 0, pch = "*",cex =0.7, col = 1, lwd = 0, outside = FALSE,
 	jitter = NULL, mkh = NULL,csi=NULL)
 {
+   geopar <- getOption("geopar")
    if(!is.null(csi)) cex <- cex*csi/0.12  # Compatibility with old program
 	if(length(lon) == 1 && length(lat) > 1) {
 		if(geopar$projection == "none") {

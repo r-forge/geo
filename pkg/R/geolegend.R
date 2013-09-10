@@ -1,6 +1,7 @@
 geolegend <-
 function(pos, legend, ...)
 {
+	geopar <- getOption("geopar")
 	oldpar <- selectedpar()
 	par(geopar$gpar)
 	on.exit(par(oldpar))

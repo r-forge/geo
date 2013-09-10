@@ -1,6 +1,7 @@
 adjust.grd <-
 function(ply, rat = 0.025)
 {
+	geopar <- getOption("geopar")
 	gx <- geopar$limx
 	gy <- geopar$limy
 	bx1 <- list(x = c(gx[1], gx[2], gx[2], gx[1], gx[1]), y = c(gy[1],

@@ -1,6 +1,7 @@
 extract <-
 function(grd, z, maxn = 10000, limits = NULL, col.names = c("lon", "lat"))
 {
+	geopar <- getOption("geopar")
 	if(is.null(limits)) {
 		if(col.names[1] == "lon" && col.names[2] == "lat") {
 			if(geopar$projection == "Lambert") {

@@ -1,7 +1,6 @@
 labels_line <-
 function(cont, digits, colors, lty, lwd, xlim = c(0, 1), ylim = c(0, 1), linew = F)
 {
-	
 	xlim <- sort(xlim)
 	ylim <- sort(ylim)
 	ncont <- length(cont)

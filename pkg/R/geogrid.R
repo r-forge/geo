@@ -2,6 +2,7 @@ geogrid <-
 function (lat, lon = 0, col = 1, type = "l", lwd = 0, lty = 0, 
     pch = "+", nx = 5) 
 {
+    geopar <- getOption("geopar")
     oldpar <- selectedpar()
     if (length(lon) == 1) {
         if (geopar$projection == "none") {

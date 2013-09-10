@@ -1,7 +1,9 @@
 Proj <-
-function(a, b = 0, scale = geopar$scale, b0 = geopar$b0, b1 = geopar$b1, l1 = 
-	geopar$l1, projection = geopar$projection, col.names = c("lon", "lat")
-	)
+function(a, b = 0, scale = getOption("geopar")$scale,
+         b0 = getOption("geopar")$b0, b1 = getOption("geopar")$b1,
+         l1 = getOption("geopar")$l1,
+         projection = getOption("geopar")$projection,
+         col.names = c("lon", "lat"))
 {
 	if(col.names[1] != "lon" || col.names[2] != "lat")
 		projection <- "none"

@@ -7,8 +7,9 @@
 Performs Mercator, Lambert or no projection of data, as a default it will perform the projection used in current plot.
 }
 \usage{
-Proj(a, b=0, scale=geopar$scale, b0=geopar$b0, b1=geopar$b1,l1=geopar$l1,
-     projection=geopar$projection, col.names=c("lon", "lat"))
+Proj(a, b=0, scale=getOption("geopar")$scale, b0=getOption("geopar")$b0,
+     b1=getOption("geopar")$b1, l1=getOption("geopar")$l1,
+     projection=getOption("geopar")$projection, col.names=c("lon", "lat"))
 }
 \arguments{
 \item{a,b}{

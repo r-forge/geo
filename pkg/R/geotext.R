@@ -2,6 +2,7 @@ geotext <-
 function(lat, lon = 0, z, cex = 0.7, adj = 0.5, col = 1, digits = 0, pretext
 	 = "", lwd = 0, aftertext = "", outside = F, angle = 0, jitter = NULL,csi=NULL)
 {
+    geopar <- getOption("geopar")
     if(!is.null(csi)) cex <- cex*csi/0.12 # For compatibility
 	if(length(lon) == 1 && length(lat) > 1) {
 		if(geopar$projection == "none") {

@@ -1,6 +1,7 @@
 giveborder <-
 function(nholes = 0)
 {
+	geopar <- getOption("geopar")
 	cat(" Give the border of estimating area (not holes) : \n")
 	xb <- locator(type = "l")
 	lines(c(xb$x[length(xb$x)], xb$x[1]), c(xb$y[length(xb$x)], xb$y[1]))

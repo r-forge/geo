@@ -7,6 +7,7 @@ function(grd, z, levels = NULL, nlevels = 0, cex = 0.7, digits = 1, col = NULL,
 	boxcol = 0, first.color.trans = TRUE, mai = c(0, 1, 0, 1), leftrat = 0.1,
 	labbox = TRUE, csi = NULL)
 {
+     geopar <- getOption("geopar")
      if(!is.null(csi)) cex <- cex*csi/0.12 # Compatibility
 	if(!is.null(attributes(grd)$grid)) { 
 		z <- grd

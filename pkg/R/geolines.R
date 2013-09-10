@@ -2,6 +2,7 @@ geolines <-
 function(lat, lon = 0, col = 1, lwd = 0, lty = 0, nx = 1, outside = FALSE, 
 	return.data = FALSE)
 {
+	geopar <- getOption("geopar")
 	if(length(lon) == 1) {
 		# For polygon structures.
 		if(!is.null(lat$length)) n <- lat$length else n <- max(c(length(

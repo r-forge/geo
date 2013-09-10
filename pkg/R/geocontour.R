@@ -5,6 +5,7 @@ function (grd, z, nlevels = 10, levels = NULL, labcex = 1, triangles = TRUE,
     lwd = 1, lty = 1, labels.only = FALSE, digits = 1, paint = FALSE, 
     set = NA, col.names = c("lon", "lat"), csi = NULL, drawlabels = FALSE)
 {
+    geopar <- getOption("geopar")
     if (!is.null(csi)) 
         cex <- cex * csi/0.12
     if (!is.null(attributes(grd)$grid)) {

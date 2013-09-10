@@ -3,6 +3,7 @@ function(regions = ".", exact = FALSE, boundary = TRUE, fill = FALSE, color = 1,
 	lty = 1, plot = TRUE, type = "l", pch = ".", database = "world", 
 	return.data = FALSE, outside=FALSE, allowed.size = 80000)
 {
+  geopar <- getOption("geopar")
   resolution <- 0 #1
   interior <- FALSE
   r <- 1.2

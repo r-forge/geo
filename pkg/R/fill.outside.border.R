@@ -1,6 +1,7 @@
 fill.outside.border <-
 function(col = 0, rat = 1)
 {
+	geopar <- getOption("geopar")
 	gx <- geopar$limx
 	gy <- geopar$limy
 	gx <- mean(gx) + rat * (gx - mean(gx))

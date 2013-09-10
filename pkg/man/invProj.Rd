@@ -7,8 +7,10 @@
 accepts data in spherical coordinates with center lattitude 0 and longitude 0 and performs an inverse Mercator, Lambert or no tranformation.
 }
 \usage{
-invProj(x, y=NULL, scale=geopar$scale, b0=geopar$b0, b1=geopar$b1,
-         l1=geopar$l1, projection=geopar$projection)
+invProj(x, y=NULL, scale=getOption("geopar")$scale,
+        b0=getOption("geopar")$b0, b1=getOption("geopar")$b1,
+        l1=getOption("geopar")$l1,
+        projection=getOption("geopar")$projection)
 }
 \arguments{
 \item{x,y}{

@@ -2,6 +2,7 @@ geoidentify <-
 function(lat, lon = NULL, labels = 1, n = 0, plot = TRUE, atpen = TRUE, offset = 0.5,
 	col = 1, cex = 1)
 {
+	geopar <- getOption("geopar")
 	oldpar <- selectedpar()
 	par(geopar$gpar)
 	par(cex = cex)

@@ -1,6 +1,7 @@
 shadeborder <-
 function(reg, lat, lon, col = 0, col.names = c("lon", "lat"))
 {
+	geopar <- getOption("geopar")
 	ind <- c(1:length(reg[[col.names[2]]]))
 	ind1 <- ind[is.na(reg[[col.names[2]]])]
 	if(length(ind1) == 0 || ind1[1] != 1) {

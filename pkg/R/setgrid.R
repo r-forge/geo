@@ -5,6 +5,7 @@ function(lat, lon = 0, type = "p", pch = "*", xlim = c(0, 0), ylim = c(0, 0),
 	 = "km", find = F, new = F, grid = T, projection = "Mercator", n = 2500,
 	b1 = b0, nholes = 0)
 {
+	geopar <- getOption("geopar")
 	if(length(lon) == 1) {
 		if(projection == "none") {
 			lon <- lat$y

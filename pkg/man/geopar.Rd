@@ -1,12 +1,20 @@
 \name{geopar}
 \alias{geopar}
 \title{
-  Parameters for the geo S-plus programs.
+  Parameters for the geo plot functions.
 }
 \description{
-Whenever geoplot is called a new set of parameters is made and the old
-deleted. When using geosubplot it is important to save these
-parameters before the subplot is plotted if one wants to make changes to the large plot afterwards.
+The \pkg{geo} functions rely on the parameters in
+\code{options("geopar")} for plotting. Every time \code{geoplot} is
+called a new set of geopar is made and the current erased. If you want
+to change the parameters in the background plot after you call
+geosubplot you have to save the current geopar before calling
+geosubplot. When reassigning geopar, the command
+\code{options(geopar=list(...))} must be used.
+
+When using \code{geosubplot} it is important to save these
+parameters before the subplot is plotted if one wants to make changes to
+the large plot afterwards.
 }
 \examples{
 \dontrun{geoplot(type="l")

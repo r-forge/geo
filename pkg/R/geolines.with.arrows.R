@@ -1,6 +1,7 @@
 geolines.with.arrows <-
 function(data, start = T, size = 0.2, ...)
 {
+	geopar <- getOption("geopar")
 	if(!is.data.frame(data))
 		data <- data.frame(data)
 	n <- nrow(data)

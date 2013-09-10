@@ -1,6 +1,7 @@
 gridpoints <-
 function(border, dx, grpkt, nx, n)
 {
+	geopar <- getOption("geopar")
 	if(length(grpkt) == 1) {
 		# gridpoints not given.  
 		if(geopar$projection == "none") {

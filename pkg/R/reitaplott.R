@@ -4,6 +4,7 @@ function(reitur, smareitur = NULL, z, levels = NULL, colors = NULL, density = 1,
 	0, digits = 0, cex = 0, label.location = 0, labels.only = FALSE, col = 1,
 	outside = TRUE, mincol = NULL)
 {
+	geopar <- getOption("geopar")
 	oldpar <- selectedpar()
 	par(geopar$gpar)
 	on.exit(par(oldpar))

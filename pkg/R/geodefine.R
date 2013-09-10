@@ -1,6 +1,7 @@
 geodefine <-
 function(nholes = 0)
 {
+	geopar <- getOption("geopar")
 	oldpar <- selectedpar()
 	par(geopar$gpar)
 	on.exit(par(oldpar))

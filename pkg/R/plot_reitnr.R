@@ -1,6 +1,7 @@
 plot_reitnr <-
 function(cexrt, lwd = 0)
 {
+	geopar <- getOption("geopar")
 	lat <- invProj(geopar$limx, geopar$limy, geopar$scale, geopar$b0, 
 		geopar$b1, geopar$l1, geopar$projection)
 	minlat <- floor(lat$lat[1] * 2)/2 - 0.5

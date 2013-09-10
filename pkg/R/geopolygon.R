@@ -3,6 +3,7 @@ function(lat, lon = NULL, col = "white", border = FALSE, exterior = FALSE, nx = 
 	outside = FALSE, plot = TRUE, save = FALSE, rat = 0.005, density = -1, Projection
 	 = NULL, angle = 45, allowed.size = 80000, option = 1)
 {
+	geopar <- getOption("geopar")
 	if(is.null(Projection))
 		Projection <- geopar$projection
 	# 	for structures too large for hardware

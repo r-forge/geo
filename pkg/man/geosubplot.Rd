@@ -45,13 +45,17 @@ The program accepts any parameter that the subplot program
  A plot added to the current plot.
 }
 \details{
-The geo S-plus programs rely on the parameters  in  geopar
-       for  plotting.   Every time geoplot is called a new set of
-       geopar is made and the current  erased.  If  you  want  to
-       change  the  parameters  in  the background plot after you
-       call geosubplot you have to save the current geopar before
-       calling geosubplot. When reassigning geopar, the command assign()
-must be use, it does not suffice to use <- See examples.
+The \pkg{geo} functions rely on the parameters in
+\code{options("geopar")} for plotting. Every time \code{geoplot} is
+called a new set of geopar is made and the current erased. If you want
+to change the parameters in the background plot after you call
+geosubplot you have to save the current geopar before calling
+geosubplot. When reassigning geopar, the command
+\code{options(geopar=list(...))} must be used.
+
+When using \code{geosubplot} it is important to save these
+parameters before the subplot is plotted if one wants to make changes to
+the large plot afterwards.
 }
 \seealso{
 \code{\link{subplot}},
@@ -79,12 +83,12 @@ must be use, it does not suffice to use <- See examples.
       large.geopar <- geopar             # Parameters saved.
       pos <- list(lat=c(63,64),lon=c(-27,-24))
       geosubplot(geoplot(island, new=T,grid=F,type="l"),pos)
-  
+
       geotext(65,-18,"subplot")           # Text on subplot.
       small.geopar <- geopar # Parameters for subplot saved.
-      
+
       # geopar <- large.geopar       # Make big plot active.
-      # Unless you are working directly with the .Data dir of the 
+      # Unless you are working directly with the .Data dir of the
       # geolibrary this assignment will not work, must use:
       assign("geopar",large.geopar,where=0)
 
@@ -96,7 +100,7 @@ must be use, it does not suffice to use <- See examples.
       geosubplot(geoplot(island,new=T,grid=F,type="l"),pos,fill=T)
       # Another subplot drawn.
       geotext(65,-18,"subplot # 2")
-       
+
       small.geopar.2 <- geopar # parameters for subplot # 2 saved.
       # geopar <- large.geopar # Big plot made active again
       # Same as above, instead use:

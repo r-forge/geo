@@ -1,5 +1,6 @@
 currentarrows <-
 function(data,maxsize=0.5,maxn,col="blue",lwd=2,arrowsize=0.2,center=T){
+  geopar <- getOption("geopar")
   res <- list()
   xsizerat <- geopar$gpar$pin[1]/diff(geopar$origin$lon)
   ysizerat <- geopar$gpar$pin[2]/diff(geopar$origin$lat)
