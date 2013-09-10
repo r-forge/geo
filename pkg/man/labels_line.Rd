@@ -8,7 +8,7 @@ Labels line ?.
 }
 
 \usage{
-labels_line(cont, digits, colors, lty, xlim = c(0, 1), ylim = c(0, 1), linew = F)
+labels_line(cont, digits, colors, lty, lwd, xlim = c(0, 1), ylim = c(0, 1), linew = F)
 }
 
 \arguments{
@@ -16,6 +16,7 @@ labels_line(cont, digits, colors, lty, xlim = c(0, 1), ylim = c(0, 1), linew = F
   \item{digits}{Number of digits}
   \item{colors}{Colors}
   \item{lty}{Line types}
+  \item{lwd}{Line widths}
   \item{xlim, ylim}{Limit}
   \item{linew}{Linewidth for some reason not lwd?}
 }

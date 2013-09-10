@@ -364,14 +364,14 @@ function(lat, lon = 0, z, levels = NULL, reflevels = NULL, labels.only = FALSE,
 			par(geopar$gpar)
 			paint.window(label.location)
 			label.location <- Proj(label.location)
-			if(is.numeric(levels))
-				Pointlabel(levels[2:(length(levels) - 1)],
-					digits, label.location$x, 
-					label.location$y, minsym, 
-					label.resolution, marks, pch, col,
-					cex, chs)
-			else Charlabel(levels, label.location$x, label.location$
-					y, label, marks, pch, col, cex, chs)
+			## if(is.numeric(levels))
+			## 	Pointlabel(levels[2:(length(levels) - 1)],
+			## 		digits, label.location$x, 
+			## 		label.location$y, minsym, 
+			## 		label.resolution, marks, pch, col,
+			## 		cex, chs)
+			## else Charlabel(levels, label.location$x, label.location$
+			## 		y, label, marks, pch, col, cex, chs)
 		}
 	}
 	options(warn = 0)

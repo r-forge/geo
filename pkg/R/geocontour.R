@@ -130,7 +130,7 @@ function (grd, z, nlevels = 10, levels = NULL, labcex = 1, triangles = TRUE,
         if (length(levels) == 1) 
           lev <- contourLines(lon + 400, lat, z, nlevels = nlevels)
         else {
-          lev <- contourLines(lon + 400, lat, z, axes = FALSE, levels = levels)
+          lev <- contourLines(lon + 400, lat, z, levels = levels)
           for (i in 1:length(lev)) {
             geolines(lev[[i]]$y, lev[[i]]$x - 400, col = col)
           }
@@ -192,7 +192,7 @@ function (grd, z, nlevels = 10, levels = NULL, labcex = 1, triangles = TRUE,
       if (geopar$projection == "none") 
         paint.window.x(label.location, border = TRUE)
       else paint.window(label.location, border = TRUE)
-        labels_line(levels, digits, color, lty, xlim = label.location$x, 
+        labels_line(levels, digits, color, lty, lwd, xlim = label.location$x, 
                     ylim = label.location$y, linew)
     }
     if (geopar$cont && colors) {

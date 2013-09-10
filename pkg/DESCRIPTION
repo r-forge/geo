@@ -1,12 +1,13 @@
 Package: geo
-Version: 1.1-1
-Date: 2013-04-18
-Title: Draw and Annotate Maps, Especially of Stuff in the North Atlantic
-Author: Hoskuldur Bjornsson, with contributions from Arni Magnusson, Sigurdur Thor Jonsson, Bjarki Thor Elvarsson and probably many others
-Maintainer: Hoskuldur Bjornsson <hoski@hafro.is>
+Version: 1.2-0
+Date: 2013-09-10
+Title: Draw and Annotate Maps, Especially Charts of the North Atlantic
+Author: Hoskuldur Bjornsson, Sigurdur Thor Jonsson, Arni Magnusson, and Bjarki
+  Thor Elvarsson
+Maintainer: Sigurdur Thor Jonsson <sigurdur@hafro.is>
 Depends: maps, mapdata, splines, R (>= 2.10.0)
 LazyData: yes
 Description: Used by Hafro staff to draw maps showing the distribution of
-  fishing intensity and catches, and of survey data for Icelandic fish stocks. 
+  fishing intensity and catches, and of survey data for Icelandic fish stocks.
   Potentially useful for others.
 License: GPL (>= 2)

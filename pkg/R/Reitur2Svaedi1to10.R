@@ -1,5 +1,5 @@
 "Reitur2Svaedi1to10"<-
-function(reitur, smareitur)
+function(reitur, smareitur, Totalreitir, Dypisreitir)
 {
         if(missing(smareitur))
                 smareitur <- rep(0, length(reitur))

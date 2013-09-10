@@ -165,7 +165,7 @@ function(reitur, smareitur = NULL, z, levels = NULL, colors = NULL, density = 1,
 		# use colors 
 		if(!labels.only) {
 			if(geopar$projection == "Lambert")
-				x <- fill.points(x, y, 10, option = 2)
+				x <- fill.points(x$x, x$y, 10, option = 2)
 			polygon(x$x, x$y, col = ind, border = border)
 			if(border == TRUE)
 				lines(x$x, x$y)

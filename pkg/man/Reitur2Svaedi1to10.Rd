@@ -8,7 +8,7 @@ Allocate statistical rectangles and subrectangles to Bormicon-areas 1--10.
 Routine for allocating rectangles to areas with some in-built decisions for rectangles on the borders of areas.
 }
 \usage{
-Reitur2Svaedi1to10(reitur, smareitur)
+Reitur2Svaedi1to10(reitur, smareitur, Totalreitir, Dypisreitir)
 }
 
 \arguments{
@@ -17,6 +17,13 @@ Rectangle in the Icelandic statistical rectangle system.
 }
   \item{smareitur}{
 Sub-rectangle in the Icelandic statistical rectangle system.
+}
+  \item{Totalreitir}{
+Projection between a list of all Icelandic rectangles to a list of
+Bormicon areas.
+}
+  \item{Dypisreitir}{
+Not documented.
 }
 }
 \value{
