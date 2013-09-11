@@ -2,7 +2,6 @@ Open.curve <-
 function(gogn, df = nrow(gogn)/2, n = 10)
 {
 	gogn$index <- c(1:nrow(gogn))
- 	assign("df", df,pos=1)#, frame = 1) # Changed for R ver, pos added.
         df <- round(df)
 	x <- glm(lat ~ ns(index, df = df), data = gogn)
 	y <- glm(lon ~ ns(index, df = df), data = gogn)
