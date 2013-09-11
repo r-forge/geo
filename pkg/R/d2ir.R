@@ -6,7 +6,7 @@ function(lat, lon = NULL, useI = FALSE)
     lat <- lat$lat
   }
   lat <- lat + 1e-06
-  lon <- lon - 1e-06
+  lon <- lon + 1e-06
   outside <- lat < 36 | lat >= 85.5 | lon <= -44 | lon > 68.5
   if(any(outside))
     warning("Positions outside of ICES statistical area")
