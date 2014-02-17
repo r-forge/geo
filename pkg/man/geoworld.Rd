@@ -9,9 +9,10 @@
        geoplot.  The countries can also be filled.  
 }
 \usage{
-geoworld(regions = ".", exact = FALSE, boundary = TRUE, fill = FALSE, color = 1, lwd = 1,
-         lty = 1, plot = TRUE, type = "l", pch = ".", database = "world",
-         return.data = FALSE, outside = FALSE, allowed.size = 80000)
+geoworld(regions = ".", exact = FALSE, boundary = TRUE, 
+  fill = FALSE, color = 1, lwd = 1, lty = 1, plot = TRUE, 
+  type = "l", pch = ".", database = "world", return.data = FALSE, 
+  outside = FALSE, allowed.size = 80000)
 }
 \arguments{
 \item{regions}{
@@ -95,16 +96,18 @@ the outlines of all countries who intersect  current  plot
 library(map) # world coastlines and programs 
 library(mapdata) # more detailed coastlines
 geoplot(xlim = c(20, 70), ylim = c(15, 34))
-geoworld(database = "worldHires", fill = TRUE, col = 30, allowed.size = 100000) #
+geoworld(database = "worldHires", fill = TRUE, col = 30, allowed.size = 1e5)
 
 geoplot(xlim = c(20, 70), ylim = c(15, 34), dlat = 10, dlon = 10)
 geoworld(database = "world", fill = TRUE, col = 30) #
 
-geoplot(xlim = c(-10, 70), ylim = c(71, 81), b0 = 80, dlat = 2, dlon = 10) # 0 must be high here else
+geoplot(xlim = c(-10, 70), ylim = c(71, 81), b0 = 80, 
+  dlat = 2, dlon = 10) # 0 must be high here else
 geoworld(database = "world", fill = TRUE, col = 30) #the plot fails.  
 
 # Lambert projection, 
-geoplot(xlim = c(-10, 70), ylim = c(71, 81), dlat = 2, dlon = 10, projection = "Lambert")
+geoplot(xlim = c(-10, 70), ylim = c(71, 81), 
+  dlat = 2, dlon = 10, projection = "Lambert")
 geoworld(database = "world", fill = TRUE, col = 30) 
 }}
 

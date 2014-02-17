@@ -10,7 +10,8 @@ names in the data frame describing the position.
 }
 
 \usage{
-geotows(lat, lon, lat1, lon1, col=1, col.names = c("kastad.n.breidd", "kastad.v.lengd", "hift.n.breidd", "hift.v.lengd"), ...)
+geotows(lat, lon, lat1, lon1, col = 1, col.names = c("kastad.n.breidd", 
+  "kastad.v.lengd", "hift.n.breidd", "hift.v.lengd"), ...)
 }
 
 \arguments{

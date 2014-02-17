@@ -264,12 +264,14 @@ par(mfrow = c(3, 2));par(mex = 0.01)
 bwps(file = "hadcatchutbr.ps", height = 6.8, width = 6.5, horizontal = FALSE)
 for(i in 1:6) {
  SMB.std.background(grid = FALSE, axlabels = FALSE)
- geocontour.fill(hadcatch[[i]], levels = lev, col = col, white = TRUE, working.space = 2e6)
+ geocontour.fill(hadcatch[[i]], levels = lev, col = col, 
+    white = TRUE, working.space = 2e6)
  gbplot(200)
  geotext(67.3, -27.6, txt[i], csi = 0.16, adj = 0)
  geopolygon(island, col = 0);geolines(island)
  tmp <- utbrteg[utbrteg$ar == txt[i], ] # select the year
- geosymbols(tmp, z = tmp$ysa.kg, circles = 0.2, sqrt = TRUE, lwd = 1)# amount of haddock
+ geosymbols(tmp, z = tmp$ysa.kg, circles = 0.2, 
+    sqrt = TRUE, lwd = 1)# amount of haddock
  geopoints(tmp, pch = 16, csi = 0.05)
 }
 dev.off()
@@ -287,28 +289,32 @@ geoplot(x, projection = "none", type = "n")
 library(map) # world coastlines and programs 
 library(mapdata) # more detailed coastlines
 geoplot(xlim = c(20, 70), ylim = c(15, 34))
-geoworld(database = "worldHires", fill = TRUE, col = 30, allowed.size = 30000) #
+geoworld(database = "worldHires", fill = TRUE, col = 30, allowed.size = 30000)
 
 geoplot(xlim = c(20, 70), ylim = c(15, 34), dlat = 10, dlon = 10)
 geoworld(database = "world", fill = TRUE, col = 30) #
 
-geoplot(xlim = c(-10, 70), ylim = c(71, 81), b0 = 80, dlat = 2, dlon = 10) # 0 must be high here else
+geoplot(xlim = c(-10, 70), ylim = c(71, 81), b0 = 80, 
+  dlat = 2, dlon = 10) # 0 must be high here else
 geoworld(database = "world", fill = TRUE, col = 30) #the plot fails.  
 
 # Lambert projection, 
-geoplot(xlim = c(-10, 70), ylim = c(71, 81), dlat = 2, dlon = 10, projection = "Lambert")
+geoplot(xlim = c(-10, 70), ylim = c(71, 81), 
+  dlat = 2, dlon = 10, projection = "Lambert")
 geoworld(database = "world", fill = TRUE, col = 30) 
 
 # Lambert projection, get the axis closer with the mgp command
 par(mgp = c(2, 0, 0))
-geoplot(xlim = c(-10, 70), ylim = c(71, 81), dlat = 2, dlon = 10, projection = "Lambert", cex = 1.1)
+geoplot(xlim = c(-10, 70), ylim = c(71, 81), 
+  dlat = 2, dlon = 10, projection = "Lambert", cex = 1.1)
 geoworld(database = "world", fill = TRUE, col = 30) 
 
 # Example with capelin data.  (lodna meanns capelin).  lodna.2 is a
 # data.frame with components lat,  lon and z.  
 geoplot(lodna.2, type = "l")
 geopoints(lodna.2)
- geosymbols(lodna.2, z = lodna.2$z, colplot = TRUE, parbars = 0.05, levels = vor.levels, label.location = labloc)
+geosymbols(lodna.2, z = lodna.2$z, colplot = TRUE, 
+  parbars = 0.05, levels = vor.levels, label.location = labloc)
 
 
 geoplot(lodna.2, type = "l")
@@ -324,7 +330,8 @@ tmp <- geoexpand(lodna.2.grd) # expand the grid
 # has defined ther area vor.area and data outside it are set  to NA.
 i <- geoinside(tmp, vor.area.new, option = 0) 
 zgr <- z.lodna.2;zgr[-i] <- NA
-geocontour.fill(lodna.2.grd, z = zgr, white = TRUE, label.location = labloc, levels = vor.levels)
+geocontour.fill(lodna.2.grd, z = zgr, white = TRUE, 
+  label.location = labloc, levels = vor.levels)
 geoplot(xlim = limits, type = "n", grid = FALSE, axlabels = TRUE, new = TRUE)
 #geolines(lodna.2, lwd = 1)
 gbplot(c(200, 500)) # Depth contours.  
@@ -336,7 +343,8 @@ gbplot(c(200, 500)) # Depth contours.
 #returning the data in different form and is included with the geo library
 
 geoplot(island, r = 1.2, type = "n", reitur = TRUE)
-x <- apply.shrink(data$torskur.stk, data$reitur, sum, names = c("reitur", "torskur.stk"))
+x <- apply.shrink(data$torskur.stk, data$reitur, sum, 
+  names = c("reitur", "torskur.stk"))
 x1 <- r2d(x$reitur)
 geotext(x1, z = paste(x$reitur, round(x$torskur.stk, 1), sep = "\n"))
 
@@ -365,23 +373,27 @@ for (ar in yy) {
     tmp1 <- tmp4[tmp4$year == ar & tmp4$month == man, ]
     SMB.std.background(axlabels = FALSE, country = "none", plotit = FALSE)
     if(nrow(tmp1) > 0) {
-      tmp2 <- apply.shrink(tmp1$catch, tmp1$square, sum, names = c("square", "catch"))
+      tmp2 <- apply.shrink(tmp1$catch, tmp1$square, sum, 
+        names = c("square", "catch"))
       tmp2 <- tmp2[order(-tmp2$catch), ]
 
       tmp3 <- data.frame(r2d(tmp2$square))
-      geosymbols(tmp3, z = tmp2$catch, fill.circles = TRUE, col = 60, levels =
-             lev, colors = my.colors, bordercol = 0, border = TRUE)
+      geosymbols(tmp3, z = tmp2$catch, fill.circles = TRUE, col = 60, 
+        levels = lev, colors = my.colors, bordercol = 0, border = TRUE)
       geopolygon(island, col = 30)
       geolines(eyjar, lwd = 3, col = 30)
       j <- tmp2$catch > 1
       if(any(j)) {
         tmp3 <- tmp3[j, ]
         tmp2 <- tmp2[j, ]
-        geotext(lat = tmp3$lat, lon = tmp3$lon, z = tmp2$catch, angle = 45, csi = 0.1)
+        geotext(lat = tmp3$lat, lon = tmp3$lon, z = tmp2$catch, 
+          angle = 45, csi = 0.1)
       }
-      geotext(lat = c(65.2), lon = (-18), z = paste(month.abb[man], round(sum(tmp2$catch, na.rm = TRUE)), sep = "\n"), csi = 0.2)
+      geotext(lat = c(65.2), lon = (-18), z = paste(month.abb[man], 
+        round(sum(tmp2$catch, na.rm = TRUE)), sep = "\n"), csi = 0.2)
     }
-    else {geotext(lat = c(65.2), lon = (-18), z = paste(month.abb[man], "0", sep = "\n"), csi = 0.2)}
+    else {geotext(lat = c(65.2), lon = (-18), 
+            z = paste(month.abb[man], "0", sep = "\n"), csi = 0.2)}
   }
   geotext(63, -10, ar, adj = 1, csi = 0.18)
   dev.off()

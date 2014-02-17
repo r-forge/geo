@@ -8,7 +8,8 @@ Labels of given size.
 }
 
 \usage{
-labels_size(cont, digits, sizes, xlim = c(0, 1), ylim = c(0, 1), fill = F, n, rat, minsym = "<", label.resolution = 0, open = F, lwd = 1, col = 1)
+labels_size(cont, digits, sizes, xlim = c(0, 1), ylim = c(0, 1), fill = F, 
+  n, rat, minsym = "<", label.resolution = 0, open = F, lwd = 1, col = 1)
 }
 
 \arguments{

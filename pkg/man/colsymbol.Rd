@@ -8,7 +8,11 @@ Adds colored symbols in a variety of shapes to a geo-plot.
 }
 
 \usage{
-colsymbol(lat, lon, z, circles, squares, rectangles, hbars, vbars, perbars, parbars, levels, nlevels, colors, white, n, maxcol, digits, label.location, labels, fill.circles, density, angle, rotate, minsym = "<", label.resolution = 0, col = 1, labels.only = F, open.circles, lwd, border = F, bordercol = 0)
+colsymbol(lat, lon, z, circles, squares, rectangles, hbars, vbars, 
+  perbars, parbars, levels, nlevels, colors, white, n, maxcol, digits, 
+  label.location, labels, fill.circles, density, angle, rotate, 
+  minsym = "<", label.resolution = 0, col = 1, labels.only = F, 
+  open.circles, lwd, border = F, bordercol = 0)
 }
 
 \arguments{

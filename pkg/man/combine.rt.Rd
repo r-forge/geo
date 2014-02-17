@@ -24,7 +24,8 @@ within squares.
 The program works quite fast even for very large datasets.
 }
 \usage{
-combine.rt(lat, lon, z, grlat, grlon=0, fun, fill=F, reg=0, minnumber=2, wsp=0, wz=0, wlat=0, xy=F, rat=0.2, type)
+combine.rt(lat, lon, z, grlat, grlon=0, fun, fill=F, reg=0, 
+  minnumber=2, wsp=0, wz=0, wlat=0, xy=F, rat=0.2, type)
 }
 \arguments{
 \item{lat}{

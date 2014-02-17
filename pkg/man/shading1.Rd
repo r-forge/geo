@@ -8,7 +8,8 @@ Shading of geoplots?
 }
 
 \usage{
-shading1(cont, digits, colors, xlim = c(0, 1), ylim = c(0, 1), fill = F, angle, rotate, cex, rat, minsym = "<")
+shading1(cont, digits, colors, xlim = c(0, 1), ylim = c(0, 1), 
+  fill = F, angle, rotate, cex, rat, minsym = "<")
 }
 
 \arguments{

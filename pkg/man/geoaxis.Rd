@@ -8,7 +8,8 @@ Set up axes for a geoplot.
 }
 
 \usage{
-geoaxis(side, pos, dist, dlat = 0.5, dlon = 1, csi = 0.12, cex = 0.7, inside = T, r = 1, ...)
+geoaxis(side, pos, dist, dlat = 0.5, dlon = 1, csi = 0.12, 
+  cex = 0.7, inside = T, r = 1, ...)
 }
 
 \arguments{
