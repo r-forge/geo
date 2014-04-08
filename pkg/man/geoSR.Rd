@@ -1,4 +1,4 @@
-\encoding{latin1}
+\encoding{utf8}
 \name{geoSR}
 \alias{geoSR}
 \title{Plot Squares in Different Colors}
@@ -29,23 +29,23 @@ geoSR(sr, z, levels, grid=FALSE, \dots)
   Convenience wrapper for the \code{reitaplott} function.
 
   The 3-digit Icelandic statistical squares are 0.5 degrees latitude and
-  1 degree longitude, defined in the range 60--70캮 and 0--50캷.
+  1 degree longitude, defined in the range 60--70째N and 0--50째W.
 
-  The bottom-left corner of square 0 is at 60캮 0�. From there, the
+  The bottom-left corner of square 0 is at 60째N 0째. From there, the
   numbering system is best explained with a table:
 
   \tabular{lrrrrr}{
-    \tab        49캷       \tab 48캷
-    \tab        \dots      \tab 1캷        \tab 0캷       \cr
-    69.5캮 \tab \samp{999} \tab \samp{998}
+    \tab        49째W       \tab 48째W
+    \tab        \dots      \tab 1째W        \tab 0째W       \cr
+    69.5째N \tab \samp{999} \tab \samp{998}
     \tab        \dots      \tab \samp{951} \tab \samp{950}\cr
-    69.0캮 \tab \samp{949} \tab \samp{948}
+    69.0째N \tab \samp{949} \tab \samp{948}
     \tab        \dots      \tab \samp{901} \tab \samp{900}\cr
     \dots  \tab \dots      \tab \dots
     \tab        \dots      \tab \dots      \tab \dots     \cr
-    60.5캮 \tab \samp{099} \tab \samp{098}
+    60.5째N \tab \samp{099} \tab \samp{098}
     \tab        \dots      \tab \samp{051} \tab \samp{050}\cr
-    60.0캮 \tab \samp{049} \tab \samp{048}
+    60.0째N \tab \samp{049} \tab \samp{048}
     \tab        \dots      \tab \samp{001} \tab \samp{000}\cr
   }
 
