@@ -12,8 +12,8 @@ function(ir, useI = FALSE)
   lon1 <- lon1 - 2
   lon2 <- substring(ir, 4)
   lon2 <- as.numeric(lon2)
-  ifelse(lon1 < 0,
-    lon <- -44 + lon2 + 0.5,
-    lon <- -40 + 10*lon1 + lon2 + 0.5)
+  lon <- ifelse(lon1 < 0,
+                -44 + lon2 + 0.5,
+                -40 + 10*lon1 + lon2 + 0.5)
   data.frame(lat = lat, lon = lon)
 }
