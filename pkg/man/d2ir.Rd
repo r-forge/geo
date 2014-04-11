@@ -66,7 +66,8 @@ ir2d(ir, useI=FALSE)
 \author{
   \enc{Sigurður}{Sigurdur} \enc{Þór}{Thor} \enc{Jónsson}{Jonsson} with
   contributions from \enc{Ásta}{Asta}
-  \enc{Guðmundsdóttir}{Gudmundsdottir}.
+  \enc{Guðmundsdóttir}{Gudmundsdottir} and \enc{Árni}{Arni}
+  \enc{Magnússon}{Magnusson}.
 }
 \seealso{
   \code{\link{d2r}} and \code{\link{r2d}} convert between geographic
@@ -75,10 +76,13 @@ ir2d(ir, useI=FALSE)
 }
 \examples{
 d2ir(54.25, 3.5)
+d2ir(c(50,60), c(-20,-10))
+
 ir2d(d2ir(54, 3))
 ## center positions for bottom left and approx top right rects
 ir2d("01A0")
 ir2d("99M7")
+ir2d(c("01A0","99M7"))
 ## note that ICES CM1977/Gen:3 indicates half-size rects on eastern margin!
 }
 \keyword{manip}
