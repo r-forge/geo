@@ -4,15 +4,18 @@
   Plot different kinds of symbols at the data points.
 }
 \description{
-The function plots different kinds of symbols at the data points defined by lat, lon. There are four categories of symbols.
- - 1. Default. Shapes whose  size  is proportional to z or sqrt(z).
- - 2. Shapes where certain color, shading or size represents certain
-      range of z. Similar to contour program.
- - 3. Filled circles where certain size represents certain range of z,
-      specified with fill.circles = TRUE.
- - 4. Characters or character strings represent the different ranges 
-      of z, specified with characters = TRUE.
-Their are seven types of shapes:
+The function plots different kinds of symbols at the data points defined
+by lat, lon. There are four categories of symbols:
+\enumerate{
+  \item{Default. Shapes whose  size  is proportional to z or sqrt(z).}
+  \item{Shapes where certain color, shading or size represents certain
+    range of z. Similar to contour program.}
+  \item{Filled circles where certain size represents certain range of z,
+    specified with fill.circles = TRUE.}
+  \item{Characters or character strings represent the different ranges
+    of z, specified with characters = TRUE.}
+}
+There are seven types of shapes:
 circles, squares, rectangles,  vbars (vertical bars), hbars(horisontal bars)
 , perbars (perpendicular bars), parbars (parallel bars)
 }
@@ -33,13 +36,19 @@ geosymbols(lat, lon = 0, z, levels = NULL, reflevels = NULL,
 
 \arguments{
 \item{lat, lon}{
-latitude and longitude of data or a dataframe containing latitude and longitude of data (or x and y coordinates), negative for southern latitudes and western longitudes. Expected to contain \$lat and \$lon if not otherwise specified in col.names.
+latitude and longitude of data or a dataframe containing latitude and
+longitude of data (or x and y coordinates), negative for southern
+latitudes and western longitudes. Expected to contain \$lat and \$lon if
+not otherwise specified in col.names.
 }
 \item{z}{
 Matrix containing values at datapoints.
 }
 \item{levels}{
-Values at contourlines. Default value is zero. If levels is zero the program determines the contourlines from the data. If squares, circles, hbars, vbars or perbars are being used levels corresponds to the levels where labels are given.
+Values at contourlines. Default value is zero. If levels is zero the
+program determines the contourlines from the data. If squares, circles,
+hbars, vbars or perbars are being used levels corresponds to the levels
+where labels are given.
 }
 \item{reflevels}{i
  Some levels for reference?
@@ -57,40 +66,50 @@ Something to do with characters?
 Value 2 at data points. Only used in connection with rectangles.
 }
 \item{circles}{
-Max size of circles plotted at data points. Default value used if value <-0 or >100. Size is either proportional to z or sqrt(z).
+Max size of circles plotted at data points. Default value used if value
+<-0 or >100. Size is either proportional to z or sqrt(z).
 }
 \item{squares}{
-Max size of squares plotted at data points. Default value used if value <-0 or >100. Size is either proportional to z or sqrt(z).
+Max size of squares plotted at data points. Default value used if value
+<-0 or >100. Size is either proportional to z or sqrt(z).
 }
 \item{rectangles}{
-Max size of rectangles plotted at datapoints in inches. The first number gives max height and the second number max width. Values < 0 or > 100 give default values.
+Max size of rectangles plotted at datapoints in inches. The first number
+gives max height and the second number max width. Values < 0 or > 100
+give default values.
 }
 \item{vbars}{
-Max size of vertical bars at data points in inches. Values >100 give default values. Value <0 gives bars below points.
+Max size of vertical bars at data points in inches. Values >100 give
+default values. Value <0 gives bars below points.
 }
 \item{hbars}{
-Max size of horizontal bars at data points in inches. Values >100 give default values. Value <0 gives bars left of  points.
+Max size of horizontal bars at data points in inches. Values >100 give
+default values. Value <0 gives bars left of  points.
 }
 \item{perbars}{
-Max size of bars perpendicular to transsect lines in inches. Values >100 give default values. Value <0 gives different orientation.
+Max size of bars perpendicular to transsect lines in inches. Values >100
+give default values. Value <0 gives different orientation.
 }
 \item{parbars}{
 Same as perbars, except the bars are now parallel.
 }
 \item{sqrt}{
-If sqrt = TRUE the size of symbol is proportional to sqrt(z) else to z. Default value if FALSE.
+If sqrt = TRUE the size of symbol is proportional to sqrt(z) else to z.
+Default value if FALSE.
 }
 \item{col}{
 Color number used, default col = 0.
 }
 \item{maxn}{
-If nonzero maxn is the base for the size of symbols, else max(z) is used. Nonzero maxn is used if several plots are to be compared.
+If nonzero maxn is the base for the size of symbols, else max(z) is
+used. Nonzero maxn is used if several plots are to be compared.
 }
 \item{colplot}{
 if true range of z is specified by a colour and not size.
 }
 \item{nlevels}{
-Number of contourlines. Used if the program has to determine the contourlines. Default value is 10.
+Number of contourlines. Used if the program has to determine the
+contourlines. Default value is 10.
 }
 
 \item{colors}{ Color number for the contourlines. Runs from 0 to 155. A
@@ -104,13 +123,15 @@ by the program because even though nlevels = 5 the length of levels can
 be 7 due to characteristics of the Splus pretty command.  }
 
 \item{n}{
-Number of vertices in each circle, default value is 25, this parameter is rarely changed by the user.
+Number of vertices in each circle, default value is 25, this parameter
+is rarely changed by the user.
 }
 \item{maxcol}{
 Number of colors used (excluding #0). Default value is 155
 }
 \item{only.positive}{
-Logical value. If FALSE then negative values are allowed else negative values are set to zero. Default value is FALSE.
+Logical value. If FALSE then negative values are allowed else negative
+values are set to zero. Default value is FALSE.
 }
 \item{digits}{
 Number of digits used in labels. Default value is zero.
@@ -122,22 +143,38 @@ If true the first color is white.
 Line width for symbols. Default value is the value when the program was called.
 }
 \item{label.location}{
-List with components \$lat and \$lon specifying oppesite corners of a square where the label should be put. (or \$x, \$y) Gives the lower left and upper right corner of the box where the labels are put. Default value is 0 that means no labels are put on the drawing or if geoplot was initialized with cont = TRUE, then labels are put on the left side of the plot. label.location is best given by geolocator or directly by specifying label.location = "locator".
+List with components \$lat and \$lon specifying oppesite corners of a
+square where the label should be put. (or \$x, \$y) Gives the lower left
+and upper right corner of the box where the labels are put. Default
+value is 0 that means no labels are put on the drawing or if geoplot was
+initialized with cont = TRUE, then labels are put on the left side of
+the plot. label.location is best given by geolocator or directly by
+specifying label.location = "locator".
 }
 \item{labels}{
-Type of labels 1 or 2. One is default and is usually used except in color with very many colors (more than 10-20) .
+Type of labels 1 or 2. One is default and is usually used except in
+color with very many colors (more than 10-20) .
 }
 \item{fill.circles}{
-If TRUE filled circles of different sizes are plotted. Size of the circles is given directly by the parameter color or found from the data. (maxcol corresponds to the size of the largest circle in this case and is 0.1 by default (changing maxcol to 0.4 makes all the circles 4 times larger.)
+If TRUE filled circles of different sizes are plotted. Size of the
+circles is given directly by the parameter color or found from the data.
+(maxcol corresponds to the size of the largest circle in this case and
+is 0.1 by default (changing maxcol to 0.4 makes all the circles 4 times
+larger.)
 }
 \item{density}{
-If density is 1 (or not zero) circles are hatched instead of having different color. Only available with circles. Color does in this case specify the density of hatching. Higher number means denser hatching. The range is from zero to maxcol (155). But the effective range is ca. 10 - 80.
+If density is 1 (or not zero) circles are hatched instead of having
+different color. Only available with circles. Color does in this case
+specify the density of hatching. Higher number means denser hatching.
+The range is from zero to maxcol (155). But the effective range is ca.
+10 - 80.
 }
 \item{angle}{
 Angle of hatching, default is 45 degrees.
 }
 \item{rotate}{
-Rotation of hatching from one level to the next. Default value is 0 but 45 or 90 can be good to better distinquish between different levels.
+Rotation of hatching from one level to the next. Default value is 0 but
+45 or 90 can be good to better distinquish between different levels.
 }
 
 \item{outside}{
@@ -147,10 +184,14 @@ geoplot(). If FALSE, which is default, outside points will be skipped.
 
 
 \item{minsym}{
-Minimum symbol, default is "<", meaning that if levels = c(1, 2), labels will be presented as < 1, 1-2, 2 <, but if minsym = " " labels will be presented as 1, 1-2, 2. See also labels.resolution.
+Minimum symbol, default is "<", meaning that if levels = c(1, 2), labels
+will be presented as < 1, 1-2, 2 <, but if minsym = " " labels will be
+presented as 1, 1-2, 2. See also labels.resolution.
 }
 \item{boundcheck}{
-If boundcheck != 0 those points which are out of bounds are returned to the user, if boundcheck = 2 the points are also not plotted, default is boundcheck = 0.
+If boundcheck != 0 those points which are out of bounds are returned to
+the user, if boundcheck = 2 the points are also not plotted, default is
+boundcheck = 0.
 }
 \item{na.rm}{
 If true NA's are removed, default is true.
@@ -173,7 +214,11 @@ A boolean variable determing whether characters are to be plotted.
 Type of symbols for each level.
 }
 \item{marks}{
-Type of symbols for each level. The difference between marks and pch is becae when making points on a plot the user can either give pch = 17 or pch = "A". The former type is called marks here but the latter pch. Marks have to be given for each level and set to -1 where pch is to be used. The length of the vector
+Type of symbols for each level. The difference between marks and pch is
+becae when making points on a plot the user can either give pch = 17 or
+pch = "A". The former type is called marks here but the latter pch.
+Marks have to be given for each level and set to -1 where pch is to be
+used. The length of the vector
 }
 \item{charcol}{
 The color of the charchters, default is the same as col.
@@ -207,23 +252,23 @@ No values are returned
 \examples{
  \dontrun{     # lodna.2 composes of echo measurements for capelin on the
       # norther- and easternshores of Iceland. [lat, lon, z]
-     
-      # Show points.            
-     
-      geoplot(lodna.2, type = "l", grid = FALSE)       # Begin by ploting Iceland.
+
+      # Show points.
+
+      geoplot(lodna.2, type = "l", grid = FALSE)   # Begin by plotting Iceland.
       geopoints(lodna.2, pch = "*", col = 150)     # See where the points are.
-     
+
       ####################################
       # Example 1, color parbars plot.   #
       ####################################
 
-      geoplot(lodna.2, type = "l", grid = TRUE)       # Begin by ploting Iceland. 
-      levels = c(0, 20, 50, 100, 500, 1000)   
+      geoplot(lodna.2, type = "l", grid = TRUE)     # Begin by plotting Iceland.
+      levels = c(0, 20, 50, 100, 500, 1000)
 
       geosymbols(lodna.2, z = lodna.2$z, colplot = TRUE, colors = seven.col,
                  levels = levels, parbars = 0.05, colors = seven.col,
                  label.location = "locator")
-      
+
       # "locator" click twice on the map where you want the contour index.
       # Indicate firstly the upper left corner position then lower right.
 
@@ -231,29 +276,29 @@ No values are returned
       # Example 2, black/white perbars plot.#
       #######################################
 
-      geoplot(lodna.2, type = "l", grid = FALSE)  
- 
+      geoplot(lodna.2, type = "l", grid = FALSE)
+
       geosymbols(lodna.2, z = lodna.2$z, perbars = 0.1)
-     
+
       # Bars perpendicular to measurement direction
 
       #######################################
       # Example 3, Color Dots.              #
       #######################################
-       
-      # Set up data.  
+
+      # Set up data.
       attach("/usr/local/reikn/SplusNamskeid")
       i<-utbrteg$ar == 2004
-    
+
       # Set up the plot.
-      geoplot()  
+      geoplot()
       levels = c(10, 100, 500)
       colors = c(13, 55, 111, 153)
       labloc<-list(lat = c(63.95, 65.4), lon = c(-19.8, -17.3))
 
       geosymbols(utbrteg[i, ], z = utbrteg[i, "torskur.kg"], circles = 0.05,
                  sqrt = TRUE, colplot = TRUE, levels = levels, colors = colors,
-                 label.location = labloc) 
+                 label.location = labloc)
 
 
       #######################################
@@ -261,12 +306,12 @@ No values are returned
       #######################################
 
       # Having done the set up data and plot in Example 3.
- 
+
       geoplot(utbrteg$lat, utbrteg$lon, pch = ".")
-      geosymbols(utbrteg[i, ], z = utbrteg[i, "torskur.kg"], circles = 0.2, sqrt = TRUE,
-                 label.location = labloc)     
-    
-      # Circles can be replaced with squares, rectangles, vbars, hbars or 
+      geosymbols(utbrteg[i, ], z = utbrteg[i, "torskur.kg"], circles = 0.2,
+                 sqrt = TRUE, label.location = labloc)
+
+      # Circles can be replaced with squares, rectangles, vbars, hbars or
       # perbars or more than one used simultanuously.
 }}
 

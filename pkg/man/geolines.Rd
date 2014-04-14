@@ -7,7 +7,10 @@
 
 \description{
 Add lines to a plot initialized by geoplot. Data is stored as lat, lon
-or x,y. Lists are assumed to have the components \code{$x} and \code{$y} if projection in geoplot was "none", else \code{$lat},\code{$lon}. The program transforms the data as specified in geoplot. Similar to the Splus function lies.
+or x,y. Lists are assumed to have the components \code{$x} and \code{$y}
+if projection in geoplot was "none", else \code{$lat},\code{$lon}. The
+program transforms the data as specified in geoplot. Similar to the
+Splus function lies.
 }
 
 \usage{
@@ -20,7 +23,10 @@ geolines(lat, lon = 0, col = 1, lwd = 0, lty = 0, nx = 1,
 Latitude of data. ( or x coordinate)
 }
 \item{lon}{
-Longitude of data. ( or y coordinate) Negative values mean western longitudes. Default value is zero. If lon is zero then the data is stored as \code{lat$lat} and \code{lat$lon}. (or \code{lat$x} and \code{lat$y})
+Longitude of data. ( or y coordinate) Negative values mean western
+longitudes. Default value is zero. If lon is zero then the data is
+stored as \code{lat$lat} and \code{lat$lon}. (or \code{lat$x} and
+\code{lat$y})
 }
 \item{col}{
 Colour number used for plotting the lines, default value is 1.
@@ -29,14 +35,19 @@ Colour number used for plotting the lines, default value is 1.
 Line width. Default is to use the width set when the program was called.
 }
 \item{lty}{
-Line type. Default is to use the width set when the program was called. See Splus manuals for numbers corresponding to different linetypes and linewidths.
+Line type. Default is to use the width set when the program was called.
+See Splus manuals for numbers corresponding to different linetypes and
+linewidths.
 }
 \item{nx}{
-Parameter only used with Lambert transform when lines in lat,lon are curves in x,y. If nx > 1, nx-1 points are put between each two datapoints in lat, lon before projection is done. For example :
+Parameter only used with Lambert transform when lines in lat,lon are
+curves in x,y. If nx > 1, nx-1 points are put between each two
+datapoints in lat, lon before projection is done. For example:
 
               \code{geolines(c(66, 66), c(-30, -10), nx = 50)}
 
-plots a line onto the 66 degree latitude from -30 to -10. The line is curved because it is made of 50 segments.
+plots a line onto the 66 degree latitude from -30 to -10. The line is
+curved because it is made of 50 segments.
 }
 \item{outside}{
 Logical, should lines outside the plot region be drawn? Default FALSE.
@@ -50,7 +61,8 @@ Logical, should the data be returned? Default FALSE.
 No values returned.
 }
 \section{Side Effects}{
-The projection is stored in geopar\$projection and parameters for the transform in \code{geopar$b0, geopar$b1 and geopar$l1}.
+The projection is stored in geopar\$projection and parameters for the
+transform in \code{geopar$b0, geopar$b1 and geopar$l1}.
 }
 
 \seealso{
@@ -70,8 +82,8 @@ The projection is stored in geopar\$projection and parameters for the transform 
 
        #######################################################
 
-       geoplot(xlim = c(0, -50), ylim = c(60, 75), projection = "Lambert")
-       # Set up a Lambert plot.       
+       geoplot(xlim=c(0, -50), ylim=c(60, 75), projection = "Lambert")
+       # Set up a Lambert plot.
 
        geolines(c(66, 66), c(-30, -10), nx = 50, col = 155, lwd = 2)
        # Draw a line with colour 155 and width 2.

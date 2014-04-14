@@ -12,7 +12,7 @@ latitude and longitude in degrees (default) or x, y in m (or other units).
 The program performs the Mercator(default) or Lambert transformation
 of the data in degrees and plots it. The plot is scaled such that 1cm
 in  vertical and horizontal directions correspond to the same
-distance. The program is used to initialize drawings to be used by programs, 
+distance. The program is used to initialize drawings to be used by programs,
 i.e. geolines, geopolygon, geopoints, geotext, geosymbol, geogrid,
 geocontour.fill, geoimage and geocontour. The inputs to the program
 are decimal numbers negative for western longitudes e.g.lat = 65.75
@@ -41,9 +41,9 @@ geoplot(lat = NULL, lon = 0, type = "p", pch = "*", xlim = c(0, 0),
 \item{lat, lon}{
 Latitude and longitude of data (or x and y coordinates), negative for
 southern latitudes and western longitudes. May be supplied as two
-vectors or as a list or dataframe  lat (or x) including 
+vectors or as a list or dataframe  lat (or x) including
 vectors lat\$lat and lat\$lon (x\$x and x\$y if projection = none). If
-xlim and ylim are given the arguments lat and lon are not required.  
+xlim and ylim are given the arguments lat and lon are not required.
 }
 \item{type}{
 Options are the same as in the plot function i.e "l" for lines, "n"
@@ -51,129 +51,146 @@ for not plotting the data, "p" for points etc. Default value is "p"
 }
 \item{pch}{
 Type of symbol drawn in points. Default is "*". Any other character or
-symbol  can be used, seet the help on points.  
+symbol  can be used, seet the help on points.
 }
 \item{xlim}{
 x limits of drawing (longitudinal direction). If not given the program
 finds the limits as the range of the data times the parameter r (1.05
 default).  xlim can be a list (dataframe) with components lat and lon
-(x and y if projection = "none").    
+(x and y if projection = "none").
 }
 \item{ylim}{
 y limits of drawing (latitudinal  direction). If not given and xlim is
-not a list the program finds the ulimits as the range of the data 
-times the parameter r (1.05).  
+not a list the program finds the ulimits as the range of the data
+times the parameter r (1.05).
 }
 \item{b0}{
 Base latitude for the Mercator or Lambert transform.  Default value is
 65 (typical for Iceland).  If Mercator transform is used values close
 to the mean of the data are recommended except the data extend very
 far north, (> 75 th degree) then b0 should be close to the northern
-limits of the data).  
+limits of the data).
 }
 \item{r}{
 Size of area which is plotted. r = 1.0 means exactly the range of the
 datapoints, but r = 1.5 means that the range is 1.5 times the range of
 data. Default value is 1.05. Does not matter if xlim and ylim are
-given.  
+given.
 }
 \item{country}{
 Country that is plotted.  Options are:
-</s-example>
+\verb{
                1. island       1300   points  (iceland)
                2. bisland      20000  points (iceland fine)
                3. greenland    62000  points
                4. faeroes      2100   points
                5. eyjar        2200   points(islands around iceland)
-               6. none"               no country plotted
-</s-example>
+               6. none                no country plotted
+}
 Which map is used depends on the size of the area plotted.
 If  small  part of the coast is seen bisland is used, else
 Iceland. Isands can be added later by geolines(eyjar). Default is
 set by a variable with the name COUNTRY.DEFAULT.  COUNTRY.DEFAULT <-
 "island" makes iceland the default country.  The program geoworld can
 be used to add all coastlines that intersect the map and also to make
-new countries (see geoworld).  
+new countries (see geoworld).
 }
 \item{xlab}{
-X-label. Default value is " " 
+X-label. Default value is " "
 }
 \item{ylab}{
-Y-label. Default value is " " 
+Y-label. Default value is " "
 }
 \item{option}{
-Can be either "cut" or "nocut". If "nocut" the plot always fills the plotted area but if "cut" the plot does not fill it in the direction where the range of data is minimum. It has to be kept in mind that the program always keeps the same scale vertically and horizontally. Default value is "cut". Not effective when contourplots are plotted.
+Can be either "cut" or "nocut". If "nocut" the plot always fills the
+plotted area but if "cut" the plot does not fill it in the direction
+where the range of data is minimum. It has to be kept in mind that the
+program always keeps the same scale vertically and horizontally. Default
+value is "cut". Not effective when contourplots are plotted.
 }
 \item{grid}{
-If grid is TRUE meridians and paralells are plotted, else not. Default value is TRUE.
+If grid is TRUE meridians and paralells are plotted, else not. Default
+value is TRUE.
 }
 \item{new}{
-If new is FALSE the plot is added to the current plot otherwise a new plot is made. Default value is FALSE. Similar to the Splus command "par(new = TRUE)".
+If new is FALSE the plot is added to the current plot otherwise a new
+plot is made. Default value is FALSE. Similar to the Splus command
+"par(new = TRUE)".
 }
 \item{cont}{
 A parameter to reserve space for legend for contours besides the plot.
 Default value is "FALSE".  Rarely used at the legends are usually put
-somewhere in the graph.  
+somewhere in the graph.
 }
 \item{cex}{
 Relative size of character and symbols (see the help on the parameter
   cex).  The size of plotted characeters is cex time the parameter csi
   that can be seen by par()\$csi.  In earlier versions of geoplot the
   parameter csi was set but csi is a parameter that can not be set in
-  R.  
+  R.
 }
 \item{col}{
 The color number used to for the plot. Default value is 1 that is
-usually black.  
+usually black.
 }
 \item{lcont}{
 Limits of area preserved for lables and contour plot as ration of
 plotting area. Default value is c(0.13, 0.21). That means that the
 labels take 13\% of the plotting area but the figure 79\%. (Labels to
 left, figure to left.) 0.08 to 0.1 is a reasonable difference. Only
-used  when cont = TRUE which is seldom used as described erlier.  
+used  when cont = TRUE which is seldom used as described erlier.
 }
 \item{plotit}{
 If FALSE plot is only initialized but not plotted. If used other programs
 are used to fill the plot (geolines, geocontour, geopolygon etc).
-Most often used in multiple plots.  
+Most often used in multiple plots.
 
-Used in connection with geocontour.fill to fewer files but the plot command is given again with new = TRUE when geocontour.fill is called. Plot = FALSE does not work if axeslabels = FALSE. Something seems to have to be on the graph for proper setup.
+Used in connection with geocontour.fill to fewer files but the plot
+command is given again with new = TRUE when geocontour.fill is called.
+Plot = FALSE does not work if axeslabels = FALSE. Something seems to
+have to be on the graph for proper setup.
 }
 \item{reitur}{
-Reitur means statistical square in Icelandic.  If true the division of 
+Reitur means statistical square in Icelandic.  If true the division of
 the axes is idendical to the distribution of
 the ocean around Iceland in statistical  squares. Means dlat = 0.5;dlon = 1.
 }
 \item{smareitur}{
-If true the division of the axes is idendical to the distribution of the ocean around Iceland in subsquares.dlat = 0.25;dlon = 0.5
+If true the division of the axes is idendical to the distribution of the
+ocean around Iceland in subsquares.dlat = 0.25;dlon = 0.5
 }
 \item{reittext}{
 If true the number of each square is written in the center of the
-square. Only meaningful for Icelandic waters.  
+square. Only meaningful for Icelandic waters.
 }
 \item{cexrt}{
-Relative size of reittext text in statistical squares (cexrt*csi). Default value is 0.7.
+Relative size of reittext text in statistical squares (cexrt*csi).
+Default value is 0.7.
 }
 \item{axratio}{
 Parameter usually not changed by the user.
 }
 \item{lwd}{
-Line width for plot (grid and axes). Default value is the value set when the program was called.(usually 1). Higher values correspond to wider lines.
+Line width for plot (grid and axes). Default value is the value set when
+the program was called.(usually 1). Higher values correspond to wider
+lines.
 }
 \item{lwd1}{
-Line width for plot country. Default value is the value set when the program was called (usually 1). Higher values correspond to wider lines.
+Line width for plot country. Default value is the value set when the
+program was called (usually 1). Higher values correspond to wider lines.
 }
 \item{locator}{
 Some kind of a simple zoom command. If locator is TRUE the user points
 with the mouse on the limits of the plot he wants to make. Needs a
-plot made by geoplot on the screen. Same as if zoom is used.  
+plot made by geoplot on the screen. Same as if zoom is used.
 }
 \item{axlabels}{
 If FALSE no numbers are plotted on the axes. Default value is TRUE.
 }
 \item{projection}{
-Projection used to make the plot. Options are "Mercator", "none" and "Lambert". Default value is "Mercator". If projection = "none" data is assumed to be x, y.
+Projection used to make the plot. Options are "Mercator", "none" and
+"Lambert". Default value is "Mercator". If projection = "none" data is
+assumed to be x, y.
 }
 \item{b1}{
   Second latitude to define Lambert projection.
@@ -194,36 +211,39 @@ varying on plot.
 \item{zoom}{
 If TRUE the mouse is used to point to two points on the current map with
 those two new points becoming the new corner points on a new map.  .
-Same as the parameter locator in older geoplot versions.  
+Same as the parameter locator in older geoplot versions.
 }
 \item{csi}{
 Size of character.  This parameter can not be set in R but for
-compatibility with old Splus scripts the parameter cex is readjusted by 
+compatibility with old Splus scripts the parameter cex is readjusted by
 cex = cex*csi/0.12.  Use of this parameter is not recommended.  Default
-value is NULL i.e not used.  
+value is NULL i.e not used.
 }
 \item{csirt}{
 Size of reittext. Default value is 0.1. Only for compatibility with
 older Splus programs but cexrt should be used as the parameter csi can
-not be set in R: 
+not be set in R:
 }
 \item{xaxdist}{
 Distance from plot to the labels on the xaxis (dist or r argument to
 geoaxis.  Default value is 0.2 but higher value mean that axlabels is
 further away from the plot.  Further flexibility with axes can be
-reached by calling geoplot with axlabels = FALSE and geoaxis aferwards.  
+reached by calling geoplot with axlabels = FALSE and geoaxis aferwards.
 }
 \item{yaxdist}{
 Distance from plot to the labels on the yaxis (dist or r argument to
 geoaxis.  Default value is 0.3 but higher value mean that axlabels is
-further away from the plot.  
+further away from the plot.
 }
 }
 \value{
-No values are returned. The graphical setup is stored in a global list called geopar. That list is accessed by other program that use the same setup.
+No values are returned. The graphical setup is stored in a global list
+called geopar. That list is accessed by other program that use the same
+setup.
 }
 \section{Side Effects}{
-There should be no side effects. The program changes a number of graphical parameters but the old parameters are restored before.
+There should be no side effects. The program changes a number of
+graphical parameters but the old parameters are restored before.
 }
 \seealso{
 \code{\link{geolines}},
@@ -242,20 +262,20 @@ There should be no side effects. The program changes a number of graphical param
 \examples{
 \dontrun{Examples shown here below also include calls to the other functions
 in the geopackage.  Further explanations of these functions can be
-found in the appropriate help files.  
+found in the appropriate help files.
 
-Contour plot of haddock catch in icelandic waters based on logbooks.   
+Contour plot of haddock catch in icelandic waters based on logbooks.
 A color scheme
 where color 0 is white, 1 black and 2-150 gradually changing from
 white to black is used.  The data is for 6 years and is stored in a
-list hadcatch with 6 components.  Circles showing haddock catch in 
+list hadcatch with 6 components.  Circles showing haddock catch in
 the Icelandic groundfish survey is added on top of the plot with the
 function geosymbols but utbrteg is a dataframe with information on all
 catch in the Icelandic groundfish survey (all names in Icelandic ysa
 means haddock and ar year).  The function bwps is a call to the
 postscript function with the indicated color scheme.  Designed for
 Splus and has to be changed for R as the color schemes there are quite
-different.  This applies to all the examples below.  
+different.  This applies to all the examples below.
 
 lev <- c(0.5, 1, 2, 4, 6)
 col <- c(0, 30, 50, 70, 90, 150)
@@ -264,13 +284,13 @@ par(mfrow = c(3, 2));par(mex = 0.01)
 bwps(file = "hadcatchutbr.ps", height = 6.8, width = 6.5, horizontal = FALSE)
 for(i in 1:6) {
  SMB.std.background(grid = FALSE, axlabels = FALSE)
- geocontour.fill(hadcatch[[i]], levels = lev, col = col, 
+ geocontour.fill(hadcatch[[i]], levels = lev, col = col,
     white = TRUE, working.space = 2e6)
  gbplot(200)
  geotext(67.3, -27.6, txt[i], csi = 0.16, adj = 0)
  geopolygon(island, col = 0);geolines(island)
  tmp <- utbrteg[utbrteg$ar == txt[i], ] # select the year
- geosymbols(tmp, z = tmp$ysa.kg, circles = 0.2, 
+ geosymbols(tmp, z = tmp$ysa.kg, circles = 0.2,
     sqrt = TRUE, lwd = 1)# amount of haddock
  geopoints(tmp, pch = 16, csi = 0.05)
 }
@@ -279,14 +299,14 @@ dev.off()
 # plot x, y data
 geoplot(x$x, x$y, projection = "none", type = "n")
 
-geoplot(x, projection = "none", type = "n") 
+geoplot(x, projection = "none", type = "n")
 # does the same thing.
 
 # The packages maps and mapdata need to be installed
-# worldHires is a very detailed database of coastlines from the 
+# worldHires is a very detailed database of coastlines from the
 # package mapdata.  Could be problematic if used with fill = TRUE)
-# Allowed.size is the maximum allowed size of polygons.  
-library(map) # world coastlines and programs 
+# Allowed.size is the maximum allowed size of polygons.
+library(map) # world coastlines and programs
 library(mapdata) # more detailed coastlines
 geoplot(xlim = c(20, 70), ylim = c(15, 34))
 geoworld(database = "worldHires", fill = TRUE, col = 30, allowed.size = 30000)
@@ -294,26 +314,26 @@ geoworld(database = "worldHires", fill = TRUE, col = 30, allowed.size = 30000)
 geoplot(xlim = c(20, 70), ylim = c(15, 34), dlat = 10, dlon = 10)
 geoworld(database = "world", fill = TRUE, col = 30) #
 
-geoplot(xlim = c(-10, 70), ylim = c(71, 81), b0 = 80, 
+geoplot(xlim = c(-10, 70), ylim = c(71, 81), b0 = 80,
   dlat = 2, dlon = 10) # 0 must be high here else
-geoworld(database = "world", fill = TRUE, col = 30) #the plot fails.  
+geoworld(database = "world", fill = TRUE, col = 30) #the plot fails.
 
-# Lambert projection, 
-geoplot(xlim = c(-10, 70), ylim = c(71, 81), 
+# Lambert projection,
+geoplot(xlim = c(-10, 70), ylim = c(71, 81),
   dlat = 2, dlon = 10, projection = "Lambert")
-geoworld(database = "world", fill = TRUE, col = 30) 
+geoworld(database = "world", fill = TRUE, col = 30)
 
 # Lambert projection, get the axis closer with the mgp command
 par(mgp = c(2, 0, 0))
-geoplot(xlim = c(-10, 70), ylim = c(71, 81), 
+geoplot(xlim = c(-10, 70), ylim = c(71, 81),
   dlat = 2, dlon = 10, projection = "Lambert", cex = 1.1)
-geoworld(database = "world", fill = TRUE, col = 30) 
+geoworld(database = "world", fill = TRUE, col = 30)
 
 # Example with capelin data.  (lodna meanns capelin).  lodna.2 is a
-# data.frame with components lat,  lon and z.  
+# data.frame with components lat,  lon and z.
 geoplot(lodna.2, type = "l")
 geopoints(lodna.2)
-geosymbols(lodna.2, z = lodna.2$z, colplot = TRUE, 
+geosymbols(lodna.2, z = lodna.2$z, colplot = TRUE,
   parbars = 0.05, levels = vor.levels, label.location = labloc)
 
 
@@ -326,36 +346,36 @@ geoplot(lodna.2, type = "l")
 
 limits <- list(lat = c(63, 68), lon = c(-30, -10))
 geoplot(xlim = limits, type = "n", grid = FALSE, axlabels = TRUE, plot = FALSE)
-tmp <- geoexpand(lodna.2.grd) # expand the grid 
+tmp <- geoexpand(lodna.2.grd) # expand the grid
 # has defined ther area vor.area and data outside it are set  to NA.
-i <- geoinside(tmp, vor.area.new, option = 0) 
+i <- geoinside(tmp, vor.area.new, option = 0)
 zgr <- z.lodna.2;zgr[-i] <- NA
-geocontour.fill(lodna.2.grd, z = zgr, white = TRUE, 
+geocontour.fill(lodna.2.grd, z = zgr, white = TRUE,
   label.location = labloc, levels = vor.levels)
 geoplot(xlim = limits, type = "n", grid = FALSE, axlabels = TRUE, new = TRUE)
 #geolines(lodna.2, lwd = 1)
-gbplot(c(200, 500)) # Depth contours.  
+gbplot(c(200, 500)) # Depth contours.
 
 # make a plot of number within a square, calculate the total number of
 #cod (torskur) within a square (reitur) and put the text number of
-#square and total number of cod in the center of the square (number of 
+#square and total number of cod in the center of the square (number of
 #cod below number of square).  Apply.shrink is similar to tapply
 #returning the data in different form and is included with the geo library
 
 geoplot(island, r = 1.2, type = "n", reitur = TRUE)
-x <- apply.shrink(data$torskur.stk, data$reitur, sum, 
+x <- apply.shrink(data$torskur.stk, data$reitur, sum,
   names = c("reitur", "torskur.stk"))
 x1 <- r2d(x$reitur)
 geotext(x1, z = paste(x$reitur, round(x$torskur.stk, 1), sep = "\n"))
 
 # Plot filled circles.  The color scheme used is the same as described
 # color 0 white, 1 black and 2 - 155 white-black see bwps
-# in geosymbols the argument color means size (in inches) 
+# in geosymbols the argument color means size (in inches)
 # when the fill.circles = TRUE.  The data used  AfliBySquareMonthYear have
-# the columns year, month , square and catch.  
-# the function r2d changes square (reitur in Icelandic) to position 
+# the columns year, month , square and catch.
+# the function r2d changes square (reitur in Icelandic) to position
 # Text is put in the middle of the circles where catch exceeds 1000
-# tonnes.  
+# tonnes.
 
 my.colors = c(0.004, 0.04, 0.1, 0.15, 0.20, .25, 100)
 lev <- c(0.2, 2, 7.5, 10, 20, 50)
@@ -373,12 +393,12 @@ for (ar in yy) {
     tmp1 <- tmp4[tmp4$year == ar & tmp4$month == man, ]
     SMB.std.background(axlabels = FALSE, country = "none", plotit = FALSE)
     if(nrow(tmp1) > 0) {
-      tmp2 <- apply.shrink(tmp1$catch, tmp1$square, sum, 
+      tmp2 <- apply.shrink(tmp1$catch, tmp1$square, sum,
         names = c("square", "catch"))
       tmp2 <- tmp2[order(-tmp2$catch), ]
 
       tmp3 <- data.frame(r2d(tmp2$square))
-      geosymbols(tmp3, z = tmp2$catch, fill.circles = TRUE, col = 60, 
+      geosymbols(tmp3, z = tmp2$catch, fill.circles = TRUE, col = 60,
         levels = lev, colors = my.colors, bordercol = 0, border = TRUE)
       geopolygon(island, col = 30)
       geolines(eyjar, lwd = 3, col = 30)
@@ -386,13 +406,13 @@ for (ar in yy) {
       if(any(j)) {
         tmp3 <- tmp3[j, ]
         tmp2 <- tmp2[j, ]
-        geotext(lat = tmp3$lat, lon = tmp3$lon, z = tmp2$catch, 
+        geotext(lat = tmp3$lat, lon = tmp3$lon, z = tmp2$catch,
           angle = 45, csi = 0.1)
       }
-      geotext(lat = c(65.2), lon = (-18), z = paste(month.abb[man], 
+      geotext(lat = c(65.2), lon = (-18), z = paste(month.abb[man],
         round(sum(tmp2$catch, na.rm = TRUE)), sep = "\n"), csi = 0.2)
     }
-    else {geotext(lat = c(65.2), lon = (-18), 
+    else {geotext(lat = c(65.2), lon = (-18),
             z = paste(month.abb[man], "0", sep = "\n"), csi = 0.2)}
   }
   geotext(63, -10, ar, adj = 1, csi = 0.18)

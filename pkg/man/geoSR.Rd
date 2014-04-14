@@ -29,24 +29,26 @@ geoSR(sr, z, levels, grid=FALSE, \dots)
   Convenience wrapper for the \code{reitaplott} function.
 
   The 3-digit Icelandic statistical squares are 0.5 degrees latitude and
-  1 degree longitude, defined in the range 60--70°N and 0--50°W.
+  1 degree longitude, defined in the range 60--70\eqn{^{\circ}}{°}N and
+  0--50\eqn{^{\circ}}{°}W.
 
-  The bottom-left corner of square 0 is at 60°N 0°. From there, the
-  numbering system is best explained with a table:
+  The bottom-left corner of square 0 is at 60\eqn{^{\circ}}{°}N
+  0\eqn{^{\circ}}{°}. From there, the numbering system is best explained
+  with a table:
 
   \tabular{lrrrrr}{
-    \tab        49°W       \tab 48°W
-    \tab        \dots      \tab 1°W        \tab 0°W       \cr
-    69.5°N \tab \samp{999} \tab \samp{998}
-    \tab        \dots      \tab \samp{951} \tab \samp{950}\cr
-    69.0°N \tab \samp{949} \tab \samp{948}
-    \tab        \dots      \tab \samp{901} \tab \samp{900}\cr
-    \dots  \tab \dots      \tab \dots
-    \tab        \dots      \tab \dots      \tab \dots     \cr
-    60.5°N \tab \samp{099} \tab \samp{098}
-    \tab        \dots      \tab \samp{051} \tab \samp{050}\cr
-    60.0°N \tab \samp{049} \tab \samp{048}
-    \tab        \dots      \tab \samp{001} \tab \samp{000}\cr
+    \tab 49\eqn{^{\circ}}{°}W \tab 48\eqn{^{\circ}}{°}W \tab \dots
+    \tab  1\eqn{^{\circ}}{°}W \tab  0\eqn{^{\circ}}{°}W              \cr
+    69.5\eqn{^{\circ}}{°}N \tab \samp{999} \tab \samp{998} \tab \dots
+    \tab                        \samp{951} \tab \samp{950}           \cr
+    69.0\eqn{^{\circ}}{°}N \tab \samp{949} \tab \samp{948} \tab \dots
+    \tab                        \samp{901} \tab \samp{900}           \cr
+    \dots                  \tab \dots      \tab \dots      \tab \dots
+    \tab                        \dots      \tab \dots                \cr
+    60.5\eqn{^{\circ}}{°}N \tab \samp{099} \tab \samp{098} \tab \dots
+    \tab                        \samp{051} \tab \samp{050}           \cr
+    60.0\eqn{^{\circ}}{°}N \tab \samp{049} \tab \samp{048} \tab \dots
+    \tab                        \samp{001} \tab \samp{000}           \cr
   }
 
   The 4-digit subsquares divide each square into quadrants (\acronym{NW,

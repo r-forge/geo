@@ -4,7 +4,10 @@
   Adds points on plots initialized by geoplot.
 }
 \description{
-Plot points on a graph initialized by geoplot. Data is stored as lat, lon or x,y depending on the projection. The program plots the transformation of the data. Parameters for the projection are stored in the list geopar. Similar to the Splus function points.
+Plot points on a graph initialized by geoplot. Data is stored as lat,
+lon or x,y depending on the projection. The program plots the
+transformation of the data. Parameters for the projection are stored in
+the list geopar. Similar to the Splus function points.
 }
 \usage{
 geopoints(lat, lon = 0, pch = "*", cex = 0.7, col = 1, lwd = 0,
@@ -12,7 +15,10 @@ geopoints(lat, lon = 0, pch = "*", cex = 0.7, col = 1, lwd = 0,
 }
 \arguments{
 \item{lat,lon}{
-Plot points on a graph initialized by geoplot. Data is stored as lat, lon or x,y depending on the projection. The program plots the transformation of the data. Parameters for the projection are stored in the list geopar. Similar to the Splus function points.
+Plot points on a graph initialized by geoplot. Data is stored as lat,
+lon or x,y depending on the projection. The program plots the
+transformation of the data. Parameters for the projection are stored in
+the list geopar. Similar to the Splus function points.
 }
 \item{pch}{
 Type of symbol used options are for example. "  ","*","+","." or
@@ -24,7 +30,7 @@ Relative size of character and symbols (see the help on the parameter
   that can be seen by \code{par("csi")}.  In earlier versions of geoplot the
   parameter csi was set but csi is a parameter that can not be set in
   R.  The parameter mkh should probably be used for symbols instead of
-  cex, see help on graphical parameters.  
+  cex, see help on graphical parameters.
 }
 \item{col}{
 Colour number used.  Default value is one.
@@ -37,16 +43,18 @@ If TRUE geopoints will plot points outside the specified limits set by
 geoplot(). If FALSE, which is default, outside points will be skipped.
 }
 \item{jitter}{
-useful if many datapoints have the same coordinates, points are jittered randomly to make common values look bigger.jitter=0.016 is often about right but you may want to have jitter smaller or bigger varying on plot.
+useful if many datapoints have the same coordinates, points are jittered
+randomly to make common values look bigger.jitter=0.016 is often about
+right but you may want to have jitter smaller or bigger varying on plot.
 }
 \item{mkh}{
-Size of symbol in inches.  If not given cex is used instead. 
+Size of symbol in inches.  If not given cex is used instead.
 }
 \item{csi}{
 Size of character.  This parameter can not be set in R but for
-compatibility with old Splus scripts the parameter cex is readjusted by 
-\code{cex = cex*csi/0.12}.  Use of this parameter is not recommended.  Default
-value is NULL i.e not used.  
+compatibility with old Splus scripts the parameter cex is readjusted by
+\code{cex = cex*csi/0.12}.  Use of this parameter is not recommended.
+Default value is NULL i.e not used.
 }
 }
 \seealso{
@@ -61,13 +69,13 @@ value is NULL i.e not used.
 \code{\link{geocontour}}.
 }
 \examples{
-\dontrun{       geopoints(deg)                           # Plots * in the points
+\dontrun{       geopoints(deg)                  # Plots * in the points
                                                 # defined by deg$lat,deg$lon.
-      
+
        geopoints(deg$lat,deg$lon,pch="*",col=5) # Same but uses color 5.
 
        geopoints(fd$x,fd$y)                     # Points in x,y when
-                                                # projection in geoplot 
+                                                # projection in geoplot
                                                 # was "none".
 }}
 % docclass is function

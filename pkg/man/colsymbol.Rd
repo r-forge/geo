@@ -50,7 +50,9 @@ colsymbol(lat, lon, z, circles, squares, rectangles, hbars, vbars,
 }
 
 \value{
-No value returned, utility lies in side effect off adding colored symbols to existing plot, generally used as internal function in geosymbols.
+No value returned, utility lies in side effect off adding colored
+symbols to existing plot, generally used as internal function in
+geosymbols.
 }
 
 \note{
@@ -58,7 +60,10 @@ Needs further elaboration, see documentation for \code{geosymbols}.
 }
 
 \seealso{
-Called by \code{\link{geosymbols}}, calls \code{\link{Proj}}, \code{\link{geolocator}}, \code{\link{labels_size}}, \code{\link{labels1}}, \code{\link{labels2}}, \code{\link{shading1}}, \code{\link{paint.window}}
+Called by \code{\link{geosymbols}}, calls \code{\link{Proj}},
+\code{\link{geolocator}}, \code{\link{labels_size}},
+\code{\link{labels1}}, \code{\link{labels2}}, \code{\link{shading1}},
+\code{\link{paint.window}}
 }
 
 \keyword{aplot}

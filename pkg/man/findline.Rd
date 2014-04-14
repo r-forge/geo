@@ -18,15 +18,19 @@ findline(x, xb, plot = T)
 }
 
 \value{
-If plot is TRUE, returns coordinates for plotting, if FALSE returns data.frame of with latitude and longitude.
+If plot is TRUE, returns coordinates for plotting, if FALSE returns
+data.frame of with latitude and longitude.
 }
 
 \note{
 Needs further elaboration.
 }
 
-\seealso{ 
-Called by \code{\link{adjust.grd}}, \code{\link{geolines}}, \code{\link{geolines.with.arrows}}, \code{\link{init}} and \code{link{reitaplott}}, calls \code{\link{invProj}}, \code{\link{prepare.line}} and \code{\link{Proj}}.
+\seealso{
+Called by \code{\link{adjust.grd}}, \code{\link{geolines}},
+\code{\link{geolines.with.arrows}}, \code{\link{init}} and
+\code{link{reitaplott}}, calls \code{\link{invProj}},
+\code{\link{prepare.line}} and \code{\link{Proj}}.
 }
 
 \keyword{manip}

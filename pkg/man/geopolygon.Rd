@@ -4,16 +4,23 @@
   Fill an area.
 }
 \description{
-The program fills an area. The program is similar to the polygon function except the data is in lat, lon and the transform of the data specified in geoplot is used. Also there are some additional parameters. The graph has to be initialized by geoplot.
+The program fills an area. The program is similar to the polygon
+function except the data is in lat, lon and the transform of the data
+specified in geoplot is used. Also there are some additional parameters.
+The graph has to be initialized by geoplot.
 }
 \usage{
-geopolygon(lat, lon = NULL, col = "white", border = FALSE, exterior = FALSE, nx = 1,
-           outside = FALSE, plot = TRUE, save = FALSE, rat = 0.005, density = -1,
-           Projection = NULL, angle = 45, allowed.size = 80000, option = 1)
+geopolygon(lat, lon=NULL, col="white", border=FALSE, exterior=FALSE,
+           nx=1, outside=FALSE, plot=TRUE, save=FALSE, rat=0.005,
+           density=-1, Projection=NULL, angle=45, allowed.size=80000,
+           option=1)
 }
 \arguments{
 \item{lat, lon}{
-Latitude and longitude of data ( or x and y coordinates),  negative for southern latitudes and western longitudes. May be supplied as two vectors or as a list lat (or x) including vectors lat\$lat and lat\$lon (x\$x and x\$y if projection = none).
+Latitude and longitude of data ( or x and y coordinates),  negative for
+southern latitudes and western longitudes. May be supplied as two
+vectors or as a list lat (or x) including vectors lat\$lat and lat\$lon
+(x\$x and x\$y if projection = none).
 }
 \item{col}{
 Color number used.  Default value is 0 (often white).
@@ -31,7 +38,8 @@ new = TRUE.  }
 See geolines for further details.
 }
 \item{outside}{
-If TRUE what is outside of the polygon is colored else what is inside. Default value is TRUE.
+If TRUE what is outside of the polygon is colored else what is inside.
+Default value is TRUE.
 }
 \item{plot}{
 if TRUE the polygon is plotted. Default is TRUE.
@@ -40,7 +48,8 @@ if TRUE the polygon is plotted. Default is TRUE.
 if TRUE the points plotted are returned. Default is FALSE.
 }
 \item{rat}{
-the ratio of the plot to what is plotted. Default is 0.005 meaning that the plot is 0.5\% bigger than what is plotted.
+the ratio of the plot to what is plotted. Default is 0.005 meaning that
+the plot is 0.5\% bigger than what is plotted.
 }
 \item{density}{
 see polygon.

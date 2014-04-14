@@ -8,7 +8,7 @@ Set up axes for a geoplot.
 }
 
 \usage{
-gridaxes(limx, limy, scale, b0, xyratio, grid, col, reitur, smareitur, 
+gridaxes(limx, limy, scale, b0, xyratio, grid, col, reitur, smareitur,
   axratio, axlabels, b1, l1, projection, dlat, dlon)
 }
 
@@ -16,34 +16,41 @@ gridaxes(limx, limy, scale, b0, xyratio, grid, col, reitur, smareitur,
   \item{limx}{Longitude limits}
   \item{limy}{Latitude limits}
   \item{scale}{Scale to supply to \code{Proj, invProj}}
-  \item{b0}{Base latitude for the Mercator projection.  Default value is 65 (typi
-cal for Iceland)}
+  \item{b0}{Base latitude for the Mercator projection.  Default value is
+  65 (typical for Iceland)}
   \item{xyratio}{Argument that can be used to set the aspect ratio (?)}
-  \item{grid}{If grid is TRUE meridians and parallels are plotted, else not. Def
-ault TRUE}
+  \item{grid}{If grid is TRUE meridians and parallels are plotted, else
+  not. Default TRUE}
   \item{col}{Color of gridlines}
   \item{reitur}{Should the grid show statistical rectangles?}
   \item{smareitur}{Should the grid show statistical sub--rectangles?}
   \item{axratio}{Parameter usually not changed by the user (?)}
-  \item{axlabels}{If FALSE no numbers are plotted on the axes. Default TRUE}
-  \item{b1}{Second latitude to define Lambert projection (?, as there's a Lambert version of this function)}
-  \item{l1}{The longitude defining the Lambert projection, default is the \code{
-l1} defined in geopar, ditto ??}
+  \item{axlabels}{If FALSE no numbers are plotted on the axes. Default
+  TRUE}
+  \item{b1}{Second latitude to define Lambert projection (?, as there's
+  a Lambert version of this function)}
+  \item{l1}{The longitude defining the Lambert projection, default is
+  the \code{l1} defined in geopar, ditto ??}
   \item{projection}{Projection ?, other than Mercator ??)}
   \item{dlat}{Latitude axis increment between labels}
   \item{dlon}{Longitude axis increment between labels}
 }
 
 \value{
-No value, useful because of its side effect of adding axes to a geo--plot.
+No value, useful because of its side effect of adding axes to a geoplot.
 }
 
 \note{
-May need further elaboration or simplification (referring to the general geoplot help). Coordinate with the geoaxes.Lambert and gridaxes helpfiles (supply as one??). Why are the \code{dlat} and \code{dlim} returned for this one?
+May need further elaboration or simplification (referring to the general
+geoplot help). Coordinate with the geoaxes.Lambert and gridaxes
+helpfiles (supply as one??). Why are the \code{dlat} and \code{dlim}
+returned for this one?
 }
 
 \seealso{
-Called by \code{\link{init}}, calls \code{\link{invProj}}, \code{\link{Proj}}, \code{\link{mercator}} and \code{\link{plot_nogrid}}.
+Called by \code{\link{init}}, calls \code{\link{invProj}},
+\code{\link{Proj}}, \code{\link{mercator}} and
+\code{\link{plot_nogrid}}.
 }
 
 \keyword{aplot}

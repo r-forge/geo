@@ -4,7 +4,8 @@
 \title{Convert latitude and longitude}
 
 \description{
-Convert between different representations of latitude and longitude, namely degrees-minutes-decimal minutes and decimal degrees.
+Convert between different representations of latitude and longitude,
+namely degrees-minutes-decimal minutes and decimal degrees.
 }
 
 \usage{
@@ -13,8 +14,10 @@ geoconvert(data, inverse = F, col.names = c("lat", "lon"))
 
 \arguments{
   \item{data}{Dataframe with coordinates in two columns}
-  \item{inverse}{Which conversion should be undertaken, default from degrees-minutes-decimal minutes (DDMMmm) to decimal degrees (DD.dd)}
-  \item{col.names}{Colnames in \code{data} with coordinates to convert, default \code{lat, lon}}
+  \item{inverse}{Which conversion should be undertaken, default from
+  degrees-minutes-decimal minutes (DDMMmm) to decimal degrees (DD.dd)}
+  \item{col.names}{Colnames in \code{data} with coordinates to convert,
+  default \code{lat, lon}}
 }
 
 \value{
@@ -22,11 +25,18 @@ Returns \code{data} with converted values in the coordinate columns.
 }
 
 \note{
-Functions calling \code{geoconvert} do so in a branch that is probably rarely used. Implement conversion from other representations of lat and lon in future?
+Functions calling \code{geoconvert} do so in a branch that is probably
+rarely used. Implement conversion from other representations of lat and
+lon in future?
 }
 
 \seealso{
-Called by a number of functions, i.e. \code{\link{d2mr}}, \code{\link{mr2d}}, \code{\link{geogrid}}, \code{\link{geoidentify}}, \code{\link{geolines}}, \code{\link{geopoints}}, \code{\link{geopolygon}} and \code{\link{geotext}}, perhaps unncessarily in some. Wraps around functions \code{\link{geoconvert.1}} and \code{\link{geoconvert.2}}, depending on which conversion to undertake.
+Called by a number of functions, i.e. \code{\link{d2mr}},
+\code{\link{mr2d}}, \code{\link{geogrid}}, \code{\link{geoidentify}},
+\code{\link{geolines}}, \code{\link{geopoints}},
+\code{\link{geopolygon}} and \code{\link{geotext}}, perhaps unncessarily
+in some. Wraps around functions \code{\link{geoconvert.1}} and
+\code{\link{geoconvert.2}}, depending on which conversion to undertake.
 }
 
 \keyword{manip}
