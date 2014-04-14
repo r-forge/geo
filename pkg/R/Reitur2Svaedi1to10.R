@@ -4,12 +4,12 @@ function(reitur, smareitur, Totalreitir, Dypisreitir)
         if(missing(smareitur))
                 smareitur <- rep(0, length(reitur))
         a <- rep(0, length(reitur))
-        i <- match(reitur, Totalreitir$reitur)  # reitir allir innan sama sv.
+        i <- match(reitur, Totalreitir$reitur)  # all rectangles within same Bormicon area
         i1 <- c(1:length(i))
         i1 <- i1[!is.na(i)]
         i <- i[!is.na(i)]
         a[i1] <- Totalreitir$area[i]
-        i <- match(reitur, Dypisreitir$reitur)  # reitir utan og innan 500m
+        i <- match(reitur, Dypisreitir$reitur)  # rectangles outside and inside 500 m
         i1 <- c(1:length(i))
         i1 <- i1[!is.na(i)]
         i <- i[!is.na(i)]
@@ -20,11 +20,11 @@ function(reitur, smareitur, Totalreitir, Dypisreitir)
         i1 <- i1[!is.na(i)]
         if(length(i1) > 0)
                 a[i1] <- 1
-        i <- match(reitur, c(373, 324)) # reitir bæği á 1 og 10
+        i <- match(reitur, c(373, 324))  # rectangles in areas 1 and 10
         i1 <- c(1:length(i))
         i1 <- i1[!is.na(i)]
-        if(length(i1) > 0) a[i1] <- 1   # meirihluti í sv. 1.
-        i <- match(reitur, c(721, 722, 723))    # reitir bæği á 2 og 3.
+        if(length(i1) > 0) a[i1] <- 1  # mainly in area 1
+        i <- match(reitur, c(721, 722, 723))  # rectangles straddling areas 2 and 3
         i1 <- c(1:length(i))
         i1 <- i1[!is.na(i)]
         if(length(i1) > 0)

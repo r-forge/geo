@@ -21,7 +21,7 @@ function(data, name.x, name.ind, FUNS = NULL, NA.rm = FALSE, resp.name = NULL,
 	}
 	data$NR <- rep(1., nrow(data))
 	i <- match("", name.x)
-	# Eyða NA gildum.  
+	# Remove NA values
 	if(!is.na(i)) name.x[i] <- "NR"
 	i <- rep(1., nrow(data))
 	if(NA.rm) {
