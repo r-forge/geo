@@ -1,12 +1,5 @@
-# Remove the previous line if you edit this file
 useDynLib(geo)
 
-# Export all names
-exportPattern(".")
+import(maps, mapdata, splines)
 
-# Import all packages listed as Imports or Depends
-import(
-  maps,
-  mapdata,
-  splines
-)
+exportPattern(".")
